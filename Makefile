@@ -115,7 +115,7 @@ build/%.asm.o: $(KERNEL_DIR)/%.asm Makefile
 
 # ISO Build target
 ISO_OUT_DIR := release
-ISO_OUT := $(ISO_OUT_DIR)/Leaf-$(TARGET_ARCH)-$(shell date +%s).iso
+ISO_OUT := $(ISO_OUT_DIR)/Leaf-$(TARGET_ARCH)-$(shell date +%B-%Y).iso
 ISO_DIR := public/
 SYSROOT := $(TARGET_ROOT)
 

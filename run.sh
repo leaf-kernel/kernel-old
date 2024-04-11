@@ -11,4 +11,4 @@ shift
 make clean
 make TARGET="$TARGET"
 
-qemu-system-$TARGET --serial stdio -name "Leaf $TARGET" -cdrom "release/Leaf-$TARGET-$(date +%s).iso" "$@"
+qemu-system-$TARGET --serial stdio -name "Leaf $TARGET" -cdrom "release/Leaf-$TARGET-$(date +%B-%Y).iso" "$@"
