@@ -1,0 +1,4 @@
+[submodule "arch/x86_64/limine"]
+	path = arch/x86_64/limine
+	url = https://github.com/limine-bootloader/limine/
+	branch = v7.x-binary
