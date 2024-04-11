@@ -11,7 +11,7 @@ You can also run and build using the provided `run.sh` script.
 Usage: ./run.sh <target> [qemu args]
 ``` 
 
-## Futures
+## Features
 - IDT
 - PIC (8259)
 - PIT
