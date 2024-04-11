@@ -6,7 +6,7 @@
 #include <include/drivers/stdio/printf.h>
 #include <include/drivers/cpu/cpu.h>
 #include <include/sys/logger.h>
-
+#include <leaf.h>
 
 void _start(void) {
     dprintf("\033c");
