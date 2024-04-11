@@ -5,6 +5,7 @@
 #include <limine/limine.h>
 #include <include/serial.h>
 #include <include/cpu.h>
+#include <include/klibc/printf.h>
 
 static volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
@@ -24,6 +25,6 @@ void _start(void) {
         fb_ptr[i * (framebuffer->pitch / 4) + i] = 0xffffff;
     }
     
-    outb(QEMU_SERIAL_PORT, 'A');
+    dprintf("Hello, World!\n");
     hcf();
 }
