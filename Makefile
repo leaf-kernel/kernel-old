@@ -78,6 +78,7 @@ LD_FLAGS := \
 NASM_FLAGS := \
 	-Wall \
 	-f $(NASM_OUT)
+	
 
 # Files
 CFILES := $(shell cd $(KERNEL_DIR) && find -L * -type f -name '*.c')
