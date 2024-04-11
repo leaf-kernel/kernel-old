@@ -1,1 +1,1 @@
-test = echo "test"
+PUBLIC ?= public

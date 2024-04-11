@@ -29,7 +29,6 @@ endif
 # Get the output type for CC_FLAGS
 ifeq ($(TARGET),x86_64)
     CC_OUT := x86-64
-	CC_VER := 64
 else
     $(error Error: Leaf currently doesn't support $(TARGET))
 endif
@@ -47,31 +46,33 @@ CC_FLAGS := \
 	-O2 \
 	-pipe \
 	-O0 \
-	-I$(TARGET_PATH) \
-	-I$(KERNEL_DIR) \
-	-Wall \
-	-Wextra \
-	-std=gnu11 \
-	-ffreestanding \
-	-fno-stack-protector \
-	-fno-stack-check \
-	-fno-lto \
-	-fno-PIE \
-	-fno-PIC \
-	-m$(CC_VER) \
-	-march=$(CC_OUT) \
-	-mabi=sysv \
-	-mcmodel=kernel \
-	-mno-80387 \
-	-mno-red-zone \
-	-msse \
-	-mgeneral-regs-only \
-	-DSUPPORT_FLOAT \
-	-Wimplicit-function-declaration \
-	-Wdiv-by-zero \
-	-Wunused-variable	
+    	-I$(TARGET_PATH) \
+    	-I$(KERNEL_DIR) \
+    	-Wall \
+    	-Wextra \
+    	-std=gnu11 \
+    	-ffreestanding \
+    	-fno-stack-protector \
+    	-fno-stack-check \
+    	-fno-lto \
+    	-fno-PIE \
+    	-fno-PIC \
+    	-m64 \
+    	-march=$(CC_OUT) \
+    	-mabi=sysv \
+    	-mcmodel=kernel \
+    	-mno-80387 \
+    	-mno-red-zone \
+    -DPRINTF_DISABLE_SUPPORT_FLOAT \
+    -DHEAP_ACCESSABLE \
+    -msse \
+    -mgeneral-regs-only \
+    -DSUPPORT_FLOAT \
+    -Wimplicit-function-declaration \
+    -Wdiv-by-zero \
+    -Wunused-variable
 
-LD_LAGS := \
+LD_FLAGS := \
 	-nostdlib \
 	-static  \
 	-m elf_x86_64 \
@@ -120,20 +121,19 @@ ISO_OUT_DIR := release
 ISO_OUT := $(ISO_OUT_DIR)/Leaf-$(TARGET)-$(shell date +%s).iso
 ISO_DIR := public/
 SYSROOT := $(TARGET_ROOT)
+ISO_FILES := bin/$(KERNEL) $(wildcard $(SYSROOT)/*)
 
 .PHONY: hdd
 hdd: $(ISO_OUT)
 
-$(ISO_OUT): bin/$(KERNEL)
+$(ISO_OUT): $(ISO_FILES)
 	@if [ "$(TARGET)" != "x86_64" ]; then \
 		echo "Error: ISO generation is only supported for x86_64 target" > /dev/stderr; \
 		exit 1; \
 	fi
 	@mkdir -p $(ISO_OUT_DIR) > /dev/null 2>&1
 	@mkdir -p $(ISO_DIR) > /dev/null 2>&1
-	@mkdir -p $(ISO_DIR)/boot > /dev/null 2>&1
-	@cp -v $(SYSROOT)/* $(ISO_DIR) > /dev/null 2>&1
-	@cp -v bin/$(KERNEL) $(ISO_DIR)/boot/leaf > /dev/null 2>&1
+	@cp -v $^ $(ISO_DIR) > /dev/null 2>&1
 	@make -C $(TARGET_PATH)/limine > /dev/null 2>&1
 	@cp -v $(TARGET_PATH)/limine/limine-bios.sys $(TARGET_PATH)/limine/limine-bios-cd.bin $(TARGET_PATH)/limine/limine-uefi-cd.bin $(ISO_DIR) > /dev/null 2>&1
 	@mkdir -p $(ISO_DIR)/EFI/BOOT > /dev/null 2>&1
@@ -146,4 +146,4 @@ $(ISO_OUT): bin/$(KERNEL)
 # Clean target
 .PHONY: clean
 clean:
-	@rm -rf bin build $(ISO_OUT_DIR)
+	@rm -rf bin build Leaf-*.iso

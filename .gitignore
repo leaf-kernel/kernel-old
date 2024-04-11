@@ -1,0 +1,7 @@
+/.vscode/
+/build/
+/bin/
+/release/
+/*.o/
+/*.bin/
+/*.iso/

@@ -1,8 +1,19 @@
 # Leaf Kernel
-The leaf kernel uses limine for the x86_64 bootloader (currently the only supported architecture)
+A x86_64 kernel.
+
+## Building
+To build an ISO. Just simply run:
+```bash
+make
+```
+
+## Requirements
+- nasm
+- Crosscompiler and binutils for target (x86_64-elf)
+- xorriso
 
 ## Architectures
 | Architecture 	| Status 	|
 |--------------	|--------	|
-| x86-64       	| ✅      	|
-| x86          	| ❌      	|
+| x86-64       	| ✅        |
+| x86          	| ❌        |

@@ -1,3 +1,5 @@
+#include <include/serial.h>
+
 static void hcf(void) {
     asm ("cli");
     for (;;) {
@@ -6,5 +8,6 @@ static void hcf(void) {
 }
 
 void _start(void) {
+    outb(QEMU_SERIAL_PORT, 'A');
     hcf();
 }
