@@ -68,6 +68,10 @@ CC_FLAGS := \
 CC_FLAGS += -DLEAF_ARCH=\"$(TARGET_ARCH)\"
 CC_FLAGS += -DLEAF_BOOTLOADER=\"$(TARGET_BOOTLOADER)\"
 
+ifeq ($(TARGET_BOOTLOADER),limine)
+	CC_FLAGS += -DLEAF_LIMINE
+endif
+
 LD_FLAGS := \
 	-nostdlib \
 	-static  \
