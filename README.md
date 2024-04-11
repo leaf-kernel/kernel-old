@@ -6,6 +6,14 @@ To build an ISO. Just simply run:
 ```bash
 make
 ```
+You can also run and build using the provided `run.sh` script.
+```
+Usage: ./run.sh <target> [qemu args]
+``` 
+
+## Target List
+- x86_64    (Supported)
+- i386      (Unsupported)
 
 ## Requirements
 - nasm
