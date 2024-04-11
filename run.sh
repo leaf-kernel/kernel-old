@@ -8,6 +8,6 @@ fi
 TARGET=$1
 shift
 
-make TARGET="$TARGET" > /dev/null
+make TARGET_ARCH="$TARGET" > /dev/null
 
 qemu-system-$TARGET -name "Leaf $TARGET" -cdrom "release/Leaf-$TARGET-$(date +%B-%Y).iso" "$@"

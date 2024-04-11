@@ -1,10 +1,5 @@
 override MAKEFLAGS += -rR
 
-# Default target config
-TARGET_ARCH := x86_64
-PUBLIC := public
-TARGET_BOOTLOADER := limine
-
 # ARCH Check
 SUPPORTED_ARCHS := x86_64
 
