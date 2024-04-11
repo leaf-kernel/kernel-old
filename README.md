@@ -11,6 +11,11 @@ You can also run and build using the provided `run.sh` script.
 Usage: ./run.sh <target> [qemu args]
 ``` 
 
+## Futures
+- IDT
+- Serial I/O
+- printf (only to serial rn)
+
 ## Target List
 - x86_64    (Supported)
 - i386      (Unsupported)

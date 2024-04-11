@@ -46,7 +46,7 @@ CC_FLAGS := \
 	-pipe \
 	-O0 \
 	-I$(TARGET_PATH) \
-	-I$(KERNEL_DIR) \
+	-I$(KERNEL_DIR)/include \
 	-Wall \
 	-Wextra \
 	-Werror \
