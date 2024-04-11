@@ -13,6 +13,8 @@ Usage: ./run.sh <target> [qemu args]
 
 ## Futures
 - IDT
+- PIC (8259)
+- PIT
 - Serial I/O
 - printf (only to serial rn)
 

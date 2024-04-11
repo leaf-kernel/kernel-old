@@ -8,7 +8,6 @@ fi
 TARGET=$1
 shift
 
-make clean
-make TARGET="$TARGET"
+make TARGET="$TARGET" > /dev/null
 
-qemu-system-$TARGET --serial stdio -name "Leaf $TARGET" -cdrom "release/Leaf-$TARGET-$(date +%B-%Y).iso" "$@"
+qemu-system-$TARGET -name "Leaf $TARGET" -cdrom "release/Leaf-$TARGET-$(date +%B-%Y).iso" "$@"

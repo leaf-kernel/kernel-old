@@ -1,4 +1,5 @@
 #include <arch/idt/idt.h>
+#include <arch/pic/pic.h>
 #include <drivers/stdio/printf.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -9,6 +10,8 @@
 
 idt_entry_t idt[IDT_ENTRIES];
 idt_pointer_t idt_p;
+void *irq_handlers[16];
+
 extern uint64_t isr_tbl[];
 
 static const char *exception_strings[32] = {"Division By Zero",
@@ -62,16 +65,22 @@ void init_idt()
 	idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
 	idt_p.base = (uint64_t)&idt;
 
+	for (size_t i = 0; i < 16; i++)
+	{
+		irq_handlers[i] = NULL;
+	}
+
 	asm("sti");
-	// TODO: Remap PIC
+	pic_configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, true);
 
 	for (int i = 0; i < IDT_ENTRIES; ++i)
 	{
 		set_idt_gate(i, isr_tbl[i], 0x28, 0x8E);
 	}
 
-	// TODO: Enable interrupts on the PIC
+	pic_disable();
 	load_idt((uint64_t)&idt_p);
+	pic_enable();
 	asm("cli");
 	cdebug_log(__func__, "done.");
 }
@@ -85,10 +94,30 @@ void excp_handler(int_frame_t frame)
 	}
 	else if (frame.vector >= 0x20 && frame.vector <= 0x2f)
 	{
-		// TODO: Handle IRQs
+		int irq = frame.vector - 0x20;
+		typedef void (*handler_func_t)(int_frame_t *);
+
+		handler_func_t handler = irq_handlers[irq];
+
+		if (handler != NULL)
+		{
+			handler(&frame);
+		}
+
+		pic_sendEOI(irq);
 	}
 	else if (frame.vector == 0x80)
 	{
 		cdebug_log(__func__, "Handeling system call!");
 	}
+}
+
+void irq_register(uint8_t irq, void *handler)
+{
+	irq_handlers[irq] = handler;
+}
+
+void irq_deregister(uint8_t irq)
+{
+	irq_handlers[irq] = NULL;
 }
