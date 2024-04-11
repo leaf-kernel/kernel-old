@@ -23,7 +23,7 @@ bool check_apic()
     return apic_supported;
 }
 
-void init_apic()
+void init_ioapic()
 {
     if (!check_apic())
     {
@@ -36,6 +36,4 @@ void init_apic()
         cdebug_log(__func__, "CPU Doesnt have MSR (Model Specific Registers)!");
         hcf();
     }
-
-    cdebug_log(__func__, "APIC Support is currently not working.");
 }

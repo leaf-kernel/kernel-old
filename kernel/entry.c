@@ -48,7 +48,7 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
-    init_apic();
+    init_ioapic();
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");

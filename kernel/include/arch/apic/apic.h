@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-void init_apic();
+void init_ioapic();
 
 #endif // __APIC_H__
