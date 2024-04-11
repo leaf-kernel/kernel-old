@@ -15,6 +15,8 @@ Usage: ./run.sh <target> [qemu args]
 - IDT
 - PIC (8259)
 - PIT
+- PMM
+- KHEAP
 - Serial I/O
 - printf (only to serial rn)
 
