@@ -1,4 +1,4 @@
-#include <include/cpu.h>
+#include <include/drivers/cpu/cpu.h>
 
 void hcf() {
     asm ("cli");

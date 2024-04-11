@@ -36,7 +36,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-#include <include/serial.h>
+#include <include/drivers/stdio/serial.h>
 
 
 #ifdef __cplusplus
