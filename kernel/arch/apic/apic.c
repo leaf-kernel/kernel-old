@@ -31,5 +31,11 @@ void init_apic()
         hcf();
     }
 
+    if (!cpuHasMSR())
+    {
+        cdebug_log(__func__, "CPU Doesnt have MSR (Model Specific Registers)!");
+        hcf();
+    }
+
     cdebug_log(__func__, "APIC Support is currently not working.");
 }
