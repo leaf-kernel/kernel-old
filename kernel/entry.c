@@ -10,6 +10,7 @@
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
 #include <arch/idt/idt.h>
+#include <arch/apic/apic.h>
 
 // Memory imports
 #include <memory/pmm.h>
@@ -47,6 +48,8 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
+    init_apic();
+
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");
     dprintf("Leaf Version: %s\n", LEAF_VERSION);
