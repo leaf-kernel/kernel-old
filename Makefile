@@ -63,7 +63,7 @@ CC_FLAGS := \
 	-mno-80387 \
 	-mno-red-zone \
     -msse \
-    -mgeneral-regs-only \
+    -msse2 \
     -Wimplicit-function-declaration \
     -Wdiv-by-zero \
     -Wunused-variable
