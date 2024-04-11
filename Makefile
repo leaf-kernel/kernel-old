@@ -3,6 +3,7 @@ override MAKEFLAGS += -rR
 # Default target config
 TARGET_ARCH := x86_64
 PUBLIC := public
+TARGET_BOOTLOADER := limine
 
 # ARCH Check
 SUPPORTED_ARCHS := x86_64
@@ -66,7 +67,11 @@ CC_FLAGS := \
     -msse2 \
     -Wimplicit-function-declaration \
     -Wdiv-by-zero \
-    -Wunused-variable
+    -Wunused-variable 
+
+# Leaf C Definitions
+CC_FLAGS += -DLEAF_ARCH=\"$(TARGET_ARCH)\"
+CC_FLAGS += -DLEAF_BOOTLOADER=\"$(TARGET_BOOTLOADER)\"
 
 LD_FLAGS := \
 	-nostdlib \

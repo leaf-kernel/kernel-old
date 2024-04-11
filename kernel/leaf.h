@@ -6,4 +6,13 @@
 #define LEAF_RETURN_FAIL        1
 #define LEAF_RETURN_FATAL       2
 
+// Leaf definitions
+#ifndef LEAF_ARCH
+#define LEAF_ARCH "Unknown"
+#endif
+
+#ifndef LEAF_BOOTLOADER
+#define LEAF_BOOTLOADER "Unknown"
+#endif
+
 #endif // __LEAF_H__

@@ -10,6 +10,6 @@
 
 void _start(void) {
     dprintf("\033c");
-    debug_log(__func__, "Hello, World!");
+    dprintf("Leaf Kernel, Arch: %s, Bootloader: %s, Compiled at %s with gcc v%s\n\n", LEAF_ARCH, LEAF_BOOTLOADER, __DATE__, __VERSION__);
     hcf();
 }
