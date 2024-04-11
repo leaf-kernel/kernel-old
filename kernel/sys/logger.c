@@ -6,7 +6,7 @@ void debug_log(const char *file, const int line, const char *function, const cha
     va_start(args, fmt);
     dprintf("%s:%d (%s) - ", file, line, function);
     vdprintf(fmt, args);
-    dprintf("\n");
+    dprintf("\r\n");
     va_end(args);
 }
 

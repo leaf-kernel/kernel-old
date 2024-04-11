@@ -15,6 +15,10 @@
 #define LEAF_BOOTLOADER "Unknown"
 #endif
 
+#ifndef LEAF_VERSION
+#define LEAF_VERSION "Unknown"
+#endif
+
 // Global Variables
 extern volatile struct limine_framebuffer_request framebuffer_request;
 extern volatile struct limine_hhdm_request hhdm_request;

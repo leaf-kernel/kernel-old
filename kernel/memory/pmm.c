@@ -3,7 +3,7 @@
 #include <sys/logger.h>
 #include <libc/math.h>
 #include <limine/limine.h>
-#include "../leaf.h"
+#include <sys/leaf.h>
 
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
