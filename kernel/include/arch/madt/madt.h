@@ -3,90 +3,86 @@
 
 #include <stdint.h>
 
-#define MADT_SIGNATURE 0x41434950
+#define MADT_SIG 0x41434950
 
 typedef struct
 {
-    // APIC Table Header
-    char signature[4];
-    uint32_t length;
-    uint8_t revision;
-    uint8_t checksum;
+    char sig[4];
+    uint32_t len;
+    uint8_t rev;
+    uint8_t chksum;
     char oem_id[6];
     uint64_t oem_table_id;
-    uint32_t oem_revision;
+    uint32_t oem_rev;
     uint32_t creator_id;
-    uint32_t creator_revision;
-
-    // MADT_specific fields
-    uint32_t local_apic_addr;
+    uint32_t creator_rev;
+    uint32_t lapic_addr;
     uint32_t flags;
-
 } MADT;
 
 typedef struct
 {
     uint8_t type;
-    uint8_t record_length;
-} MADTEntryHeader;
+    uint8_t len;
+} MADT_Entry;
 
 typedef struct
 {
-    MADTEntryHeader header;
-    uint8_t acpi_proccesor_id;
+    MADT_Entry header;
+    uint8_t acpi_id;
     uint8_t apic_id;
     uint32_t flags;
-} MADTProcessorLocalAPIC;
+} MADT_CPU_LAPIC;
 
 typedef struct
 {
-    MADTEntryHeader header;
-    uint8_t io_apic_id;
+    MADT_Entry header;
+    uint8_t ioapic_id;
     uint8_t reserved;
-    uint32_t io_apic_address;
-    uint32_t globam_system_interrupt_base;
-} MADTIOAPIC;
+    uint32_t ioapic_addr;
+    uint32_t gsi_base;
+} MADT_IOAPIC;
 
 typedef struct
 {
-    MADTEntryHeader header;
-    uint8_t bus_source;
-    uint8_t irq_source;
-    uint32_t global_system_interrupt;
+    MADT_Entry header;
+    uint8_t bus_src;
+    uint8_t irq_src;
+    uint32_t gsi;
     uint16_t flags;
-} MADTIOAPICInterruptSourceOverride;
+} MADT_IOAPIC_IntSrcOverride;
 
 typedef struct
 {
-    MADTEntryHeader header;
-    uint8_t nmi_source;
+    MADT_Entry header;
+    uint8_t nmi_src;
     uint8_t reserved;
     uint16_t flags;
-    uint32_t global_system_interrupt;
-} MADTIOAPICNonmaskableInterruptSource;
+    uint32_t gsi;
+} MADT_IOAPIC_NMI;
 
 typedef struct
 {
-    MADTEntryHeader header;
-    uint8_t acpi_proccessor_id;
+    MADT_Entry header;
+    uint8_t acpi_id;
     uint16_t flags;
     uint8_t lint_nr;
-} MADTLocalAPICNonmaskableInterrupts;
+} MADT_LAPIC_NMI;
 
 typedef struct
 {
-    MADTEntryHeader header;
+    MADT_Entry header;
     uint16_t reserved;
-    uint64_t local_apic_physaddr;
-} MADTLocalAPICAddressOverride;
+    uint64_t lapic_phys_addr;
+} MADT_LAPIC_Address;
 
 typedef struct
 {
-    MADTEntryHeader header;
+    MADT_Entry header;
     uint16_t reserved;
-    uint32_t processors_local_x2_apic_id;
+    uint32_t proc_local_x2_apic_id;
     uint32_t flags;
     uint32_t acpi_id;
-} MADTProcessorLocalx2APIC;
+} MADT_CPU_LAPIC_x2;
 
 #endif // __MADT_H__
