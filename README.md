@@ -17,8 +17,12 @@ Usage: ./run.sh <target> [qemu args]
 - PIT
 - PMM
 - KHEAP
+- CPUID
 - Serial I/O
 - printf (only to serial rn)
+
+## Work in progress
+We are currently working on APIC (IOAPIC and LAPIC).
 
 ## Target List
 - x86_64    (Supported)
