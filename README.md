@@ -21,6 +21,7 @@ Usage: ./run.sh <target> [qemu args]
 - Serial I/O
 - Nighterm
 - printf
+- Ramdisk (ish only TAR for now. Still usable)
 
 ## Work in progress
 We are currently working on APIC (IOAPIC and LAPIC).
