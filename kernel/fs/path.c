@@ -23,6 +23,14 @@ PathComponent *split_path(const char *path, int *num_components)
         }
 
         components[count].name = strdup(token);
+        if (components[count].name == NULL)
+        {
+            for (int i = 0; i < count; i++)
+                kfree(components[i].name);
+            kfree(components);
+            kfree(path_copy);
+            return NULL;
+        }
 
         char *next_token = strtok(NULL, "/");
         if (next_token != NULL)
@@ -43,7 +51,9 @@ void free_components(PathComponent *components, int num_components)
 {
     if (components == NULL)
         return;
+
     for (int i = 0; i < num_components; i++)
         kfree(components[i].name);
+
     kfree(components);
 }

@@ -164,6 +164,6 @@ $(ISO_OUT): bin/$(KERNEL).bin
 # Clean target
 .PHONY: clean
 clean:
-	@rm -rf bin build $(ISO_OUT_DIR)
+	@rm -rf bin build $(ISO_OUT_DIR) $(TARGET_PATH)/$(MODULES)/ramdisk
 
 .DEFAULT_GOAL := all

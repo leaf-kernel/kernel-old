@@ -37,7 +37,16 @@ void TARExtract(const char *raw, uint64_t size, TAREntry *tar)
 
         TARFile file;
         file.size = TARGetSize(header->size);
-        file.name = TARRemovePrefix(header->filename, RAMDISK_PATH_PREFIX);
+        file.path = TARRemovePrefix(header->filename, RAMDISK_PATH_PREFIX);
+
+        int num_components = 0;
+        PathComponent *components = split_path(file.path, &num_components);
+
+        if (components != NULL)
+            file.name = components[num_components - 1].name;
+        else
+            file.name = file.path;
+
         file.directory = header->typeflag[0] == '5';
 
         if (!file.directory)
@@ -48,7 +57,7 @@ void TARExtract(const char *raw, uint64_t size, TAREntry *tar)
         }
         else
         {
-            file.content = NULL;
+            file.content = "";
         }
 
         TARFile *temp_files = krealloc(tar->files, (tar->fileCount + 1) * sizeof(TARFile));
@@ -71,7 +80,7 @@ void TARFree(TAREntry *tar)
 
     for (uint64_t i = 0; i < tar->fileCount; ++i)
     {
-        kfree(tar->files[i].name);
+        kfree(tar->files[i].path);
         kfree(tar->files[i].content);
     }
 

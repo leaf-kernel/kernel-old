@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <libc/math.h>
 #include <libc/string.h>
+#include <fs/path.h>
 
 #define RAMDISK_PATH_PREFIX "initrd"
 
@@ -22,6 +23,7 @@ typedef struct
 
 typedef struct
 {
+    char *path;
     char *name;
     char *content;
     uint64_t size;
