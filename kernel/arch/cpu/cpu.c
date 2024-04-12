@@ -81,3 +81,21 @@ bool check_apic()
         __get_cpuid(1, &eax, &unused, &unused, &edx);
         return edx & CPUID_FEAT_EDX_APIC;
 }
+
+bool check_msr()
+{
+        unsigned int eax, unused, edx;
+        __get_cpuid(1, &eax, &unused, &unused, &edx);
+        return edx & CPUID_FEAT_EDX_MSR;
+}
+
+// MSR
+void get_msr(uint32_t msr, uint32_t *lo, uint32_t *hi)
+{
+        asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+}
+
+void set_msr(uint32_t msr, uint32_t lo, uint32_t hi)
+{
+        asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+}

@@ -102,5 +102,10 @@ void get_cpu_vendor_string(char *vendor_string);
 
 // Check functions
 bool check_apic();
+bool check_msr();
+
+// MSR
+void get_msr(uint32_t msr, uint32_t *lo, uint32_t *hi);
+void set_msr(uint32_t msr, uint32_t lo, uint32_t hi);
 
 #endif // __CPU_H__
