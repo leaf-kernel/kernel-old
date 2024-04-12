@@ -36,6 +36,7 @@ void panic(const char *reason, int_frame_t frame)
         hcf();
 }
 
+// CPU ID
 int get_model()
 {
         int ebx, unused;
@@ -50,6 +51,7 @@ int cpuid_string(int code, uint32_t where[4])
         return (int)where[0];
 }
 
+// Utils functions
 void get_intel_cpu_brand_string(char *brand_string)
 {
         uint32_t brand[12];
@@ -70,4 +72,12 @@ void get_cpu_vendor_string(char *vendor_string)
         memcpy(vendor_string + sizeof(uint32_t), &vendor[3], sizeof(uint32_t));
         memcpy(vendor_string + 2 * sizeof(uint32_t), &vendor[2], sizeof(uint32_t));
         vendor_string[12] = '\0';
+}
+
+// Check functions
+bool check_apic()
+{
+        unsigned int eax, unused, edx;
+        __get_cpuid(1, &eax, &unused, &unused, &edx);
+        return edx & CPUID_FEAT_EDX_APIC;
 }
