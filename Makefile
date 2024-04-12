@@ -6,6 +6,8 @@ TARGET_FORMAT := elf
 TARGET_BOOTLOADER := limine
 TARGET_VER := v0.0.1
 PUBLIC := root
+MODULES := modules
+RAMDISK_PATH := initrd
 
 # ARCH Check
 SUPPORTED_ARCHS := x86_64
@@ -143,6 +145,7 @@ $(ISO_OUT): bin/$(KERNEL).bin
     	@echo "Error: ISO generation is only supported for the limine bootloader" > /dev/stderr; \
     	exit 1; \
 	fi
+	@tar -cvf $(TARGET_PATH)/$(MODULES)/ramdisk $(RAMDISK_PATH)/*
 	@mkdir -p $(ISO_OUT_DIR) > /dev/null 2>&1
 	@mkdir -p $(ISO_DIR) > /dev/null 2>&1
 	@mkdir -p $(ISO_DIR)/boot > /dev/null 2>&1
@@ -153,6 +156,7 @@ $(ISO_OUT): bin/$(KERNEL).bin
 	@mkdir -p $(ISO_DIR)/EFI/BOOT > /dev/null 2>&1
 	@cp -v $(TARGET_PATH)/limine/BOOTX64.EFI $(ISO_DIR)/EFI/BOOT/ > /dev/null 2>&1
 	@cp -v $(TARGET_PATH)/limine/BOOTIA32.EFI $(ISO_DIR)/EFI/BOOT/ > /dev/null 2>&1
+	@cp -v $(TARGET_PATH)/$(MODULES)/* $(ISO_DIR) > /dev/null 2>&1
 	@xorriso -as mkisofs -b limine-bios-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot limine-uefi-cd.bin -efi-boot-part --efi-boot-image --protective-msdos-label $(ISO_DIR) -o $@ > /dev/null 2>&1
 	@$(TARGET_PATH)/limine/limine bios-install $@ > /dev/null 2>&1
 	@rm -rf $(ISO_DIR) > /dev/null 2>&1

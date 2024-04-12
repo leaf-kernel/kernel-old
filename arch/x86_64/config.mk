@@ -6,3 +6,5 @@ TARGET_VER ?= v0.0.1
 
 # Path config
 PUBLIC ?= root
+MODULES ?= modules
+RAMDISK_PATH ?= initrd

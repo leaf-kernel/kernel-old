@@ -22,6 +22,10 @@
 
 // Libc imports
 #include <libc/math.h>
+#include <libc/string.h>
+
+// File imports
+#include <fs/tar.h>
 
 // Leaf header import
 #include <sys/leaf.h>
@@ -32,6 +36,7 @@
 
 // Limine requests
 volatile struct limine_framebuffer_request framebuffer_request = {.id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 1};
+volatile struct limine_module_request mod_request = {.id = LIMINE_MODULE_REQUEST, .revision = 0};
 volatile struct limine_hhdm_request hhdm_request = {.id = LIMINE_HHDM_REQUEST, .revision = 0};
 
 // Global variables
@@ -68,6 +73,17 @@ void _start(void)
     printf("CPU Vendor: %s\n", vendor_string);
     printf("CPU Brand: %s\n", brand);
     printf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
+
+    TAREntry *tar = (TAREntry *)kmalloc(sizeof(TAREntry));
+    if (tar == NULL)
+    {
+        cdebug_log(__func__, "Failed to allocate memory for initrd!");
+        hcf();
+    }
+
+    TARExtract((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size, tar);
+
+    printf("TAR Test:\n - %s: %s\n", tar->files[0].name, tar->files[0].content);
 
     hcf();
 }
