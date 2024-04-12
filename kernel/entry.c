@@ -55,7 +55,11 @@ void _start(void)
     dprintf("CPU Model: %d\n", get_model());
 
     char brand[49];
+    char vendor_string[13];
     get_intel_cpu_brand_string(brand);
+    get_cpu_vendor_string(vendor_string);
+
+    dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
     hcf();

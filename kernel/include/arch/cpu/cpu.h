@@ -33,5 +33,6 @@ int cpuid_string(int code, uint32_t where[4]);
 
 // Util funcs (yet again)
 void get_intel_cpu_brand_string(char *brand_string);
+void get_cpu_vendor_string(char *vendor_string);
 
 #endif // __CPU_H__

@@ -61,3 +61,13 @@ void get_intel_cpu_brand_string(char *brand_string)
         memcpy(brand_string, brand, sizeof(brand));
         brand_string[sizeof(brand)] = '\0';
 }
+
+void get_cpu_vendor_string(char *vendor_string)
+{
+        uint32_t vendor[4];
+        cpuid_string(0, vendor);
+        memcpy(vendor_string, &vendor[1], sizeof(uint32_t));
+        memcpy(vendor_string + sizeof(uint32_t), &vendor[3], sizeof(uint32_t));
+        memcpy(vendor_string + 2 * sizeof(uint32_t), &vendor[2], sizeof(uint32_t));
+        vendor_string[12] = '\0';
+}
