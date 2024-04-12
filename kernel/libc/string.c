@@ -172,6 +172,47 @@ uint64_t strtoul(const char *str, char **endptr, int base)
     return sign * result;
 }
 
+char *strtok(char *str, const char *delim)
+{
+    static char *next_token = NULL;
+    char *token_start;
+
+    if (str != NULL)
+    {
+        next_token = str;
+    }
+    else if (next_token == NULL)
+    {
+        return NULL;
+    }
+
+    while (*next_token != '\0' && strchr(delim, *next_token) != NULL)
+    {
+        next_token++;
+    }
+
+    if (*next_token == '\0')
+    {
+        next_token = NULL;
+        return NULL;
+    }
+
+    token_start = next_token;
+
+    while (*next_token != '\0' && strchr(delim, *next_token) == NULL)
+    {
+        next_token++;
+    }
+
+    if (*next_token != '\0')
+    {
+        *next_token = '\0';
+        next_token++;
+    }
+
+    return token_start;
+}
+
 uint64_t octal_str_to_uint64(const char *str) { return strtoul(str, NULL, 8); }
 
 int isdigit(unsigned char c) { return (c >= '0' && c <= '9'); }
@@ -216,4 +257,16 @@ char *strrchr(const char *s, int c)
     // If c was found, return a pointer to the last occurrence
     // Otherwise, return NULL
     return (char *)last_occurrence;
+}
+char *strchr(const char *str, int c)
+{
+    while (*str != '\0')
+    {
+        if (*str == c)
+        {
+            return (char *)str; // Cast const away to return non-const pointer
+        }
+        str++;
+    }
+    return NULL;
 }

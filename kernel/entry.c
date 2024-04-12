@@ -26,6 +26,7 @@
 
 // File imports
 #include <fs/tar.h>
+#include <fs/initrd.h>
 
 // Leaf header import
 #include <sys/leaf.h>
@@ -54,36 +55,34 @@ void _start(void)
     init_pit();
     init_pmm();
     init_tty();
-    tty_spawn(0);
+    Ramdisk *initrd = (Ramdisk *)kmalloc(sizeof(Ramdisk));
+    if (initrd == NULL)
+    {
+        cdebug_log(__func__, "Failed to allocate memory for initrd!");
+        hcf();
+    }
 
+    init_ramdisk(initrd, (char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
+
+    tty_spawn(0);
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");
 
     // Print out some system info
-    printf("leaf @ tty%04d\n\n", currentTTYid);
-    printf("Leaf Version: %s\n", LEAF_VERSION);
-    printf("Arch: %s\n", LEAF_ARCH);
-    printf("CPU Model: %d\n", get_model());
+    dprintf("Leaf Version: %s\n", LEAF_VERSION);
+    dprintf("Arch: %s\n", LEAF_ARCH);
+    dprintf("CPU Model: %d\n", get_model());
 
     char brand[49];
     char vendor_string[13];
     get_intel_cpu_brand_string(brand);
     get_cpu_vendor_string(vendor_string);
 
-    printf("CPU Vendor: %s\n", vendor_string);
-    printf("CPU Brand: %s\n", brand);
-    printf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
-
-    TAREntry *tar = (TAREntry *)kmalloc(sizeof(TAREntry));
-    if (tar == NULL)
-    {
-        cdebug_log(__func__, "Failed to allocate memory for initrd!");
-        hcf();
-    }
-
-    TARExtract((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size, tar);
-
-    printf("TAR Test:\n - %s: %s\n", tar->files[0].name, tar->files[0].content);
+    dprintf("CPU Vendor: %s\n", vendor_string);
+    dprintf("CPU Brand: %s\n", brand);
+    dprintf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
+    // TTY
+    printf("leaf @ tty%04d\n\n", currentTTYid);
 
     hcf();
 }
