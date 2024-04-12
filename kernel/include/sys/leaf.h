@@ -19,9 +19,6 @@
 #define LEAF_VERSION "Unknown"
 #endif
 
-#ifdef LEAF_LIMINE
-static volatile LIMINE_BASE_REVISION(1)
-#endif
 
 // Global Variables
 extern volatile struct limine_framebuffer_request framebuffer_request;

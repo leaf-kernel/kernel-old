@@ -2,6 +2,10 @@ override MAKEFLAGS += -rR
 
 # Default ARCH
 TARGET_ARCH := x86_64
+TARGET_FORMAT := elf
+TARGET_BOOTLOADER := limine
+TARGET_VER := v0.0.1
+PUBLIC := root
 
 # ARCH Check
 SUPPORTED_ARCHS := x86_64
@@ -68,9 +72,9 @@ CC_FLAGS := \
     -Wunused-variable 
 
 # Leaf C Definitions
-CC_FLAGS += -DLEAF_ARCH="$(TARGET_ARCH)"
-CC_FLAGS += -DLEAF_BOOTLOADER="$(TARGET_BOOTLOADER)"
-CC_FLAGS += -DLEAF_VERSION="$(TARGET_VER)"
+CC_FLAGS += -DLEAF_ARCH=\"$(TARGET_ARCH)\"
+CC_FLAGS += -DLEAF_BOOTLOADER=\"$(TARGET_BOOTLOADER)\"
+CC_FLAGS += -DLEAF_VERSION=\"$(TARGET_VER)\"
 
 ifeq ($(TARGET_BOOTLOADER),limine)
     CC_FLAGS += -DLEAF_LIMINE
@@ -133,6 +137,10 @@ hdd: $(ISO_OUT)
 $(ISO_OUT): bin/$(KERNEL).bin
 	@if [ "$(TARGET_ARCH)" != "x86_64" ]; then \
     	@echo "Error: ISO generation is only supported for x86_64 target" > /dev/stderr; \
+    	exit 1; \
+	fi
+	@if [ "$(TARGET_BOOTLOADER)" != "limine" ]; then \
+    	@echo "Error: ISO generation is only supported for the limine bootloader" > /dev/stderr; \
     	exit 1; \
 	fi
 	@mkdir -p $(ISO_OUT_DIR) > /dev/null 2>&1
