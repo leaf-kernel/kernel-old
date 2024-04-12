@@ -18,6 +18,7 @@
 // Logging imports
 #include <sys/logger.h>
 #include <drivers/stdio/printf.h>
+#include <drivers/tty/tty.h>
 
 // Libc imports
 #include <libc/math.h>
@@ -47,20 +48,26 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
+    init_tty();
+    tty_spawn(0);
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");
-    dprintf("Leaf Version: %s\n", LEAF_VERSION);
-    dprintf("Arch: %s\n", LEAF_ARCH);
-    dprintf("CPU Model: %d\n", get_model());
+
+    // Print out some system info
+    printf("leaf @ tty%04d\n\n", currentTTYid);
+    printf("Leaf Version: %s\n", LEAF_VERSION);
+    printf("Arch: %s\n", LEAF_ARCH);
+    printf("CPU Model: %d\n", get_model());
 
     char brand[49];
     char vendor_string[13];
     get_intel_cpu_brand_string(brand);
     get_cpu_vendor_string(vendor_string);
 
-    dprintf("CPU Vendor: %s\n", vendor_string);
-    dprintf("CPU Brand: %s\n", brand);
-    dprintf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
+    printf("CPU Vendor: %s\n", vendor_string);
+    printf("CPU Brand: %s\n", brand);
+    printf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
+
     hcf();
 }

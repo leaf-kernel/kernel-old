@@ -13,6 +13,7 @@ uint8_t *bitmap;
 uint64_t bitmap_pages;
 uint64_t bitmap_size;
 uint64_t free_memory;
+uint64_t total_memory;
 
 void init_pmm()
 {
@@ -72,6 +73,7 @@ void init_pmm()
 void update_memory()
 {
     free_memory = 0;
+    total_memory = 0;
     for (uint64_t entryCount = 0; entryCount < memmap->entry_count; entryCount++)
     {
         struct limine_memmap_entry *entry = memmap->entries[entryCount];
@@ -80,6 +82,7 @@ void update_memory()
         {
             free_memory += entry->length;
         }
+        total_memory += entry->length;
     }
 }
 

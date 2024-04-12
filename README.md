@@ -19,7 +19,8 @@ Usage: ./run.sh <target> [qemu args]
 - KHEAP
 - CPUID
 - Serial I/O
-- printf (only to serial rn)
+- Nighterm
+- printf
 
 ## Work in progress
 We are currently working on APIC (IOAPIC and LAPIC).

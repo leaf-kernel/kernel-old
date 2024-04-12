@@ -15,6 +15,7 @@ extern uint8_t *bitmap;
 extern uint64_t bitmap_pages;
 extern uint64_t bitmap_size;
 extern uint64_t free_memory;
+extern uint64_t total_memory;
 
 void init_pmm();
 void update_memory();
