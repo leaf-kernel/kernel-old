@@ -36,29 +36,28 @@ void panic(const char *reason, int_frame_t frame)
         hcf();
 }
 
-void cpuid(uint32_t code, uint32_t *a, uint32_t *d)
+int get_model()
 {
-        asm volatile("cpuid"
-                     : "=a"(*a), "=d"(*d)
-                     : "a"(code)
-                     : "ecx", "ebx");
+        int ebx, unused;
+        __cpuid(0, unused, ebx, unused, unused);
+        return ebx;
 }
 
-const uint32_t CPUID_FLAG_MSR = 1 << 5;
-
-bool cpuHasMSR()
+int cpuid_string(int code, uint32_t where[4])
 {
-        static uint32_t a, d;
-        cpuid(1, &a, &d);
-        return d & CPUID_FLAG_MSR;
+        asm volatile("cpuid" : "=a"(*where), "=b"(*(where + 1)),
+                               "=c"(*(where + 2)), "=d"(*(where + 3)) : "a"(code));
+        return (int)where[0];
 }
 
-void cpuGetMSR(uint32_t msr, uint32_t *lo, uint32_t *hi)
+void get_intel_cpu_brand_string(char *brand_string)
 {
-        asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
-}
+        uint32_t brand[12];
 
-void cpuSetMSR(uint32_t msr, uint32_t lo, uint32_t hi)
-{
-        asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+        cpuid_string(CPUID_INTELBRANDSTRING, brand);
+        cpuid_string(CPUID_INTELBRANDSTRINGMORE, brand + 4);
+        cpuid_string(CPUID_INTELBRANDSTRINGEND, brand + 8);
+
+        memcpy(brand_string, brand, sizeof(brand));
+        brand_string[sizeof(brand)] = '\0';
 }

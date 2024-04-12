@@ -10,7 +10,6 @@
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
 #include <arch/idt/idt.h>
-#include <arch/apic/apic.h>
 
 // Memory imports
 #include <memory/pmm.h>
@@ -48,12 +47,16 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
-    init_ioapic();
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");
     dprintf("Leaf Version: %s\n", LEAF_VERSION);
     dprintf("Arch: %s\n", LEAF_ARCH);
+    dprintf("CPU Model: %d\n", get_model());
+
+    char brand[49];
+    get_intel_cpu_brand_string(brand);
+    dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
     hcf();
 }

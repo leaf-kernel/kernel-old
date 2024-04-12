@@ -3,16 +3,35 @@
 
 #include <arch/idt/idt.h>
 #include <drivers/stdio/printf.h>
-#include <stdbool.h>
+#include <memory/pmm.h>
 
+#include <stdbool.h>
+#include <cpuid.h>
+
+// CPU utils
 void hcf();
 void hlt();
 void panic(const char *reason, int_frame_t frame);
-void cpuid(uint32_t code, uint32_t *a, uint32_t *d);
 
-// MSR
-bool cpuHasMSR();
-void cpuGetMSR(uint32_t msr, uint32_t *lo, uint32_t *hi);
-void cpuSetMSR(uint32_t msr, uint32_t lo, uint32_t hi);
+// CPUID Stuff
+enum cpuid_requests
+{
+    CPUID_GETVENDORSTRING,
+    CPUID_GETFEATURES,
+    CPUID_GETTLB,
+    CPUID_GETSERIAL,
+
+    CPUID_INTELEXTENDED = 0x80000000,
+    CPUID_INTELFEATURES,
+    CPUID_INTELBRANDSTRING,
+    CPUID_INTELBRANDSTRINGMORE,
+    CPUID_INTELBRANDSTRINGEND,
+};
+
+int get_model();
+int cpuid_string(int code, uint32_t where[4]);
+
+// Util funcs (yet again)
+void get_intel_cpu_brand_string(char *brand_string);
 
 #endif // __CPU_H__
