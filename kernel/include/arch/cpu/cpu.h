@@ -101,8 +101,10 @@ void get_intel_cpu_brand_string(char *brand_string);
 void get_cpu_vendor_string(char *vendor_string);
 
 // Check functions
+bool check_feature(uint32_t feat);
 bool check_apic();
 bool check_msr();
+void check_all_features();
 
 // MSR
 void get_msr(uint32_t msr, uint32_t *lo, uint32_t *hi);

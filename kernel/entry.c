@@ -61,8 +61,7 @@ void _start(void)
 
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
-    dprintf("APIC Available: %s\n", check_apic() ? "yes" : (check_apic() == false ? "no" : "?"));
-    dprintf("MSR Available: %s\n", check_msr() ? "yes" : (check_msr() == false ? "no" : "?"));
-    dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
+    dprintf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
+    check_all_features();
     hcf();
 }
