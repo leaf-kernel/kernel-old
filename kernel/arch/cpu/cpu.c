@@ -36,22 +36,7 @@ void panic(const char *reason, int_frame_t frame)
         hcf();
 }
 
-// CPU ID
-int get_model()
-{
-        int ebx, unused;
-        __cpuid(0, unused, ebx, unused, unused);
-        return ebx;
-}
-
-int cpuid_string(int code, uint32_t where[4])
-{
-        asm volatile("cpuid" : "=a"(*where), "=b"(*(where + 1)),
-                               "=c"(*(where + 2)), "=d"(*(where + 3)) : "a"(code));
-        return (int)where[0];
-}
-
-// Utils functions
+// Utils functions (CPUID)
 void get_intel_cpu_brand_string(char *brand_string)
 {
         uint32_t brand[12];
@@ -72,6 +57,13 @@ void get_cpu_vendor_string(char *vendor_string)
         memcpy(vendor_string + sizeof(uint32_t), &vendor[3], sizeof(uint32_t));
         memcpy(vendor_string + 2 * sizeof(uint32_t), &vendor[2], sizeof(uint32_t));
         vendor_string[12] = '\0';
+}
+
+int get_model()
+{
+        int ebx, unused;
+        __cpuid(0, unused, ebx, unused, unused);
+        return ebx;
 }
 
 // Check functions

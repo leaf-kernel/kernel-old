@@ -62,6 +62,5 @@ void _start(void)
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
-    check_all_features();
     hcf();
 }

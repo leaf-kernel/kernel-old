@@ -1,5 +1,8 @@
 override MAKEFLAGS += -rR
 
+# Default ARCH
+TARGET_ARCH := x86_64
+
 # ARCH Check
 SUPPORTED_ARCHS := x86_64
 
@@ -17,11 +20,11 @@ TARGET_ROOT := $(TARGET_PATH)/$(PUBLIC)
 KERNEL := Leaf
 KERNEL_DIR := kernel
 
-# Set correct output values for flags coresponding to arch
+# Set correct output values for flags corresponding to arch
 ifeq ($(TARGET_ARCH),x86_64)
     CC_OUT := x86-64
-	CC_VER := 64
-	LD_OUT := elf_x86_64
+    CC_VER := 64
+    LD_OUT := elf_x86_64
     NASM_OUT := elf64
 else
     $(error Error: Leaf currently doesn't support $(TARGET_ARCH))
@@ -36,28 +39,28 @@ LD_CONF := $(TARGET_PATH)/linker.ld
 
 # Tool Flags
 CC_FLAGS := \
-	-g \
-	-O2 \
-	-pipe \
-	-O0 \
-	-I$(TARGET_PATH) \
-	-I$(KERNEL_DIR)/include \
-	-Wall \
-	-Wextra \
-	-Werror \
-	-std=gnu11 \
-	-ffreestanding \
-	-fno-stack-protector \
-	-fno-stack-check \
-	-fno-lto \
-	-fno-PIE \
-	-fno-PIC \
-	-m$(CC_VER) \
-	-march=$(CC_OUT) \
-	-mabi=sysv \
-	-mcmodel=kernel \
-	-mno-80387 \
-	-mno-red-zone \
+    -g \
+    -O2 \
+    -pipe \
+    -O0 \
+    -I$(TARGET_PATH) \
+    -I$(KERNEL_DIR)/include \
+    -Wall \
+    -Wextra \
+    -Werror \
+    -std=gnu11 \
+    -ffreestanding \
+    -fno-stack-protector \
+    -fno-stack-check \
+    -fno-lto \
+    -fno-PIE \
+    -fno-PIC \
+    -m$(CC_VER) \
+    -march=$(CC_OUT) \
+    -mabi=sysv \
+    -mcmodel=kernel \
+    -mno-80387 \
+    -mno-red-zone \
     -msse \
     -msse2 \
     -Wimplicit-function-declaration \
@@ -65,25 +68,25 @@ CC_FLAGS := \
     -Wunused-variable 
 
 # Leaf C Definitions
-CC_FLAGS += -DLEAF_ARCH=\"$(TARGET_ARCH)\"
-CC_FLAGS += -DLEAF_BOOTLOADER=\"$(TARGET_BOOTLOADER)\"
-CC_FLAGS += -DLEAF_VERSION=\"$(TARGET_VER)\"
+CC_FLAGS += -DLEAF_ARCH="$(TARGET_ARCH)"
+CC_FLAGS += -DLEAF_BOOTLOADER="$(TARGET_BOOTLOADER)"
+CC_FLAGS += -DLEAF_VERSION="$(TARGET_VER)"
 
 ifeq ($(TARGET_BOOTLOADER),limine)
-	CC_FLAGS += -DLEAF_LIMINE
+    CC_FLAGS += -DLEAF_LIMINE
 endif
 
 LD_FLAGS := \
-	-nostdlib \
-	-static  \
-	-m $(LD_OUT) \
-	-z max-page-size=0x1000 \
-	-T $(LD_CONF)
+    -nostdlib \
+    -static  \
+    -m $(LD_OUT) \
+    -z max-page-size=0x1000 \
+    -T $(LD_CONF)
 
 NASM_FLAGS := \
-	-Wall \
-	-f $(NASM_OUT)
-	
+    -Wall \
+    -f $(NASM_OUT)
+    
 
 # Files
 CFILES := $(shell cd $(KERNEL_DIR) && find -L * -type f -name '*.c')
@@ -129,8 +132,8 @@ hdd: $(ISO_OUT)
 
 $(ISO_OUT): bin/$(KERNEL).bin
 	@if [ "$(TARGET_ARCH)" != "x86_64" ]; then \
-		echo "Error: ISO generation is only supported for x86_64 target" > /dev/stderr; \
-		exit 1; \
+    	@echo "Error: ISO generation is only supported for x86_64 target" > /dev/stderr; \
+    	exit 1; \
 	fi
 	@mkdir -p $(ISO_OUT_DIR) > /dev/null 2>&1
 	@mkdir -p $(ISO_DIR) > /dev/null 2>&1
@@ -150,3 +153,5 @@ $(ISO_OUT): bin/$(KERNEL).bin
 .PHONY: clean
 clean:
 	@rm -rf bin build $(ISO_OUT_DIR)
+
+.DEFAULT_GOAL := all
