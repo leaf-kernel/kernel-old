@@ -90,8 +90,7 @@ LD_FLAGS := \
     -T $(LD_CONF)
 
 NASM_FLAGS := \
-    -Wall \
-    -f $(NASM_OUT)
+    -f$(NASM_OUT)
     
 
 # Files
@@ -145,6 +144,7 @@ $(ISO_OUT): bin/$(KERNEL).bin
     	@echo "Error: ISO generation is only supported for the limine bootloader" > /dev/stderr; \
     	exit 1; \
 	fi
+	@mkdir -p $(TARGET_PATH)/$(MODULES)
 	@tar -cvf $(TARGET_PATH)/$(MODULES)/ramdisk $(RAMDISK_PATH)/*
 	@mkdir -p $(ISO_OUT_DIR) > /dev/null 2>&1
 	@mkdir -p $(ISO_DIR) > /dev/null 2>&1
