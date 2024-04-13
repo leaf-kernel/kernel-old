@@ -104,13 +104,13 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
 
                 cur_node->entry->file = &entry->files[i];
 
-                cdebug_log(__func__, "Added child (%s) to root!\n", cur_node->entry->file->name);
+                cdebug_log(__func__, "Added child (%s) to root!", cur_node->entry->file->name);
             }
             else
             {
                 initrd->root = new_node;
                 cur_node = new_node;
-                cdebug_log(__func__, "Added %s to root!\n", cur_node->entry->file->name);
+                cdebug_log(__func__, "Added %s to root!", cur_node->entry->file->name);
             }
         }
         cdebug_log(__func__, "{ path: %s, name: %s, directory: %s, root: %s }", pathValue, nameValue, dirValue, root ? "true" : "false");
