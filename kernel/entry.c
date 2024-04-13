@@ -26,6 +26,7 @@
 
 // File imports
 #include <fs/tar.h>
+#include <fs/initrd.h>
 
 // Leaf header import
 #include <sys/leaf.h>
@@ -50,9 +51,14 @@ void _start(void)
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
 
+    // clear serial lolz
+    dprintf("\033c");
+
     init_idt();
     init_pit();
     init_pmm();
+    Ramdisk* initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
+    (void)initrd;
     init_tty();
     tty_spawn(0);
 
@@ -72,23 +78,6 @@ void _start(void)
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
-
-    TAREntry *tar = (TAREntry *)kmalloc(sizeof(TAREntry));
-    if (tar == NULL)
-    {
-        cdebug_log(__func__, "Failed to allocate memory for initrd!");
-        hcf();
-    }
-
-    TARExtract((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size, tar);
-
-    dprintf("TAR Test:\n");
-    for (uint64_t i = 0; i < tar->fileCount; i++)
-    {
-        TARFile f = tar->files[i];
-        dprintf(" - file(name: %s, path: %s, size: %d, directory: \"%s\", content: \"%s\")\n", f.name, f.path, f.size, f.directory ? "yes" : "no", f.content);
-    }
-
     // TTY
     printf("leaf @ tty%04d\n\n", currentTTYid);
 
