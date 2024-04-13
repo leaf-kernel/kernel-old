@@ -57,7 +57,7 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
-    Ramdisk* initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
+    Ramdisk *initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     (void)initrd;
     init_tty();
     tty_spawn(0);
