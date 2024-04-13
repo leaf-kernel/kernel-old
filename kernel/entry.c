@@ -68,7 +68,6 @@ void _start(void)
     // Print out some system info
     dprintf("Leaf Version: %s\n", LEAF_VERSION);
     dprintf("Arch: %s\n", LEAF_ARCH);
-    dprintf("CPU Model: %d\n", get_model());
 
     char brand[49];
     char vendor_string[13];
@@ -77,7 +76,7 @@ void _start(void)
 
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
-    dprintf("Bootloader: %s\n\n", LEAF_BOOTLOADER);
+    dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
     // TTY
     printf("leaf @ tty%04d\n\n", currentTTYid);
 

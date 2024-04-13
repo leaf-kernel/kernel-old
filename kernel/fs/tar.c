@@ -43,9 +43,17 @@ void TARExtract(const char *raw, uint64_t size, TAREntry *tar)
         PathComponent *components = split_path(file.path, &num_components);
 
         if (components != NULL)
+        {
+            file.raw_path = components;
+            file.number_path_comonents = num_components;
             file.name = components[num_components - 1].name;
+        }
         else
+        {
+            file.raw_path = NULL;
+            file.number_path_comonents = 0;
             file.name = file.path;
+        }
 
         file.directory = header->typeflag[0] == '5';
 
@@ -78,7 +86,7 @@ void TARExtract(const char *raw, uint64_t size, TAREntry *tar)
 void TARFree(TAREntry *tar)
 {
 
-    for (uint64_t i = 0; i < tar->fileCount; ++i)
+    for (int i = 0; i < tar->fileCount; ++i)
     {
         kfree(tar->files[i].path);
         kfree(tar->files[i].content);

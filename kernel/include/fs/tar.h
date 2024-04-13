@@ -23,17 +23,20 @@ typedef struct
 
 typedef struct
 {
+    PathComponent *raw_path;
+    int number_path_comonents;
+
     char *path;
     char *name;
     char *content;
-    uint64_t size;
+    int size;
     bool directory;
 } TARFile;
 
 typedef struct
 {
     TARFile *files;
-    uint64_t fileCount;
+    int fileCount;
 } TAREntry;
 
 void TARExtract(const char *raw, uint64_t size, TAREntry *tar);

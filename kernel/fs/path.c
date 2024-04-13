@@ -9,18 +9,25 @@ PathComponent *split_path(const char *path, int *num_components)
     if (path_copy == NULL)
         return NULL;
 
-    char *token = strtok(path_copy, "/");
-    PathComponent *components = NULL;
+    PathComponent *components = (PathComponent *)kmalloc(sizeof(PathComponent));
+    if (components == NULL)
+        return NULL;
+
     int count = 0;
+    char *token = strtok(path_copy, "/");
 
     while (token != NULL)
     {
-        components = krealloc(components, (count + 1) * sizeof(PathComponent));
-        if (components == NULL)
+        PathComponent *new_components = krealloc(components, (count + 1) * sizeof(PathComponent));
+        if (new_components == NULL)
         {
             kfree(path_copy);
+            kfree(components);
+            *num_components = 0;
             return NULL;
         }
+
+        components = new_components;
 
         components[count].name = strdup(token);
         if (components[count].name == NULL)
@@ -29,14 +36,15 @@ PathComponent *split_path(const char *path, int *num_components)
                 kfree(components[i].name);
             kfree(components);
             kfree(path_copy);
+            *num_components = 0;
             return NULL;
         }
 
         char *next_token = strtok(NULL, "/");
-        if (next_token != NULL)
-            components[count].directory = 1;
-        else
-            components[count].directory = 0;
+        components[count].directory = (next_token != NULL);
+
+        if (path[strlen(path) - 1] == '/')
+            components[count].directory = true;
 
         token = next_token;
         count++;
@@ -53,7 +61,9 @@ void free_components(PathComponent *components, int num_components)
         return;
 
     for (int i = 0; i < num_components; i++)
+    {
         kfree(components[i].name);
+    }
 
     kfree(components);
 }
