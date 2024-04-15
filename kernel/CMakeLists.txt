@@ -20,15 +20,3 @@ target_include_directories(${LEAF_TARGET} PRIVATE
 )
 
 message("${CMAKE_C_COMPILER}")
-
-target_compile_options(${LEAF_TARGET} PRIVATE
-    ${TARGET_CFLAGS}
-)
-
-target_link_options(${LEAF_TARGET} PRIVATE 
-    ${TARGET_LDFLAGS}
-)
-
-target_compile_options(${LEAF_TARGET} PRIVATE
-    $<$<COMPILE_LANGUAGE:ASM>:${TARGET_ASFLAGS}>
-)
