@@ -1,5 +1,7 @@
 #!/bin/bash
-tar -cvf modules/ramdisk -C ../../initrd/ *
+cd ../../
+tar -cvf arch/x86_64/modules/ramdisk initrd/*
+cd arch/x86_64
 mkdir -p ../../release
 mkdir -p iso
 mkdir -p iso/boot
