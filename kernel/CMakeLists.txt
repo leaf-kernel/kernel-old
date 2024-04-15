@@ -16,7 +16,5 @@ add_executable(${LEAF_TARGET} ${CC_FILES} ${ASM_FILES})
 
 target_include_directories(${LEAF_TARGET} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../arch/${LEAF_TARGET_ARCH}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../arch/${TARGET_ARCH}"
 )
-
-message("${CMAKE_C_COMPILER}")
