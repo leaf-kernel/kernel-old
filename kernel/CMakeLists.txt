@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-set(LEAF_TARGET "Leaf-${TARGET_ARCH}-raw.img")
+set(LEAF_TARGET "Leaf-${TARGET_ARCH}-raw.bin")
 
 file(GLOB_RECURSE CC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
