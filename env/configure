@@ -1,0 +1,18 @@
+#!/bin/bash
+target_arch=${1:-x86_64}
+toolchain=${2:-arch/x86_64/toolchain.cmake}
+
+rm -rf build-*
+mkdir "build-$target_arch"
+pushd "build-$target_arch"
+
+cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain"
+config_status=$?
+popd
+
+if [[ $config_status -ne 0 ]]; then
+    echo "CMake configuration failed."
+    exit 1
+fi
+
+echo "Configuration finished! Run make in the build-$target_arch to build the kernel!"

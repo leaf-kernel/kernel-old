@@ -1,0 +1,17 @@
+#!/bin/bash
+
+target_arch=${1:-x86_64}
+
+if [ ! -d "build-$target_arch" ]; then
+    echo "You have to configure the kernel before building! Use ./env/configure <target> <toolchain> (The target and toolchain options are optional!)."
+    exit
+fi
+
+pushd "build-$target_arch"
+make
+popd
+
+pushd "arch/$target_arch"
+./gen.sh
+popd
+echo "Finished building. Enjoy!"

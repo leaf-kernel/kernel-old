@@ -2,30 +2,42 @@
 A x86_64 kernel.
 
 ## Building
-First you need to build the kernel to do so simply run:
-```bash
-export TARGET=x86_64; cmake . -DTARGET_ARCH=$TARGET -DCMAKE_TOOLCHAIN_FILE=arch/$TARGET/toolchain.cmake -B build-$TARGET; cmake --build build-$TARGET
-```
+**WARNING**: You can not run these script inside the `env` directory only use the relative paths from the project root (ex, ./env/configure)
 
-Now this might look a bit much (or even scary). But all this is doing is setting the TARGET to what target we are compiling to, in this case x86_64. Then generating the build file using cmake. Then to generate an iso run:
+**First you need to configure the kernel, you can do it like this**:
 ```bash
-export TARGET=x86_64; cd arch/$TARGET; ./gen.sh; cd ../../
-```
+./env/configure <target> <toolchain>
+``` 
+*The target and toolchain options are optional. They default to x86_64-limine*
 
-To do all this in one you can do:
+To configure the kernel to build for the x86_64-limine simply run:
 ```bash
-export TARGET=x86_64; cmake . -DTARGET_ARCH=$TARGET -DCMAKE_TOOLCHAIN_FILE=arch/$TARGET/toolchain.cmake -B build-$TARGET; cmake --build build-$TARGET; cd arch/$TARGET; ./gen.sh; cd ../../
+./env/configure x86_64
 ```
+*We dont need to specify toolchain since the default x86_64 one uses limine*
 
-There even exists script to do this:
+**Now its time to actually build the kernel, we can do this using the build script:**
 ```bash
-./compile.sh <target>
+./env/build <target>
 ```
+*The target option here is also optional, it defaults to x86_64*
 
-To run with qemu you can use the run script:
+So to build for the x86_64 target we just configured simply run:
 ```bash
-./run.sh <target> [qemu args]
+./env/build x86_64
 ```
+*You dont need to specify the target here but its best to do.*
+
+**Now check the `release/` directory in the projects root and it should have an iso named something like: *Leaf-x86_64-April-2024.iso***
+
+### Alternative building method
+**You could also use the `./run` script to automatically configure and run leaf**.
+
+#### Usage:
+```bash
+./run <target> [qemu args]
+```
+*The target and qemu args are optional. Target will default to x86_64*
 
 ## Features
 - IDT
@@ -37,19 +49,21 @@ To run with qemu you can use the run script:
 - Serial I/O
 - Nighterm
 - printf
-- Ramdisk (ish only TAR for now. Still usable)
+- TAR Parsing
 
 ## Work in progress
-We are currently working on APIC (IOAPIC and LAPIC).
+We are currently working on APIC (IOAPIC and LAPIC). And ramdisk
 
 ## Target List
 - x86_64
 
 ## Requirements
 - nasm
-- Crosscompiler and binutils for target (x86_64-elf)
+- gcc (For target, ex: x86_64-elf-gcc)
+- binutils (For target, ex: x86_64-elf-binutils)
 - cmake
 - xorriso
+- qemu (For running)
 
 ## Architectures
 | Architecture 	| Status 	|
