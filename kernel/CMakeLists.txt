@@ -32,3 +32,5 @@ target_link_options(${LEAF_TARGET} PRIVATE
 target_compile_options(${LEAF_TARGET} PRIVATE
     $<$<COMPILE_LANGUAGE:ASM>:${TARGET_ASFLAGS}>
 )
+
+message("Using CC: ${CMAKE_C_COMPILER}")
