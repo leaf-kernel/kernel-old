@@ -8,5 +8,5 @@ fi
 TARGET=$1
 shift
 
-./compile.sh $TARGET; cd arch/$TARGET; ./gen.sh; cd ../../
+./compile.sh $TARGET
 qemu-system-$TARGET -name "Leaf $TARGET" -drive file="release/Leaf-$TARGET-$(date +%B-%Y).iso",index=0,format=raw "$@"
