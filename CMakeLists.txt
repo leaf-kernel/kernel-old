@@ -7,7 +7,7 @@ if(NOT EXISTS "${ARCH_DIR}")
     message(FATAL_ERROR "The ${LEAF_TARGET_ARCH} architecture isn't supported by Leaf (${ARCH_DIR})!")
 endif()
 
-add_subdirectory(${ARCH_DIR})
+include("${ARCH_DIR}/CMakeLists.txt")
 
 set(KERNEL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/kernel")
 
@@ -16,3 +16,7 @@ if(NOT EXISTS "${KERNEL_DIR}")
 endif()
 
 add_subdirectory(${KERNEL_DIR})
+
+set(CMAKE_ASM_COMPILER ${TARGET_ASM})
+set(CMAKE_C_COMPILER ${TARGET_CC})
+set(CMAKE_LINKER ${TARGET_LD})

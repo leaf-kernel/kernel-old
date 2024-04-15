@@ -12,17 +12,14 @@ file(GLOB_RECURSE ASM_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.asm"
 )
 
-
-set(CMAKE_ASM_COMPILER ${TARGET_ASM})
-set(CMAKE_C_COMPILER ${TARGET_CC})
-set(CMAKE_LINKER ${TARGET_LD})
-
 add_executable(${LEAF_TARGET} ${CC_FILES} ${ASM_FILES})
 
 target_include_directories(${LEAF_TARGET} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/../arch/${LEAF_TARGET_ARCH}"
 )
+
+message("${CMAKE_C_COMPILER}")
 
 target_compile_options(${LEAF_TARGET} PRIVATE
     ${TARGET_CFLAGS}
