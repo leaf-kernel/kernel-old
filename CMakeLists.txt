@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Leaf LANGUAGES C ASM)
+project(Leaf LANGUAGES C ASM_NASM)
 
 # Check for kernel directory
 set(KERNEL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/kernel")
