@@ -4,8 +4,4 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-TARGET=$1
-
-rm -rf build-$TARGET
-cmake . -DTARGET_ARCH=$TARGET -DCMAKE_TOOLCHAIN_FILE=arch/$TARGET/toolchain.cmake -B build-$TARGET
-make -C build-$TARGET
+export TARGET=$1; cmake . -DTARGET_ARCH=$TARGET -DCMAKE_TOOLCHAIN_FILE=arch/$TARGET/toolchain.cmake -B build-$TARGET; cmake --build build-$TARGET

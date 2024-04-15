@@ -11,6 +11,11 @@ if(NOT CMAKE_ASM_COMPILER_TARGET)
     message(FATAL_ERROR "You need nasm to assemble Leaf for x86_64!")
 endif()
 
-set(CMAKE_C_FLAGS "-g -O2 -pipe -O0 -Wall -Wextra -Werror -std=gnu11 -ffreestanding -fno-stack-protector -fno-stack-check -fno-lto -fno-PIE -fno-PIC -m64 -march=x86-64 -mabi=sysv -mcmodel=kernel -mno-80387 -mno-red-zone -msse -msse2 -Wimplicit-function-declaration -Wdiv-by-zero -Wunused-variable")
-set(CMAKE_ASM_NASM_FLAGS "-felf64")
-set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -static -z max-page-size=0x1000 -T linker.ld")
+
+set(TARGET_CFLAGS "-g -O2 -pipe -O0 -Wall -Wextra -Werror -std=gnu11 -ffreestanding -fno-stack-protector -fno-stack-check -fno-lto -fno-PIE -fno-PIC -m64 -march=x86-64 -mabi=sysv -mcmodel=kernel -mno-80387 -mno-red-zone -msse -msse2 -Wimplicit-function-declaration -Wdiv-by-zero -Wunused-variable")
+set(TARGET_ASFLAGS "-felf64")
+set(TARGET_LDFLAGS "-nostdlib -static -z max-page-size=0x1000 -T linker.ld")
+
+# <sys/leaf.h> defines
+set(TARGET_BOOTLOADER "limine")
+set(TARGET_VERSION "v0.0.1")
