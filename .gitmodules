@@ -1,7 +1,3 @@
-[submodule "arch/x86_64/limine"]
-	path = arch/x86_64/limine
-	url = https://github.com/limine-bootloader/limine/
-	branch = v7.x-binary
 [submodule "kernel/include/drivers/tty/nighterm"]
 	path = kernel/include/drivers/tty/nighterm
 	url = https://github.com/schkwve/nighterm-extended
