@@ -1,3 +1,0 @@
-[submodule "kernel/include/drivers/tty/nighterm"]
-	path = kernel/include/drivers/tty/nighterm
-	url = https://github.com/schkwve/nighterm-extended
