@@ -6,9 +6,9 @@ A x86_64 kernel.
 
 **First you need to configure the kernel, you can do it like this**:
 ```bash
-./env/configure <target> <toolchain>
+./env/configure <target> <bootloader> <toolchain>
 ``` 
-*The target and toolchain options are optional. They default to x86_64-limine*
+*The target, bootloader and toolchain options are optional. They default to x86_64-limine*
 
 To configure the kernel to build for the x86_64-limine simply run:
 ```bash
@@ -18,9 +18,9 @@ To configure the kernel to build for the x86_64-limine simply run:
 
 **Now its time to actually build the kernel, we can do this using the build script:**
 ```bash
-./env/build <target>
+./env/build <target> <bootloader>
 ```
-*The target option here is also optional, it defaults to x86_64*
+*The target and bootloader options here are also optional, it defaults to x86_64 with limine*
 
 So to build for the x86_64 target we just configured simply run:
 ```bash
@@ -35,9 +35,9 @@ So to build for the x86_64 target we just configured simply run:
 
 #### Usage:
 ```bash
-./run <target> [qemu args]
+./run <target> <bootloader> [qemu args]
 ```
-*The target and qemu args are optional. Target will default to x86_64*
+*The target, bootloader and qemu args are optional. Target will default to x86_64 with limine*
 
 ## Features
 - IDT
