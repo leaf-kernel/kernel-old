@@ -34,6 +34,11 @@
 // Utility imports
 #include <utils/convertion.h>
 
+// Target checks
+#if !defined(LEAF_X64)
+#error "Leaf currently only supports x86_64!"
+#endif
+
 #if !defined(LEAF_LIMINE)
 #error "Leaf currently only supports x86_64 with limine!"
 #endif
