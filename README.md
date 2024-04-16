@@ -1,72 +1,100 @@
-# Leaf Kernel
-A x86_64 kernel.
+# Leaf
+A hobby kernel.
+## Building Instructions
 
-## Building
-**WARNING**: You can not run these script inside the `env` directory only use the relative paths from the project root (ex, ./env/configure)
+To build a bootable image, follow these steps:
 
-**First you need to configure the kernel, you can do it like this**:
-```bash
-./env/configure <target> <bootloader> <toolchain>
-``` 
-*The target, bootloader and toolchain options are optional. They default to x86_64-limine*
+1. **Configure the Kernel:**
 
-To configure the kernel to build for the x86_64-limine simply run:
-```bash
-./env/configure x86_64
-```
-*We dont need to specify toolchain since the default x86_64 one uses limine*
+   Use the `./env/configure` script to set up the kernel build environment.
 
-**Now its time to actually build the kernel, we can do this using the build script:**
-```bash
-./env/build <target> <bootloader>
-```
-*The target and bootloader options here are also optional, it defaults to x86_64 with limine*
+   ```bash
+   ./env/configure <target> <bootloader> <toolchain>
+   ```
 
-So to build for the x86_64 target we just configured simply run:
-```bash
-./env/build x86_64
-```
-*You dont need to specify the target here but its best to do.*
+   For example, to configure for x86_64 with the default settings (limine bootloader):
 
-**Now check the `release/` directory in the projects root and it should have an iso named something like: *Leaf-x86_64-April-2024.iso***
+   ```bash
+   ./env/configure x86_64
+   ```
 
-### Alternative building method
-**You could also use the `./run` script to automatically configure and run leaf**.
+2. **Build the Kernel:**
 
-#### Usage:
-```bash
-./run <target> <bootloader> [qemu args]
-```
-*The target, bootloader and qemu args are optional. Target will default to x86_64 with limine*
+   Execute the `./env/build` script to compile the kernel and generate the bootable ISO image.
 
-## Features
-- IDT
-- PIC (8259)
-- PIT
-- PMM
-- KHEAP
-- CPUID
-- Serial I/O
-- Nighterm
-- printf
-- TAR Parsing
+   ```bash
+   ./env/build <target> <bootloader>
+   ```
 
-## Work in progress
-We are currently working on APIC (IOAPIC and LAPIC). And ramdisk
+   For building for the x86_64 target with limine bootloader:
 
-## Target List
-- x86_64
+   ```bash
+   ./env/build x86_64
+   ```
+
+   The resulting ISO image will be located in the `release/` directory.
+
+3. **Run the Kernel (Optional):**
+
+   You can also use the `./run` script to automatically configure and run the kernel in QEMU.
+
+   ```bash
+   ./run <target> <bootloader> [qemu args]
+   ```
+
+
+## Key Features
+
+- Interrupt Descriptor Table (IDT)
+- Programmable Interrupt Controller (8259)
+- Programmable Interval Timer (PIT)
+- Physical Memory Manager (PMM)
+- CPU Identification (CPUID)
+- Serial Input/Output (I/O)
+- Nighterm (Terminal emulator for TTY)
+- TAR File Parsing
+
+
+## Work in Progress
+
+We are actively working on:
+
+- Advanced Programmable Interrupt Controller (APIC) (IOAPIC and LAPIC)
+- Ramdisk Support
+
+
+## Supported Targets
+- x86_64-limine
+    - x86_64 shipped with the limine bootloader.
 
 ## Requirements
-- nasm
-- gcc (For target, ex: x86_64-elf-gcc)
-- binutils (For target, ex: x86_64-elf-binutils)
-- cmake
-- xorriso
-- qemu (For running)
+
+Ensure you have the following tools installed:
+
+- `nasm` (Assembler)
+- `gcc` (Cross-compiler for the target architecture, e.g., x86_64-elf-gcc)
+- `binutils` (Cross-assembler and linker, e.g., x86_64-elf-binutils)
+- `cmake` (Build system)
+- `xorriso` (ISO creation tool)
+- `qemu` (Emulator for testing the kernel)
+
 
 ## Architectures
-| Architecture 	| Status 	|
-|--------------	|--------	|
-| x86-64       	| ✅        |
-| x86          	| ❌        |
+
+| Architecture | Status |
+|--------------|--------|
+| x86-64       | ✅     |
+| x86          | ❌     |
+
+
+## Bootloaders
+
+| Bootloaders                                                   | Status |
+|---------------------------------------------------------------|--------|
+| [x86_64-limine](https://github.com/limine-bootloader/limine)  | ✅     |
+| [x86-leaf](https://github.com/leaf-kernel/bootloader)         | ❌     |
+
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/leaf-kernel/kernel/blob/main/LICENSE).

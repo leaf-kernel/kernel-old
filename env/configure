@@ -39,11 +39,11 @@ echo ">>> Configuring leaf to build for $target_arch ($target_arch-$bootloader).
 
 rm -rf "build-$target_arch-$bootloader"
 mkdir "build-$target_arch-$bootloader"
-pushd "build-$target_arch-$bootloader"
+pushd "build-$target_arch-$bootloader" > /dev/null
 
 cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain"
 config_status=$?
-popd
+popd > /dev/null
 
 if [[ $config_status -ne 0 ]]; then
     echo ">>> Configuration for Leaf $target_arch-$bootloader failed!"

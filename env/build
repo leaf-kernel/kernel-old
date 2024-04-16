@@ -8,11 +8,17 @@ if [ ! -d "build-$target_arch-$bootloader" ]; then
     exit
 fi
 
-pushd "build-$target_arch-$bootloader"
+pushd "build-$target_arch-$bootloader" > /dev/null
 make
-popd
+status=$?
+if [ $status -ne 0 ]; then
+    echo -e ">>> \033[1m\033[31mFailed to build!\033[0m"
+    exit 1
+fi
+popd > /dev/null
 
-pushd "arch/$target_arch"
+pushd "arch/$target_arch" > /dev/null
 ./gen-$bootloader.sh
-popd
-echo "Finished building. Enjoy!"
+popd > /dev/null
+
+echo -e ">>> Successfully built Leaf-$target_arch-$bootloader."

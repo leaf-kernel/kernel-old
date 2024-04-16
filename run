@@ -10,10 +10,4 @@ ISO_FILE="release/Leaf-$TARGET-$(date +%B-%Y).iso"
 ./env/configure "$TARGET" "$BOOTLOADER"
 ./env/build "$TARGET" "$BOOTLOADER"
 
-if [ ! -f "$ISO_FILE" ]; then
-    echo -e ">>> \033[1m\033[31mFailed to build? Didn't find '$ISO_FILE'!\033[0m"
-    exit 1
-fi
-
-echo -e ">>> \033[32mSuccessfully built '$ISO_FILE'.\033[0m"
 qemu-system-"$TARGET" -name "Leaf $TARGET" -drive file="$ISO_FILE",index=0,format=raw "$@"
