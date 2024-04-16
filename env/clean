@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -rf build-*
+rm -rf kernel/include/drivers/tty/nighterm
+rm -rf arch/x86_64/limine
