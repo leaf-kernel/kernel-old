@@ -53,14 +53,13 @@ To build a bootable image, follow these steps:
 - Serial Input/Output (I/O)
 - Nighterm (Terminal emulator for TTY)
 - TAR File Parsing
+- Ramdisk (To copy files into memory, using limine modules)
 
 
 ## Work in Progress
 
 We are actively working on:
-
 - Advanced Programmable Interrupt Controller (APIC) (IOAPIC and LAPIC)
-- Ramdisk Support
 
 
 ## Supported Targets
