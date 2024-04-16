@@ -4,7 +4,7 @@ target_arch=${1:-x86_64}
 bootloader=${2:-limine}
 
 if [ ! -d "build-$target_arch-$bootloader" ]; then
-    echo ""build-$target_arch-$bootloader" Doest exist! You have to configure the kernel before building! Use ./env/configure <target> <bootloader> <toolchain> (These options are optional!)."
+    echo ""build-$target_arch-$bootloader" Doest exist! You have to configure the kernel before building! Use: ./env/configure $target_arch $bootloader."
     exit
 fi
 
