@@ -61,10 +61,6 @@ void _start(void)
     init_pit();
     init_pmm();
     Ramdisk *initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
-    (void)initrd;
-    init_tty();
-    tty_spawn(0);
-
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");
 
@@ -80,8 +76,6 @@ void _start(void)
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
-    // TTY
-    printf("leaf @ tty%04d\n\n", currentTTYid);
-
+    dprintf("Test file: %s\n", initrd->content[0]->file->content);
     hcf();
 }

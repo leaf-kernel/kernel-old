@@ -12,16 +12,10 @@ typedef struct
     PathComponent *path;
 } RamdiskEntry;
 
-typedef struct RamdiskNode
-{
-    RamdiskEntry *entry;
-    struct RamdiskNode *child;
-    struct RamdiskNode *next;
-} RamdiskNode;
 
 typedef struct
 {
-    struct RamdiskNode *root;
+    RamdiskEntry** content;
 } Ramdisk;
 
 Ramdisk *init_ramdisk(const char *raw, const size_t size);
