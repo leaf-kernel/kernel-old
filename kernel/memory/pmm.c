@@ -70,10 +70,6 @@ void init_pmm()
     }
 
     update_memory();
-    cdebug_log(__func__, "Memory Usage:");
-    dprintf("  Total memory: %dKB (%dMB)\n", bytes_to_kb(total_memory), bytes_to_mb(total_memory));
-    dprintf("  Used memory:  %dKB (%dMB)\n", bytes_to_kb(total_memory - free_memory), bytes_to_mb(total_memory - free_memory));
-    dprintf("  Free memory:  %dKB (%dMB)\n", bytes_to_kb(free_memory), bytes_to_mb(free_memory));
     cdebug_log(__func__, "done.");
 }
 

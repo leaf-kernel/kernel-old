@@ -31,6 +31,9 @@
 // Leaf header import
 #include <sys/leaf.h>
 
+// Utility imports
+#include <utils/convertion.h>
+
 #if !defined(LEAF_LIMINE)
 #error "Leaf currently only supports x86_64 with limine!"
 #endif
