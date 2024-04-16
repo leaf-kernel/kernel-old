@@ -5,7 +5,7 @@ toolchain=${3:-arch/$target_arch/$target_arch-$bootloader.toolchain.cmake}
 
 
 nighterm_out="kernel/include/drivers/tty/nighterm/";
-if [ "$target_arch" = "x86_64" ]; then
+if [ "$target_arch" = "x86_64" -o "$target_arch" = "x86" ]; then
     if [ ! -d "$nighterm_out" ]; then
         temp_dir=$(mktemp -d)
         echo ">>> Downloading nighterm for x86_64."
@@ -14,24 +14,24 @@ if [ "$target_arch" = "x86_64" ]; then
         mkdir -p "$nighterm_out"
         mv "$temp_dir/extracted/nighterm-extended-main/"* "$nighterm_out"
         rm -rf "$temp_dir"
-        echo ">>> Successfully downloaded nighterm for the x86_64 target."
+        echo ">>> Successfully downloaded nighterm for the $target_arch target."
     else
-        echo ">> Nighterm for x86_64 already exists! ("$nighterm_out") will be using that."
+        echo ">> Nighterm for $target_arch already exists! ("$nighterm_out") will be using that."
     fi
 fi
 
 if [ "$target_arch-$bootloader" = "x86_64-limine" ]; then
     if [ ! -d "arch/$target_arch/$bootloader" ]; then
         temp_dir=$(mktemp -d)
-        echo ">>> Downloading limine for x86_64-limine."
+        echo ">>> Downloading limine for $target_arch-$bootloader."
         wget -O "$temp_dir/limine.zip" "https://github.com/limine-bootloader/limine/archive/refs/heads/v7.x-binary.zip" -q
         unzip -o "$temp_dir/limine.zip" -d "$temp_dir/extracted" > /dev/null
         mkdir -p "arch/$target_arch/$bootloader"
         mv "$temp_dir/extracted/limine-7.x-binary/"* "arch/$target_arch/$bootloader/"
         rm -rf "$temp_dir"
-        echo ">>> Successfully downloaded limine for the x86_64-limine target."
+        echo ">>> Successfully downloaded limine for $target_arch."
     else
-        echo ">> Limine for x86-64-limine already exists! ("arch/$target_arch/$bootloader") will be using that."
+        echo ">> Limine for $target_arch already exists! ("arch/$target_arch/$bootloader") will be using that."
     fi
 fi
 

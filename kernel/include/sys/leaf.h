@@ -3,7 +3,7 @@
 
 // Bootloader include
 #ifdef LEAF_LIMINE
-#include <limine/limine.h>
+#include <sys/limine.h>
 #endif
 
 // Leaf return codes.

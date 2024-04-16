@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 // Bootloader imports
-#include <limine/limine.h>
+#include <sys/limine.h>
 
 // Arch specific imports
 #include <arch/cpu/cpu.h>
@@ -28,20 +28,13 @@
 #include <fs/tar.h>
 #include <fs/initrd.h>
 
-// Leaf header import
+// Sys import
+#include <sys/limine.h>
 #include <sys/leaf.h>
 
 // Utility imports
 #include <utils/convertion.h>
 
-// Target checks
-#if !defined(LEAF_X64)
-#error "Leaf currently only supports x86_64!"
-#endif
-
-#if !defined(LEAF_LIMINE)
-#error "Leaf currently only supports x86_64 with limine!"
-#endif
 
 // Limine requests
 volatile struct limine_framebuffer_request framebuffer_request = {.id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 1};

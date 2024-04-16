@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <limine/limine.h>
+#include <sys/limine.h>
 #include <sys/logger.h>
 
 #define PAGE_SIZE 4096
