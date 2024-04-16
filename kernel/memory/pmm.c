@@ -4,6 +4,7 @@
 #include <libc/math.h>
 #include <limine/limine.h>
 #include <sys/leaf.h>
+#include <utils/convertion.h>
 
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
@@ -21,6 +22,8 @@ void init_pmm()
     uint64_t top_address;
     uint64_t higher_address = 0;
     uint64_t hhdm_offset = hhdm_request.response->offset;
+    free_memory = 0;
+    total_memory = 0;
 
     for (uint64_t entryCount = 0; entryCount < memmap->entry_count; entryCount++)
     {
@@ -35,8 +38,6 @@ void init_pmm()
     }
     bitmap_pages = higher_address / PAGE_SIZE;
     bitmap_size = ALIGN_UP(bitmap_pages / 8, PAGE_SIZE);
-
-    update_memory();
 
     for (uint64_t entryCount = 0; entryCount < memmap->entry_count; entryCount++)
     {
@@ -67,6 +68,12 @@ void init_pmm()
             }
         }
     }
+
+    update_memory();
+    cdebug_log(__func__, "Memory Usage:");
+    dprintf("  Total memory: %dKB (%dMB)\n", bytes_to_kb(total_memory), bytes_to_mb(total_memory));
+    dprintf("  Used memory:  %dKB (%dMB)\n", bytes_to_kb(total_memory - free_memory), bytes_to_mb(total_memory - free_memory));
+    dprintf("  Free memory:  %dKB (%dMB)\n", bytes_to_kb(free_memory), bytes_to_mb(free_memory));
     cdebug_log(__func__, "done.");
 }
 
@@ -74,17 +81,25 @@ void update_memory()
 {
     free_memory = 0;
     total_memory = 0;
+
+    for (uint64_t i = 0; i < bitmap_pages; i++)
+    {
+        if (!bitmap_get(bitmap, i))
+        {
+            free_memory += PAGE_SIZE;
+        }
+    }
+
     for (uint64_t entryCount = 0; entryCount < memmap->entry_count; entryCount++)
     {
         struct limine_memmap_entry *entry = memmap->entries[entryCount];
-
         if (entry->type == LIMINE_MEMMAP_USABLE)
         {
-            free_memory += entry->length;
+            total_memory += entry->length;
         }
-        total_memory += entry->length;
     }
 }
+
 
 void *pmm_request_page()
 {
