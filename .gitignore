@@ -7,3 +7,5 @@
 /*.bin/
 /*.iso/
 /.DS_Store/
+/arch/x86_64/limine
+/kernel/include/drivers/tty/nighterm

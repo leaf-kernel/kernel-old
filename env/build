@@ -1,17 +1,50 @@
 #!/bin/bash
 
 target_arch=${1:-x86_64}
+bootloader=${2:-limine}
 
-if [ ! -d "build-$target_arch" ]; then
-    echo "You have to configure the kernel before building! Use ./env/configure <target> <toolchain> (The target and toolchain options are optional!)."
+if [ ! -d "build-$target_arch-$bootloader" ]; then
+    echo ""build-$target_arch-$bootloader" Doest exist! You have to configure the kernel before building! Use ./env/configure <target> <bootloader> <toolchain> (These options are optional!)."
     exit
 fi
 
-pushd "build-$target_arch"
+
+nighterm_out="kernel/include/drivers/tty/nighterm/";
+if [ "$target_arch" = "x86_64" ]; then
+    if [ ! -d "$nighterm_out" ]; then
+        temp_dir=$(mktemp -d)
+        echo ">>> Downloading nighterm for x86_64."
+        wget -O "$temp_dir/nighterm.zip" "https://codeload.github.com/schkwve/nighterm-extended/zip/refs/heads/main" -q
+        unzip -o "$temp_dir/nighterm.zip" -d "$temp_dir/extracted" > /dev/null
+        mkdir -p "$nighterm_out"
+        mv "$temp_dir/extracted/nighterm-extended-main/"* "$nighterm_out"
+        rm -rf "$temp_dir"
+        echo ">>> Successfully downloaded nighterm for the x86_64 target."
+    else
+        echo ">> Nighterm for x86_64 already exists! ("$nighterm_out") will be using that."
+    fi
+fi
+
+if [ "$target_arch-$bootloader" = "x86_64-limine" ]; then
+    if [ ! -d "arch/$target_arch/$bootloader" ]; then
+        temp_dir=$(mktemp -d)
+        echo ">>> Downloading limine for x86_64-limine."
+        wget -O "$temp_dir/limine.zip" "https://github.com/limine-bootloader/limine/archive/refs/heads/v7.x-binary.zip" -q
+        unzip -o "$temp_dir/limine.zip" -d "$temp_dir/extracted" > /dev/null
+        mkdir -p "arch/$target_arch/$bootloader"
+        mv "$temp_dir/extracted/limine-7.x-binary/"* "arch/$target_arch/$bootloader/"
+        rm -rf "$temp_dir"
+        echo ">>> Successfully downloaded limine for the x86_64-limine target."
+    else
+        echo ">> Limine for x86-64-limine already exists! ("arch/$target_arch/$bootloader") will be using that."
+    fi
+fi
+
+pushd "build-$target_arch-$bootloader"
 make
 popd
 
 pushd "arch/$target_arch"
-./gen.sh
+./gen-$bootloader.sh
 popd
 echo "Finished building. Enjoy!"

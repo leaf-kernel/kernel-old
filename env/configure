@@ -1,18 +1,21 @@
 #!/bin/bash
 target_arch=${1:-x86_64}
-toolchain=${2:-arch/x86_64/toolchain.cmake}
+bootloader=${2:-limine}
+toolchain=${3:-arch/$target_arch/$target_arch-$bootloader.toolchain.cmake}
+
+echo ">>> Configuring leaf to build for $target_arch ($target_arch-$bootloader)."
 
 rm -rf build-*
-mkdir "build-$target_arch"
-pushd "build-$target_arch"
+mkdir "build-$target_arch-$bootloader"
+pushd "build-$target_arch-$bootloader"
 
 cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain"
 config_status=$?
 popd
 
 if [[ $config_status -ne 0 ]]; then
-    echo "CMake configuration failed."
+    echo ">>> Configuration for Leaf $target_arch-$bootloader failed!"
     exit 1
 fi
 
-echo "Configuration finished! Run make in the build-$target_arch to build the kernel!"
+echo ">>> Configuration for Leaf $target_arch-$bootloader done."

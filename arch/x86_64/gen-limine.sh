@@ -6,7 +6,7 @@ mkdir -p ../../release
 mkdir -p iso
 mkdir -p iso/boot
 cp -v root/* iso > /dev/null 2>&1
-cp -v ../../build-x86_64/kernel/Leaf-x86_64-raw.bin iso/boot/leaf > /dev/null 2>&1
+cp -v ../../build-x86_64-limine/kernel/Leaf-x86_64-raw.bin iso/boot/leaf > /dev/null 2>&1
 make -C limine > /dev/null 2>&1
 cp -v limine/limine-bios.sys limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso > /dev/null 2>&1
 mkdir -p iso/EFI/BOOT
