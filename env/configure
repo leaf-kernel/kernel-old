@@ -37,7 +37,7 @@ fi
 
 echo ">>> Configuring leaf to build for $target_arch ($target_arch-$bootloader)."
 
-rm -rf build-*
+rm -rf "build-$target_arch-$bootloader"
 mkdir "build-$target_arch-$bootloader"
 pushd "build-$target_arch-$bootloader"
 
