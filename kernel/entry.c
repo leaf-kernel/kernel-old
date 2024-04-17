@@ -6,7 +6,7 @@
 // Bootloader imports
 #include <sys/limine.h>
 
-// Arch specific imports
+// Arch imports
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
 #include ARCH_INCLUDE(idt/idt.h)
