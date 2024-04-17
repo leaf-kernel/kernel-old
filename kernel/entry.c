@@ -34,23 +34,27 @@
 
 // Utility imports
 #include <utils/convertion.h>
+#include <utils/hash.h>
 
 
 // Limine requests
+#if defined(LEAF_LIMINE)
 volatile struct limine_framebuffer_request framebuffer_request = {.id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 1};
 volatile struct limine_module_request mod_request = {.id = LIMINE_MODULE_REQUEST, .revision = 0};
 volatile struct limine_hhdm_request hhdm_request = {.id = LIMINE_HHDM_REQUEST, .revision = 0};
 
-// Global variables
 struct limine_framebuffer *framebuffer;
+#endif
+
 uint64_t hhdm_offset;
 
 // Kernel entry function
 void _start(void)
 {
-    // init code
+    #if defined(LEAF_LIMINE)
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
+    #endif
 
     // clear serial lolz
     dprintf("\033c");
@@ -74,6 +78,10 @@ void _start(void)
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
+    if(initrd->content[0]->hash != LEAF_TEST_FILE_HASH) {
+        debug_log(__FILE__, __LINE__, __func__, "Failed to find /test.txt? Got invalid hash: 0x%08x != 0x%08x\n", initrd->content[0]->hash, LEAF_TEST_FILE_HASH);
+        hcf();
+    }
     dprintf("Test file: %s\n", initrd->content[0]->file->content);
     hcf();
 }

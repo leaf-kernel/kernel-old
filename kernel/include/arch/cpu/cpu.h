@@ -11,7 +11,7 @@
 // CPU utils
 void hcf();
 void hlt();
-void panic(const char *reason, int_frame_t frame);
+void panic(const char *reason, const char *description, int_frame_t frame);
 
 // Util funcs (yet again)
 void get_intel_cpu_brand_string(char *brand_string);

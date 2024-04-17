@@ -2,6 +2,8 @@
 #define __LEAF_H__
 
 // Bootloader include
+#include <utils/hash.h>
+
 #ifdef LEAF_LIMINE
 #include <sys/limine.h>
 #endif
@@ -35,5 +37,8 @@ extern volatile struct limine_module_request mod_request;
 extern volatile struct limine_hhdm_request hhdm_request;
 extern struct limine_framebuffer *framebuffer;
 extern uint64_t hhdm_offset;
+
+// Etc Definitions
+#define LEAF_TEST_FILE_HASH HASH_STRING("/test.txt")
 
 #endif // __LEAF_H__

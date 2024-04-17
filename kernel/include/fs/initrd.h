@@ -3,12 +3,13 @@
 
 #include <fs/tar.h>
 #include <fs/path.h>
-
 #include <stddef.h>
+#include <stdint.h>
 
 typedef struct
 {
     TARFile *file;
+    uint32_t hash;
     PathComponent *path;
 } RamdiskEntry;
 

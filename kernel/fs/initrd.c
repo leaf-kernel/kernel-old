@@ -1,6 +1,7 @@
 #include <fs/initrd.h>
 #include <sys/logger.h>
 #include <memory/kheap.h>
+#include <utils/hash.h>
 
 Ramdisk *init_ramdisk(const char *raw, const size_t size)
 {
@@ -51,13 +52,14 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
 
         ramEntry->file = &entry->files[i];
         ramEntry->path = &comp[entry->files[i].number_path_comonents - 1];
+        ramEntry->hash = hash_string(entry->files[i].path);
 
         initrd->content[i] = ramEntry;
 
         const char *nameValue = (name != NULL) ? name : "NULL";
         const char *pathValue = (entry->files[i].path != NULL) ? entry->files[i].path : "NULL";
         const char *dirValue = (dir) ? "true" : "false";
-        cdebug_log(__func__, "{ path: %s, name: %s, directory: %s }", pathValue, nameValue, dirValue);
+        cdebug_log(__func__, "{ path: %s, name: %s, directory: %s, hash: 0x%08x }", pathValue, nameValue, dirValue, initrd->content[i]->hash);
     }
 
 
