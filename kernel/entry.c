@@ -9,7 +9,7 @@
 // Arch specific imports
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
-#include <arch/idt/idt.h>
+#include ARCH_INCLUDE(idt/idt.h)
 
 // Memory imports
 #include <memory/pmm.h>

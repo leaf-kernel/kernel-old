@@ -1,4 +1,5 @@
-#include <arch/pic/pic.h>
+#include <sys/leaf.h>
+#include ARCH_INCLUDE(pic/pic.h)
 #include <drivers/stdio/serial.h>
 
 #define PIC1_COMMAND 0x20

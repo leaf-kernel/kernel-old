@@ -1,7 +1,7 @@
 #ifndef __CPU_H__
 #define __CPU_H__
 
-#include <arch/idt/idt.h>
+#include <arch/x86_64/idt/idt.h>
 #include <arch/cpu/cpuid.h>
 #include <drivers/stdio/printf.h>
 #include <memory/pmm.h>

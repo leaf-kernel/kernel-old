@@ -24,6 +24,11 @@
 #define LEAF_VERSION "Unknown"
 #endif
 
+// Helper functions
+#define STRINGIZE_HELPER(x...) #x
+#define STRINGIZE(x...) STRINGIZE_HELPER(x)
+#define ARCH_INCLUDE(a) STRINGIZE(arch/LEAF_ARCH_RAW/a)
+
 // Global Variables
 extern volatile struct limine_framebuffer_request framebuffer_request;
 extern volatile struct limine_module_request mod_request;

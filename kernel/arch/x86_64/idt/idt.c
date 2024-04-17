@@ -1,5 +1,6 @@
-#include <arch/idt/idt.h>
-#include <arch/pic/pic.h>
+#include <sys/leaf.h>
+#include ARCH_INCLUDE(idt/idt.h)
+#include ARCH_INCLUDE(pic/pic.h)
 #include <drivers/stdio/printf.h>
 #include <stddef.h>
 #include <stdint.h>

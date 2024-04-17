@@ -1,8 +1,8 @@
 #include <arch/pit/pit.h>
 #include <drivers/stdio/serial.h>
 #include <arch/cpu/cpu.h>
-#include <arch/idt/idt.h>
-#include <arch/pic/pic.h>
+#include ARCH_INCLUDE(idt/idt.h)
+#include ARCH_INCLUDE(pic/pic.h)
 #include <sys/logger.h>
 
 uint64_t uptime_secs;
