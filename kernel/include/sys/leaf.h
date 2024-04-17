@@ -1,6 +1,9 @@
 #ifndef __LEAF_H__
 #define __LEAF_H__
 
+// Helper functions
+#define ARCH_INCLUDE(a) STRINGIZE(arch/LEAF_ARCH/a)
+
 // Bootloader include
 #ifdef LEAF_LIMINE
 #include <sys/limine.h>
