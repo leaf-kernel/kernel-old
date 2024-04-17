@@ -78,10 +78,14 @@ void _start(void)
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
-    if(initrd->content[0]->hash != LEAF_TEST_FILE_HASH) {
-        debug_log(__FILE__, __LINE__, __func__, "Failed to find /test.txt? Got invalid hash: 0x%08x != 0x%08x\n", initrd->content[0]->hash, LEAF_TEST_FILE_HASH);
+
+    uint32_t hash = hash_string("/test.txt");
+    int file_id = find_file_by_hash(initrd, hash);
+    if(file_id != -1) {
+        dprintf("Test file: %s\n", initrd->content[file_id]->file->content);
+    } else {
+        dprintf("Failed to find ./test.txt!\n");
         hcf();
-    }
-    dprintf("Test file: %s\n", initrd->content[0]->file->content);
+    } 
     hcf();
 }

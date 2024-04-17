@@ -17,8 +17,10 @@ typedef struct
 typedef struct
 {
     RamdiskEntry** content;
+    int count;
 } Ramdisk;
 
 Ramdisk *init_ramdisk(const char *raw, const size_t size);
+int find_file_by_hash(Ramdisk *initrd, uint32_t hash);
 
 #endif // __INITRD_H__
