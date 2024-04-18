@@ -1,8 +1,8 @@
 #ifndef __LEAF_H__
 #define __LEAF_H__
 
-// Bootloader include
 #include <utils/hash.h>
+#include <stdint.h>
 
 #ifdef LEAF_LIMINE
 #include <sys/limine.h>
@@ -24,6 +24,14 @@
 
 #ifndef LEAF_VERSION
 #define LEAF_VERSION "Unknown"
+#endif
+
+#ifndef LEAF_UUID
+#define LEAF_UUID "Unknown"
+#endif
+
+#ifndef LEAF_OFFSET
+#define LEAF_OFFSET 0
 #endif
 
 // Helper functions

@@ -63,11 +63,15 @@ void _start(void)
     init_pit();
     init_pmm();
     Ramdisk *initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
+    (void)initrd;
+
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\n");
 
     // Print out some system info
     dprintf("Leaf Version: %s\n", LEAF_VERSION);
+    dprintf("Leaf UUID: %s\n", LEAF_UUID);
+    dprintf("Leaf Offset: 0x%08X\n", ((uint32_t)LEAF_OFFSET + 1) - 1);
     dprintf("Arch: %s\n", LEAF_ARCH);
 
     char brand[49];
@@ -78,14 +82,5 @@ void _start(void)
     dprintf("CPU Vendor: %s\n", vendor_string);
     dprintf("CPU Brand: %s\n", brand);
     dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
-
-    uint32_t hash = hash_string("/test.txt");
-    int file_id = find_file_by_hash(initrd, hash);
-    if(file_id != -1) {
-        dprintf("Test file: %s\n", initrd->content[file_id]->file->content);
-    } else {
-        dprintf("Failed to find ./test.txt!\n");
-        hcf();
-    } 
     hcf();
 }
