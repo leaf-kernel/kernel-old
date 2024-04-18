@@ -3,7 +3,7 @@
 
 #include <arch/x86_64/idt/idt.h>
 #include <arch/cpu/cpuid.h>
-#include <drivers/stdio/printf.h>
+#include <libc/stdio/printf.h>
 #include <memory/pmm.h>
 
 #include <stdbool.h>

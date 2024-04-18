@@ -9,7 +9,7 @@
 // Arch imports
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
-#include ARCH_INCLUDE(idt/idt.h)
+#include <arch/x86_64/idt/idt.h>
 
 // Memory imports
 #include <memory/pmm.h>
@@ -17,12 +17,13 @@
 
 // Logging imports
 #include <sys/logger.h>
-#include <drivers/stdio/printf.h>
 #include <drivers/tty/tty.h>
 
 // Libc imports
 #include <libc/math.h>
 #include <libc/string.h>
+#include <libc/stdio/printf.h>
+#include <libc/stdlib/atoi.h>
 
 // File imports
 #include <fs/tar.h>
@@ -35,7 +36,6 @@
 // Utility imports
 #include <utils/convertion.h>
 #include <utils/hash.h>
-
 
 // Limine requests
 #if defined(LEAF_LIMINE)
@@ -51,10 +51,10 @@ uint64_t hhdm_offset;
 // Kernel entry function
 void _start(void)
 {
-    #if defined(LEAF_LIMINE)
+#if defined(LEAF_LIMINE)
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
-    #endif
+#endif
 
     // clear serial lolz
     dprintf("\033c");
@@ -66,21 +66,21 @@ void _start(void)
     (void)initrd;
 
     cdebug_log(__func__, "Kernel init finished.");
-    dprintf("\n");
+    dprintf("\r\n");
 
     // Print out some system info
-    dprintf("Leaf Version: %s\n", LEAF_VERSION);
-    dprintf("Leaf UUID: %s\n", LEAF_UUID);
-    dprintf("Leaf Offset: 0x%08X\n", ((uint32_t)LEAF_OFFSET + 1) - 1);
-    dprintf("Arch: %s\n", LEAF_ARCH);
+    dprintf("Leaf Version: %s\r\n", LEAF_VERSION);
+    dprintf("Leaf UUID: %s\r\n", LEAF_UUID);
+    dprintf("Leaf Offset: 0x%08X\r\n", atoi(LEAF_OFFSET));
+    dprintf("Arch: %s\r\n", LEAF_ARCH);
 
     char brand[49];
     char vendor_string[13];
     get_intel_cpu_brand_string(brand);
     get_cpu_vendor_string(vendor_string);
 
-    dprintf("CPU Vendor: %s\n", vendor_string);
-    dprintf("CPU Brand: %s\n", brand);
-    dprintf("Bootloader: %s\n", LEAF_BOOTLOADER);
+    dprintf("CPU Vendor: %s\r\n", vendor_string);
+    dprintf("CPU Brand: %s\r\n", brand);
+    dprintf("Bootloader: %s\r\n", LEAF_BOOTLOADER);
     hcf();
 }

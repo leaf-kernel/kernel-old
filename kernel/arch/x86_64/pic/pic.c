@@ -1,6 +1,6 @@
 #include <sys/leaf.h>
-#include ARCH_INCLUDE(pic/pic.h)
-#include <drivers/stdio/serial.h>
+#include <arch/x86_64/pic/pic.h>
+#include <drivers/serial/serial.h>
 
 #define PIC1_COMMAND 0x20
 #define PIC1_DATA 0x21

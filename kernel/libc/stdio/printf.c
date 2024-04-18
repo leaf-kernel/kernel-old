@@ -31,7 +31,7 @@
 //
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
-#include <drivers/stdio/printf.h>
+#include <libc/stdio/printf.h>
 #include <stdbool.h>
 #include <stdint.h>
 
