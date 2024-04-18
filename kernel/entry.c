@@ -67,6 +67,7 @@ void _start(void)
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\r\n");
+    dprintf("%s\r\n", initrd->content[find_file_by_hash(initrd, hash_string("/etc/motd"))]->file->content);
 
     // Print out some system info
     dprintf("Leaf Version: %s\r\n", LEAF_VERSION);

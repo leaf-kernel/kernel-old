@@ -6,6 +6,6 @@
 
 #define HASH_STRING(str) hash_string(str)
 
-uint32_t hash_string(const char *str);
+uint32_t hash_string(const char *in);
 
 #endif // __HASH_H__
