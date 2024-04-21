@@ -13,16 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
         run: |
-          sudo systemctl start docker
-          ./docker_build.sh
+          docker build --progress=plain -t leaf-builder .
 
+      - name: Create container from image
+        id: create-container
+        run: |
+          docker create --name leaf-container leaf-builder
+          docker cp leaf-container:/leaf/build/release ./release
+          docker rm leaf-container
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
