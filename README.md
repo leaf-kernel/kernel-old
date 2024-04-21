@@ -1,8 +1,8 @@
 # Leaf
 
-A hobby kernel.
+**A Hobby Kernel**
 
-## Building Instructions
+## Building Instructions (Local)
 
 To build a bootable image, follow these steps:
 
@@ -14,7 +14,7 @@ To build a bootable image, follow these steps:
    ./env/configure <target> <bootloader> <toolchain>
    ```
 
-   For example, to configure for x86_64 with the default settings (limine bootloader):
+   For example, to configure for x86_64 with the default settings (using the Limine bootloader):
 
    ```bash
    ./env/configure x86_64
@@ -28,7 +28,7 @@ To build a bootable image, follow these steps:
    ./env/build <target> <bootloader>
    ```
 
-   For building for the x86_64 target with limine bootloader:
+   For building for the x86_64 target with the Limine bootloader:
 
    ```bash
    ./env/build x86_64
@@ -38,11 +38,44 @@ To build a bootable image, follow these steps:
 
 3. **Run the Kernel (Optional):**
 
-   You can also use the `./run` script to automatically configure and run the kernel in QEMU.
+   Use the `./run.sh` script to automatically configure and run the kernel in QEMU.
 
    ```bash
-   ./run <target> <bootloader> [qemu args]
+   ./run.sh <target> <bootloader> [qemu args]
    ```
+
+## Building Instructions (Docker)
+
+1. **Build the Image:**
+
+   Use the provided Dockerfile to set up an environment for building the kernel image.
+
+   ```bash
+   docker build -t leaf-builder \
+       --build-arg TARGET=x86_64 \
+       --build-arg BOOTLOADER=limine \
+       .
+   ```
+
+2. **Create a Docker Container:**
+
+   Create a Docker container from the built image.
+
+   ```bash
+   docker run --name leaf leaf-builder
+   ```
+
+3. **Copy the Built ISO to Your Local Machine:**
+
+   Copy the ISO built within the Docker container to your local machine.
+
+   ```bash
+   docker cp leaf:/leaf/release/ .
+   ```
+
+   Now, the `release/` directory on your local machine (inside the Leaf directory) should contain the built ISO.
+
+**You can also run the `docker_build.sh` script to automate this.**
 
 ## Key Features
 
@@ -54,8 +87,8 @@ To build a bootable image, follow these steps:
 - Serial Input/Output (I/O)
 - Nighterm (Terminal emulator for TTY)
 - TAR File Parsing
-- Ramdisk (To copy files into memory, using limine modules)
-- Virtual File System (A VFS To simply read and write to files!)
+- Ramdisk (For copying files into memory using Limine modules)
+- Virtual File System (VFS for reading and writing files)
 
 ## Work in Progress
 
@@ -66,7 +99,7 @@ We are actively working on:
 ## Supported Targets
 
 - x86_64-limine
-  - x86_64 shipped with the limine bootloader.
+  - x86_64 with the Limine bootloader
 
 ## Requirements
 
@@ -78,6 +111,7 @@ Ensure you have the following tools installed:
 - `cmake` (Build system)
 - `xorriso` (ISO creation tool)
 - `qemu` (Emulator for testing the kernel)
+- `docker` (For building using docker)
 
 ## Architectures
 

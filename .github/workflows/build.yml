@@ -1,0 +1,33 @@
+name: Build and Package
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: actions/setup-docker@v2
+        with:
+          dockerfile: Dockerfile
+
+      - name: Build Docker image
+        run: |
+          ./docker_build.sh
+
+      - name: Package release
+        run: |
+          mkdir -p builds
+          zip -r "builds/leaf-$(date +'%Y-%m-%d')-builds.zip" release/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: leaf-builds
+          path: builds

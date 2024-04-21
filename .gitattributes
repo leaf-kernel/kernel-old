@@ -1,0 +1,10 @@
+* text=auto
+*.c        diff=cpp
+*.h        diff=cpp
+*.S        diff=cpp
+*.lds      diff=cpp
+*.asm      diff=nasm
+*.bin      binary
+*.o        binary
+*.tar.gz   filter=lfs diff=lfs merge=lfs -text
+*.tar.xz   filter=lfs diff=lfs merge=lfs -text
