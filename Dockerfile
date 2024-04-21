@@ -3,7 +3,7 @@ FROM ubuntu:latest
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
 
 RUN apt-get update && \
-    apt-get install -y build-essential curl file git
+    apt-get install -y build-essential curl file git unzip
 
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
