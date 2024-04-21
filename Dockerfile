@@ -10,7 +10,7 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
 RUN brew install cmake xorriso wget nasm
 
 ARG TARGET=x86_64
-ARG BOOTLOADER=grub
+ARG BOOTLOADER=limine
 
 RUN brew install ${TARGET}-elf-gcc ${TARGET}-elf-binutils
 
