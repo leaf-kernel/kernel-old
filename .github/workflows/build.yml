@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -24,11 +26,11 @@ jobs:
         id: create-container
         run: |
           docker create --name leaf-container leaf-builder
-          docker cp leaf-container:/leaf/build-x86_64-limine/ ./release
+          docker cp leaf-container:/leaf/release/ ./release
           docker rm leaf-container
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: leaf-$(date +'%Y-%m-%d')-builds
+          name: Leaf-release
           path: release
