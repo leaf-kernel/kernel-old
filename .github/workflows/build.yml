@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,6 +20,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          sudo systemctl start docker
           ./docker_build.sh
 
 
