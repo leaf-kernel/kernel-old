@@ -5,8 +5,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <libc/stdio/printf.h>
+#include <utils/hash.h>
 
-typedef enum {
+typedef enum
+{
   TYPE_INITRD = 0
 } vfs_drive_type;
 
@@ -21,20 +23,23 @@ typedef enum
   STATUS_INVALID_DRIVE_TYPE,
   STATUS_UNKNOWN_ERROR
 } vfs_op_status;
- 
-typedef struct {
+
+typedef struct
+{
   vfs_drive_type driveType;
   uint64_t driveAddr;
-  void (*driveRead)(char*, void*);
-  void (*driveWrite)(char*, void*);
 } drive_t;
 
-typedef struct {
+typedef struct
+{
   drive_t *drives;
   uint64_t address;
+  int numDrives;
 } VFS_t;
 
 VFS_t *init_vfs();
-vfs_op_status mount_drive(VFS_t* vfs, uint64_t driveAddr, void* read, void* write, vfs_drive_type type);
+vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type);
+vfs_op_status umount_drive(VFS_t *vfs, int driveId);
+vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out);
 
 #endif // __VFS_H__

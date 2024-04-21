@@ -63,9 +63,16 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
+    init_tty();
+    tty_spawn(0);
+
     Ramdisk *initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     VFS_t *vfs = init_vfs();
-    (void)vfs;
+    mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
+
+    char *out;
+    drive_read(vfs, 0, "/etc/motd", &out);
+    printf("%s", out);
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\r\n");
@@ -85,5 +92,6 @@ void _start(void)
     dprintf("CPU Vendor: %s\r\n", vendor_string);
     dprintf("CPU Brand: %s\r\n", brand);
     dprintf("Bootloader: %s\r\n", LEAF_BOOTLOADER);
+    dprintf("Drives Mounted On VFS: %d\r\n", vfs->numDrives);
     hcf();
 }
