@@ -24,7 +24,7 @@ jobs:
         id: create-container
         run: |
           docker create --name leaf-container leaf-builder
-          docker cp leaf-container:/leaf/build/release ./release
+          docker cp leaf-container:/leaf/build-x86_64-limine/ ./release
           docker rm leaf-container
 
       - name: Upload artifact
