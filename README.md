@@ -1,5 +1,7 @@
 # Leaf
+
 A hobby kernel.
+
 ## Building Instructions
 
 To build a bootable image, follow these steps:
@@ -42,7 +44,6 @@ To build a bootable image, follow these steps:
    ./run <target> <bootloader> [qemu args]
    ```
 
-
 ## Key Features
 
 - Interrupt Descriptor Table (IDT)
@@ -54,17 +55,18 @@ To build a bootable image, follow these steps:
 - Nighterm (Terminal emulator for TTY)
 - TAR File Parsing
 - Ramdisk (To copy files into memory, using limine modules)
-
+- Virtual File System (A VFS To simply read and write to files!)
 
 ## Work in Progress
 
 We are actively working on:
+
 - Advanced Programmable Interrupt Controller (APIC) (IOAPIC and LAPIC)
 
-
 ## Supported Targets
+
 - x86_64-limine
-    - x86_64 shipped with the limine bootloader.
+  - x86_64 shipped with the limine bootloader.
 
 ## Requirements
 
@@ -77,22 +79,19 @@ Ensure you have the following tools installed:
 - `xorriso` (ISO creation tool)
 - `qemu` (Emulator for testing the kernel)
 
-
 ## Architectures
 
 | Architecture | Status |
-|--------------|--------|
+| ------------ | ------ |
 | x86-64       | ✅     |
 | x86          | ❌     |
 
-
 ## Bootloaders
 
-| Bootloaders                                                   | Status |
-|---------------------------------------------------------------|--------|
-| [x86_64-limine](https://github.com/limine-bootloader/limine)  | ✅     |
-| [x86-leaf](https://github.com/leaf-kernel/bootloader)         | ❌     |
-
+| Bootloaders                                                  | Status |
+| ------------------------------------------------------------ | ------ |
+| [x86_64-limine](https://github.com/limine-bootloader/limine) | ✅     |
+| [x86-leaf](https://github.com/leaf-kernel/bootloader)        | ❌     |
 
 ## License
 
