@@ -28,6 +28,7 @@
 // File imports
 #include <fs/tar.h>
 #include <fs/initrd.h>
+#include <fs/vfs.h>
 
 // Sys import
 #include <sys/limine.h>
@@ -63,7 +64,8 @@ void _start(void)
     init_pit();
     init_pmm();
     Ramdisk *initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
-    (void)initrd;
+    VFS_t *vfs = init_vfs();
+    (void)vfs;
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\r\n");
