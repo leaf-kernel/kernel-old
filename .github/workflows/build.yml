@@ -1,33 +1,29 @@
-name: Build and Package
+name: Build Leaf for x86_64-limine
 
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: actions/setup-docker@v2
-        with:
-          dockerfile: Dockerfile
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
 
       - name: Build Docker image
         run: |
           ./docker_build.sh
 
-      - name: Package release
-        run: |
-          mkdir -p builds
-          zip -r "builds/leaf-$(date +'%Y-%m-%d')-builds.zip" release/*
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: leaf-builds
-          path: builds
+          name: leaf-$(date +'%Y-%m-%d')-builds
+          path: release
