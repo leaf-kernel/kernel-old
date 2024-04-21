@@ -80,28 +80,17 @@ void _start(void)
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
-    tty_spawn(0, "/usr/share/fonts/Uni3-Terminus12x6.psf");
-    char *out;
-    drive_read(vfs, 0, "/etc/motd", &out);
-    printf("%s", out);
+    tty_spawn(0, NULL);
 
     cdebug_log(__func__, "Kernel init finished.");
-    dprintf("\r\n");
 
-    // Print out some system info
-    dprintf("Leaf Version: %s\r\n", LEAF_VERSION);
-    dprintf("Leaf UUID: %s\r\n", LEAF_UUID);
-    dprintf("Leaf Offset: 0x%08X\r\n", atoi(LEAF_OFFSET));
-    dprintf("Arch: %s\r\n", LEAF_ARCH);
-
-    char brand[49];
     char vendor_string[13];
-    get_intel_cpu_brand_string(brand);
+    char *motd;
     get_cpu_vendor_string(vendor_string);
+    drive_read(vfs, 0, "/etc/motd", &motd);
 
-    dprintf("CPU Vendor: %s\r\n", vendor_string);
-    dprintf("CPU Brand: %s\r\n", brand);
-    dprintf("Bootloader: %s\r\n", LEAF_BOOTLOADER);
-    dprintf("Drives Mounted On VFS: %d\r\n", vfs->numDrives);
+    printf("%s\n\n", motd);
+    printf("Leaf %s @ %s: %s (%s) tty%04d\n", LEAF_VERSION, LEAF_ARCH, vendor_string, LEAF_BOOTLOADER, currentTTYid);
+
     hcf();
 }

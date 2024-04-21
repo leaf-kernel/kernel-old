@@ -54,21 +54,35 @@ void tty_spawn(uint8_t id, char *font)
     struct nighterm_ctx *context = kmalloc(sizeof(struct nighterm_ctx));
     currentTTY->ctx = context;
 
-    char *out;
-    vfs_op_status status;
     int s;
-    status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
-
-    if (status == STATUS_OK)
+    if (font != NULL)
     {
-        s = nighterm_initialize(currentTTY->ctx,
-                                out,
-                                framebuffer->address,
-                                framebuffer->width,
-                                framebuffer->height,
-                                framebuffer->pitch,
-                                framebuffer->bpp,
-                                kmalloc, kfree);
+        char *out;
+        vfs_op_status status;
+        status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
+
+        if (status == STATUS_OK)
+        {
+            s = nighterm_initialize(currentTTY->ctx,
+                                    out,
+                                    framebuffer->address,
+                                    framebuffer->width,
+                                    framebuffer->height,
+                                    framebuffer->pitch,
+                                    framebuffer->bpp,
+                                    kmalloc, kfree);
+        }
+        else
+        {
+            s = nighterm_initialize(currentTTY->ctx,
+                                    NULL,
+                                    framebuffer->address,
+                                    framebuffer->width,
+                                    framebuffer->height,
+                                    framebuffer->pitch,
+                                    framebuffer->bpp,
+                                    kmalloc, kfree);
+        }
     }
     else
     {
@@ -104,7 +118,9 @@ void tty_flush()
 {
     if (currentTTY != NULL && currentTTY->ctx != NULL)
     {
-        nighterm_flush(currentTTY->ctx, 0, 0, 0);
+        nighterm_flush(currentTTY->ctx, 230, 145, 197);
+        nighterm_set_bg_color(currentTTY->ctx, 230, 145, 197);
+        nighterm_set_fg_color(currentTTY->ctx, 255, 255, 255);
         nighterm_set_cursor_position(currentTTY->ctx, 0, 0);
     }
 }
