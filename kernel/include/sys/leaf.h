@@ -4,6 +4,10 @@
 #include <utils/hash.h>
 #include <stdint.h>
 
+#ifdef LEAF_INCLUDE_PRIVATE
+#include <sys/leaf_private.h>
+#endif
+
 #ifdef LEAF_LIMINE
 #include <sys/limine.h>
 #endif
@@ -45,8 +49,5 @@ extern volatile struct limine_module_request mod_request;
 extern volatile struct limine_hhdm_request hhdm_request;
 extern struct limine_framebuffer *framebuffer;
 extern uint64_t hhdm_offset;
-
-// Etc Definitions
-#define LEAF_TEST_FILE_HASH HASH_STRING("/test.txt")
 
 #endif // __LEAF_H__

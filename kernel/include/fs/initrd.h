@@ -13,10 +13,9 @@ typedef struct
     PathComponent *path;
 } RamdiskEntry;
 
-
 typedef struct
 {
-    RamdiskEntry** content;
+    RamdiskEntry **content;
     int count;
 } Ramdisk;
 

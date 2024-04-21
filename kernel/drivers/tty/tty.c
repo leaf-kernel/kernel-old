@@ -35,7 +35,7 @@ void init_tty()
     cdebug_log(__func__, "done.");
 }
 
-void tty_spawn(uint8_t id)
+void tty_spawn(uint8_t id, char *font)
 {
     if (id >= MAX_TTYS || ttys[id] != NULL)
     {
@@ -53,7 +53,26 @@ void tty_spawn(uint8_t id)
     currentTTY = ttys[currentTTYid];
     struct nighterm_ctx *context = kmalloc(sizeof(struct nighterm_ctx));
     currentTTY->ctx = context;
-    int s = nighterm_initialize(currentTTY->ctx,
+
+    char *out;
+    vfs_op_status status;
+    int s;
+    status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
+
+    if (status == STATUS_OK)
+    {
+        s = nighterm_initialize(currentTTY->ctx,
+                                out,
+                                framebuffer->address,
+                                framebuffer->width,
+                                framebuffer->height,
+                                framebuffer->pitch,
+                                framebuffer->bpp,
+                                kmalloc, kfree);
+    }
+    else
+    {
+        s = nighterm_initialize(currentTTY->ctx,
                                 NULL,
                                 framebuffer->address,
                                 framebuffer->width,
@@ -61,6 +80,7 @@ void tty_spawn(uint8_t id)
                                 framebuffer->pitch,
                                 framebuffer->bpp,
                                 kmalloc, kfree);
+    }
 
     if (s != NIGHTERM_SUCCESS)
     {

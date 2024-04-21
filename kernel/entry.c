@@ -3,9 +3,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-// Bootloader imports
-#include <sys/limine.h>
-
 // Arch imports
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
@@ -32,6 +29,7 @@
 
 // Sys import
 #include <sys/limine.h>
+#define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
 // Utility imports
@@ -48,6 +46,19 @@ struct limine_framebuffer *framebuffer;
 #endif
 
 uint64_t hhdm_offset;
+Ramdisk *initrd;
+VFS_t *vfs;
+
+// Utils
+void *__LEAF_GET_INITRD__()
+{
+    return (void *)initrd;
+}
+
+void *__LEAF_GET_VFS__()
+{
+    return (void *)vfs;
+}
 
 // Kernel entry function
 void _start(void)
@@ -64,19 +75,18 @@ void _start(void)
     init_pit();
     init_pmm();
     init_tty();
-    tty_spawn(0);
 
-    Ramdisk *initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
-    VFS_t *vfs = init_vfs();
+    initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
+    vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
+    tty_spawn(0, "/usr/share/fonts/Uni3-Terminus12x6.psf");
     char *out;
     drive_read(vfs, 0, "/etc/motd", &out);
     printf("%s", out);
 
     cdebug_log(__func__, "Kernel init finished.");
     dprintf("\r\n");
-    dprintf("%s\r\n", initrd->content[find_file_by_hash(initrd, hash_string("/etc/motd"))]->file->content);
 
     // Print out some system info
     dprintf("Leaf Version: %s\r\n", LEAF_VERSION);

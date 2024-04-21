@@ -44,7 +44,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type)
 
     if (type == TYPE_INITRD)
     {
-        cdebug_log(__func__, "Mounted ramdisk to VFS (0x%016X(initrd) -> 0x%016X(VFS))", driveAddr, vfs->address);
+        cdebug_log(__func__, "Mounted Ramdisk to VFS (0x%016X(initrd) -> 0x%016X(VFS))", driveAddr, vfs->address);
     }
 
     if (vfs->drives == NULL)
@@ -84,7 +84,7 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId)
     switch (driveToRemove->driveType)
     {
     case TYPE_INITRD:
-        cdebug_log(__func__, "Unmounting ramdisk from VFS (0x%016X)", driveToRemove->driveAddr);
+        cdebug_log(__func__, "Unmounting Ramdisk from VFS (0x%016X)", driveToRemove->driveAddr);
         break;
     default:
         break;
