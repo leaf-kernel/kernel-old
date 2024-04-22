@@ -1,6 +1,5 @@
 # Leaf
-
-**A Hobby Kernel**
+A hobby kernel for nerds. Pre built ISO's [here](https://nightly.link/leaf-kernel/kernel/workflows/build/main/Leaf-release.zip)
 
 ## Building Instructions (Local)
 
