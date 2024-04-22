@@ -95,6 +95,8 @@ void _start(void)
     {
         cdebug_log(__func__, "\033[1;31mAll libc tests passed!\033[0m");
     }
+
+    printf("Leaf %s %s-%s\n", LEAF_VERSION, LEAF_ARCH, LEAF_BOOTLOADER);
     cdebug_log(__func__, "Kernel init finished.");
     hcf();
 }
