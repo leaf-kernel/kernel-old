@@ -24,10 +24,4 @@ void *pmm_request_pages(size_t numPages);
 void pmm_free(void *ptr);
 void pmm_free_pages(void *ptr, size_t numPages);
 
-// MEMORY FUNCTIONS
-void *memcpy(void *dest, const void *src, size_t n);
-void *memset(void *s, int c, size_t n);
-void *memmove(void *dest, const void *src, size_t n);
-int memcmp(const void *s1, const void *s2, size_t n);
-
 #endif // __PMM_H__

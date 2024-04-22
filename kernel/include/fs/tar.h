@@ -5,7 +5,9 @@
 #include <stdint.h>
 #include <libc/math.h>
 #include <libc/string.h>
+#include <libc/ctype.h>
 #include <fs/path.h>
+#include <sys/logger.h>
 
 #define RAMDISK_PATH_PREFIX "initrd"
 

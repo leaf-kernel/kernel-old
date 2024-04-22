@@ -80,17 +80,6 @@ void _start(void)
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
-    tty_spawn(0, NULL);
-
     cdebug_log(__func__, "Kernel init finished.");
-
-    char vendor_string[13];
-    char *motd;
-    get_cpu_vendor_string(vendor_string);
-    drive_read(vfs, 0, "/etc/motd", &motd);
-
-    printf("%s\n\n", motd);
-    printf("Leaf %s @ %s: %s (%s) tty%04d\n", LEAF_VERSION, LEAF_ARCH, vendor_string, LEAF_BOOTLOADER, currentTTYid);
-
     hcf();
 }

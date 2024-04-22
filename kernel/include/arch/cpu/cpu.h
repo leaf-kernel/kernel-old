@@ -3,6 +3,7 @@
 
 #include <arch/x86_64/idt/idt.h>
 #include <arch/cpu/cpuid.h>
+#include <libc/string.h>
 #include <libc/stdio/printf.h>
 #include <memory/pmm.h>
 

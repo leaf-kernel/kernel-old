@@ -422,7 +422,7 @@ static size_t _ftoa(out_fct_type out, char *buffer, size_t idx, size_t maxlen,
 #if defined(PRINTF_SUPPORT_EXPONENTIAL)
         return _etoa(out, buffer, idx, maxlen, value, prec, width, flags);
 #else
-        return 0U;
+        return LEAF_RETURN_SUCCESSU;
 #endif
     }
 

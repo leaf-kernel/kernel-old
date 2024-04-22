@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <libc/string.h>
 
 void *kmalloc(size_t size);
 void *kcalloc(size_t size);

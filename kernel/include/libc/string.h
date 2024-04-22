@@ -2,26 +2,27 @@
 #define __STRING_H__
 
 #include <stddef.h>
-#include <stdint.h>
 #include <memory/kheap.h>
-#include <memory/pmm.h>
 
-size_t strlen(const char *str);
-long strtol(const char *nptr, char **endptr, int base);
-char *strtok(char *str, const char *delim);
-char *strdup(const char *src);
-char *strchr(const char *str, int c);
-int strncmp(const char *s1, const char *s2, size_t n);
-char *strncpy(char *dest, const char *src, size_t n);
+void *memcpy(void *dest, const void *src, size_t n);
+void *memmove(void *dest, const void *src, size_t n);
 char *strcpy(char *dest, const char *src);
+char *strncpy(char *dest, const char *src, size_t n);
+char *strcat(char *dest, const char *src);
+char *strncat(char *dest, const char *src, size_t n);
+int memcmp(const void *s1, const void *s2, size_t n);
 int strcmp(const char *s1, const char *s2);
-uint64_t strtoul(const char *str, char **endptr, int base);
-uint64_t octal_str_to_uint64(const char *str);
-int isxdigit(unsigned char c);
-int isdigit(unsigned char c);
-int isspace(int c);
-int islower(int c);
-char tolower(int c);
+int strncmp(const char *s1, const char *s2, size_t n);
+void *memchr(const void *s, int c, size_t n);
+char *strchr(const char *s, int c);
+size_t strcspn(const char *s1, const char *s2);
+char *strpbrk(const char *s1, const char *s2);
 char *strrchr(const char *s, int c);
+size_t strspn(const char *s1, const char *s2);
+char *strstr(const char *haystack, const char *needle);
+void *memset(void *s, int c, size_t n);
+char *strtok(char *str, const char *delim);
+size_t strlen(const char *s);
+char *strdup(const char *s);
 
-#endif // __STRING_H__
+#endif /* __STRING_H__ */
