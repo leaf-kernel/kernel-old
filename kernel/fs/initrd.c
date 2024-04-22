@@ -1,6 +1,6 @@
 #include <fs/initrd.h>
 #include <sys/logger.h>
-#include <memory/kheap.h>
+#include <libc/stdlib/memory/kheap.h>
 #include <utils/hash.h>
 
 Ramdisk *init_ramdisk(const char *raw, const size_t size)
@@ -68,9 +68,12 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
     return initrd;
 }
 
-int find_file_by_hash(Ramdisk *initrd, uint32_t hash) {
-    for(int i = 0; i < initrd->count; i++) {
-        if(initrd->content[i]->hash == hash) {
+int find_file_by_hash(Ramdisk *initrd, uint32_t hash)
+{
+    for (int i = 0; i < initrd->count; i++)
+    {
+        if (initrd->content[i]->hash == hash)
+        {
             return i;
         }
     }

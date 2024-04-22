@@ -9,8 +9,8 @@
 #include <arch/x86_64/idt/idt.h>
 
 // Memory imports
-#include <memory/pmm.h>
-#include <memory/kheap.h>
+#include <libc/stdlib/memory/pmm.h>
+#include <libc/stdlib/memory/kheap.h>
 
 // Logging imports
 #include <sys/logger.h>
@@ -84,26 +84,17 @@ void _start(void)
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
+    TestResult testResult = check_libc();
+    if (testResult.failed != 0)
+    {
+        cdebug_log(__func__, "\033[1;33mWarning: Only %d/%d libc tests passed!\033[0m", testResult.passed, testResult.failed + testResult.passed);
+    }
+    else
+    {
+        cdebug_log(__func__, "\033[1;31mAll libc tests passed!\033[0m");
+    }
+
     cdebug_log(__func__, "Kernel init finished.");
 
-    // static lwjson_token_t tokens[128];
-    // static lwjson_t lwjson;
-
-    // lwjson_init(&lwjson, tokens, LWJSON_ARRAYSIZE(tokens));
-    // if (lwjson_parse(&lwjson, "{\"mykey\":\"myvalue\"}") == lwjsonOK) {
-    //     const lwjson_token_t* t;
-
-    //     if ((t = lwjson_find(&lwjson, "mykey")) != NULL) {
-    //        dprintf("Key found with data type: %d\n", (int)t->type);
-    //     } else {
-    //         dprintf("%s\n", tokens[0].token_name);
-    //     }
-
-    //     /* Call this when not used anymore */
-    //     lwjson_free(&lwjson);
-    // }
-
-    dprintf("\n");
-    check_stdlib();
     hcf();
 }

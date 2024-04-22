@@ -5,7 +5,7 @@
 #include <arch/cpu/cpuid.h>
 #include <libc/string.h>
 #include <libc/stdio/printf.h>
-#include <memory/pmm.h>
+#include <libc/stdlib/memory/pmm.h>
 
 #include <stdbool.h>
 

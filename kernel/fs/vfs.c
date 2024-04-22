@@ -1,7 +1,7 @@
 #include <fs/vfs.h>
 #include <fs/initrd.h>
 #include <sys/logger.h>
-#include <memory/kheap.h>
+#include <libc/stdlib/memory/kheap.h>
 
 VFS_t *init_vfs()
 {

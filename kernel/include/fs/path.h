@@ -1,7 +1,7 @@
 #ifndef __PATH_H__
 #define __PATH_H__
 
-#include <memory/kheap.h>
+#include <libc/stdlib/memory/kheap.h>
 #include <libc/string.h>
 
 typedef struct

@@ -1,4 +1,4 @@
-#include <memory/pmm.h>
+#include <libc/stdlib/memory/pmm.h>
 #include <bitmap/bitmap.h>
 #include <sys/logger.h>
 #include <libc/math.h>

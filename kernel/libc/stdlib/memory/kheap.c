@@ -1,5 +1,5 @@
-#include <memory/kheap.h>
-#include <memory/pmm.h>
+#include <libc/stdlib/memory/kheap.h>
+#include <libc/stdlib/memory/pmm.h>
 #include <sys/logger.h>
 
 void *kmalloc(size_t size)

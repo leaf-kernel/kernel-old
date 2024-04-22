@@ -2,7 +2,7 @@
 #define __TTY_H__
 
 #include <drivers/tty/nighterm/nighterm.h>
-#include <memory/kheap.h>
+#include <libc/stdlib/memory/kheap.h>
 #include <sys/logger.h>
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
