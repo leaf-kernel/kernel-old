@@ -13,6 +13,11 @@ void *memcpy(void *dest, const void *src, size_t n) {
 void *memmove(void *dest, const void *src, size_t n) {
     char *d = (char *)dest;
     const char *s = (const char *)src;
+
+    if (d == s) {
+        return dest;
+    }
+
     if (d < s) {
         while (n-- > 0) {
             *d++ = *s++;
@@ -24,6 +29,7 @@ void *memmove(void *dest, const void *src, size_t n) {
             *--d = *--s;
         }
     }
+
     return dest;
 }
 
@@ -72,12 +78,12 @@ int memcmp(const void *s1, const void *s2, size_t n) {
     const unsigned char *p2 = (const unsigned char *)s2;
     while (n-- > 0) {
         if (*p1 != *p2) {
-            return (*p1 - *p2);
+            return *p1 - *p2;
         }
         p1++;
         p2++;
     }
-    return LEAF_RETURN_SUCCESS;
+    return 0;
 }
 
 int strcmp(const char *s1, const char *s2) {
@@ -94,9 +100,9 @@ int strncmp(const char *s1, const char *s2, size_t n) {
         s2++;
     }
     if (n == 0) {
-        return LEAF_RETURN_SUCCESS;
+        return 0;
     }
-    return *(unsigned char *)s1 - *(unsigned char *)s2;
+    return (unsigned char)*s1 - (unsigned char)*s2;
 }
 
 void *memchr(const void *s, int c, size_t n) {
