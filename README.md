@@ -1,6 +1,12 @@
 # Leaf
 A hobby kernel for nerds. Pre built ISO's [here](https://nightly.link/leaf-kernel/kernel/workflows/build/main/Leaf-release.zip)
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/leaf-kernel/kernel/.github%2Fworkflows%2Fbuild.yml?label=Daily%20ISO%20Build%20(x86_64-limine))
+
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/leaf-kernel/kernel?label=Code%20Size%20(bytes))
+
+
+
 ## Building Instructions (Local)
 
 To build a bootable image, follow these steps:
