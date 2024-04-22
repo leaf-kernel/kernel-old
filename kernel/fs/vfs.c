@@ -13,7 +13,7 @@ VFS_t *init_vfs()
     }
 
     vfs->address = (uint64_t)vfs;
-    cdebug_log(__func__, "VFS located at 0x%016X", vfs->address);
+    cdebug_log(__func__, "0x%016x", vfs->address);
 
     vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
     if (vfs->drives == NULL)
@@ -42,11 +42,6 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type)
     newDrive->driveAddr = driveAddr;
     newDrive->driveType = type;
 
-    if (type == TYPE_INITRD)
-    {
-        cdebug_log(__func__, "Mounted Ramdisk to VFS (0x%016X(initrd) -> 0x%016X(VFS))", driveAddr, vfs->address);
-    }
-
     if (vfs->drives == NULL)
     {
         vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
@@ -69,6 +64,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type)
 
     vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
+    cdebug_log(__func__, "+0x%016x", driveAddr);
     return STATUS_OK;
 }
 
@@ -80,15 +76,6 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId)
     }
 
     drive_t *driveToRemove = &(vfs->drives[driveId]);
-
-    switch (driveToRemove->driveType)
-    {
-    case TYPE_INITRD:
-        cdebug_log(__func__, "Unmounting Ramdisk from VFS (0x%016X)", driveToRemove->driveAddr);
-        break;
-    default:
-        break;
-    }
 
     for (int i = driveId; i < vfs->numDrives - 1; i++)
     {
@@ -110,6 +97,8 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId)
         kfree(vfs->drives);
         vfs->drives = NULL;
     }
+
+    cdebug_log(__func__, "-0x%016x", driveToRemove->driveAddr);
 
     return STATUS_OK;
 }

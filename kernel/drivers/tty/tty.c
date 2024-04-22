@@ -118,8 +118,8 @@ void tty_flush()
 {
     if (currentTTY != NULL && currentTTY->ctx != NULL)
     {
-        nighterm_flush(currentTTY->ctx, 230, 145, 197);
-        nighterm_set_bg_color(currentTTY->ctx, 230, 145, 197);
+        nighterm_flush(currentTTY->ctx, 27, 27, 27);
+        nighterm_set_bg_color(currentTTY->ctx, 27, 27, 27);
         nighterm_set_fg_color(currentTTY->ctx, 255, 255, 255);
         nighterm_set_cursor_position(currentTTY->ctx, 0, 0);
     }

@@ -84,6 +84,8 @@ void _start(void)
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
+    tty_spawn(0, NULL);
+
     TestResult testResult = check_libc();
     if (testResult.failed != 0)
     {
@@ -93,8 +95,6 @@ void _start(void)
     {
         cdebug_log(__func__, "\033[1;31mAll libc tests passed!\033[0m");
     }
-
     cdebug_log(__func__, "Kernel init finished.");
-
     hcf();
 }

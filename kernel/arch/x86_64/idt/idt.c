@@ -100,6 +100,8 @@ void init_idt()
 	idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
 	idt_p.base = (uint64_t)&idt;
 
+	cdebug_log(__func__, "limit: 0x%04x base: 0x%016x", idt_p.limit, idt_p.base);
+
 	for (size_t i = 0; i < 16; i++)
 	{
 		irq_handlers[i] = NULL;

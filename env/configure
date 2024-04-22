@@ -38,7 +38,7 @@ fi
 echo ">>> Configuring leaf to build for $target_arch ($target_arch-$bootloader)."
 
 if [ -d "build-$target_arch-$bootloader" ]; then
-  echo ">>> Leaf is already configured to build for $target_arch-$bootloader. To reconfigure run: rm -rf build-$target_arch-$bootloader; ./env/configure"
+  echo ">>> Leaf is already configured to build for $target_arch-$bootloader. To reconfigure run: ./env/soft-clean; ./env/configure"
   exit 1
 fi
 

@@ -35,8 +35,6 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
     for (int i = 0; i < entry->fileCount; i++)
     {
         PathComponent *comp = entry->files[i].raw_path;
-        char *name = comp[entry->files[i].number_path_comonents - 1].name;
-        bool dir = comp[entry->files[i].number_path_comonents - 1].directory;
 
         RamdiskEntry *ramEntry = (RamdiskEntry *)kmalloc(sizeof(RamdiskEntry));
         if (ramEntry == NULL)
@@ -55,11 +53,7 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
         ramEntry->hash = hash_string(entry->files[i].path);
 
         initrd->content[i] = ramEntry;
-
-        const char *nameValue = (name != NULL) ? name : "NULL";
-        const char *pathValue = (entry->files[i].path != NULL) ? entry->files[i].path : "NULL";
-        const char *dirValue = (dir) ? "true" : "false";
-        cdebug_log(__func__, "{ path: %s, name: %s, directory: %s, hash: 0x%08x }", pathValue, nameValue, dirValue, initrd->content[i]->hash);
+        cdebug_log(__func__, "hash: 0x%08x", initrd->content[i]->hash);
     }
 
     initrd->count = entry->fileCount;

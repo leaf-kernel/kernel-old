@@ -34,6 +34,8 @@ void init_pmm()
             top_address = entry->base + entry->length;
             if (top_address > higher_address)
                 higher_address = top_address;
+
+            cdebug_log(__func__, "Usable entry at 0x%p, Top Address: 0x%p, Higher Address: 0x%p", entry->base, top_address, higher_address);
         }
     }
     bitmap_pages = higher_address / PAGE_SIZE;
@@ -95,7 +97,6 @@ void update_memory()
         }
     }
 }
-
 
 void *pmm_request_page()
 {
