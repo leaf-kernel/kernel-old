@@ -64,7 +64,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type)
 
     vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
-    cdlog("+0x%016x", driveAddr);
+    cdlog("0x%016x", driveAddr);
     return STATUS_OK;
 }
 

@@ -19,7 +19,7 @@ void panic(const char *reason, const char *description, int_frame_t frame)
         // TODO: Get the CPU ID
         int cpuId = 1;
         dprintf("\n\npanic(cpu %d @ 0x%016llx) type: %d (Name: %s - Description: %s)!\n", cpuId, frame.rip, frame.vector, reason, description);
-        #ifdef LEAF_DEBUG
+#ifdef LEAF_DEBUG
         dprintf("Register dump:\n");
         dprintf("  rax: 0x%.16llx, rbx: 0x%.16llx, rcx: 0x%.16llx, rdx: 0x%.16llx\n",
                 frame.rax, frame.rbx, frame.rcx, frame.rdx);
@@ -31,7 +31,7 @@ void panic(const char *reason, const char *description, int_frame_t frame)
                 frame.r12, frame.r13, frame.r14, frame.r15);
         dprintf("  rfl: 0x%.16llx, rip: 0x%.16llx, cs:  0x%.16llx, ss:  0x%.16llx\n",
                 frame.rflags, frame.rip, frame.cs, frame.ss);
-        #endif
+#endif
         hcf();
 }
 

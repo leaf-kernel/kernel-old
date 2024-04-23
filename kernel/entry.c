@@ -7,6 +7,7 @@
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
 #include <arch/x86_64/idt/idt.h>
+#include <arch/x86_64/apic/apic.h>
 
 // Memory imports
 #include <libc/stdlib/memory/pmm.h>
@@ -77,11 +78,11 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
-    init_tty();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
+    init_apic();
 
     TestResult testResult = check_libc();
     if (testResult.failed != 0)
@@ -91,15 +92,6 @@ void _start(void)
     else
     {
         cdlog("\033[1;32mAll libc tests passed!\033[0m");
-    }
-
-    if (check_apic())
-    {
-        cdlog("\033[1;32mAPIC is supported by your CPU\033[0m");
-    }
-    else
-    {
-        cdlog("\033[1;32mError: APIC is not supported by your CPU!\033[0m");
     }
 
     cdlog("ready.");
