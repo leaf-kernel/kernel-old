@@ -13,7 +13,7 @@ VFS_t *init_vfs()
     }
 
     vfs->address = (uint64_t)vfs;
-    cdebug_log(__func__, "0x%016x", vfs->address);
+    cdlog("0x%016x", vfs->address);
 
     vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
     if (vfs->drives == NULL)
@@ -22,7 +22,7 @@ VFS_t *init_vfs()
         return NULL;
     }
 
-    cdebug_log(__func__, "done.");
+    cdlog("done.");
     return vfs;
 }
 
@@ -64,7 +64,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type)
 
     vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
-    cdebug_log(__func__, "+0x%016x", driveAddr);
+    cdlog("+0x%016x", driveAddr);
     return STATUS_OK;
 }
 
@@ -98,7 +98,7 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId)
         vfs->drives = NULL;
     }
 
-    cdebug_log(__func__, "-0x%016x", driveToRemove->driveAddr);
+    cdlog("-0x%016x", driveToRemove->driveAddr);
 
     return STATUS_OK;
 }
@@ -132,7 +132,7 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out)
             (*out)[i] = tempEntry->file->content[i];
         }
 
-        cdebug_log(__func__, "done.");
+        cdlog("done.");
         break;
     default:
         debug_log(__FILE__, __LINE__, __func__, "Invalid drive type !");

@@ -89,14 +89,14 @@ void _start(void)
     TestResult testResult = check_libc();
     if (testResult.failed != 0)
     {
-        cdebug_log(__func__, "\033[1;33mWarning: Only %d/%d libc tests passed!\033[0m", testResult.passed, testResult.failed + testResult.passed);
+        cdlog("\033[1;33mWarning: Only %d/%d libc tests passed!\033[0m", testResult.passed, testResult.failed + testResult.passed);
     }
     else
     {
-        cdebug_log(__func__, "\033[1;31mAll libc tests passed!\033[0m");
+        cdlog("\033[1;31mAll libc tests passed!\033[0m");
     }
 
     printf("Leaf %s %s-%s\n", LEAF_VERSION, LEAF_ARCH, LEAF_BOOTLOADER);
-    cdebug_log(__func__, "Kernel init finished.");
+    cdlog("Kernel init finished.");
     hcf();
 }

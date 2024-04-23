@@ -32,7 +32,7 @@ void init_tty()
         }
     }
 
-    cdebug_log(__func__, "done.");
+    cdlog("done.");
 }
 
 void tty_spawn(uint8_t id, char *font)
@@ -103,7 +103,7 @@ void tty_spawn(uint8_t id, char *font)
     }
 
     tty_switch(id);
-    cdebug_log(__func__, "tty%04d", id);
+    cdlog("tty%04d", id);
 }
 
 void tty_switch(uint8_t id)

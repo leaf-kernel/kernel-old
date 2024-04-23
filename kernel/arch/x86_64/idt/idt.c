@@ -1,3 +1,4 @@
+#define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 #include <arch/x86_64/idt/idt.h>
 #include <arch/x86_64/pic/pic.h>
@@ -100,7 +101,7 @@ void init_idt()
 	idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
 	idt_p.base = (uint64_t)&idt;
 
-	cdebug_log(__func__, "limit: 0x%04x base: 0x%016x", idt_p.limit, idt_p.base);
+	cdlog("limit: 0x%04x base: 0x%016x", idt_p.limit, idt_p.base);
 
 	for (size_t i = 0; i < 16; i++)
 	{
@@ -119,7 +120,7 @@ void init_idt()
 	load_idt((uint64_t)&idt_p);
 	pic_enable();
 	asm("cli");
-	cdebug_log(__func__, "done.");
+	cdlog("done.");
 }
 
 void excp_handler(int_frame_t frame)
@@ -145,7 +146,7 @@ void excp_handler(int_frame_t frame)
 	}
 	else if (frame.vector == 0x80)
 	{
-		cdebug_log(__func__, "Handeling system call!");
+		cdlog("Handeling system call!");
 	}
 }
 
