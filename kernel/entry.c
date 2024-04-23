@@ -64,7 +64,6 @@ void *__LEAF_GET_VFS__()
 
 // Kernel entry function
 
-#define DEBUG_PRINT(fmt, ...) dprintf(fmt, ##__VA_ARGS__)
 void _start(void)
 {
 #if defined(LEAF_LIMINE)
@@ -84,8 +83,6 @@ void _start(void)
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
-    tty_spawn(0, NULL);
-
     TestResult testResult = check_libc();
     if (testResult.failed != 0)
     {
@@ -93,10 +90,18 @@ void _start(void)
     }
     else
     {
-        cdlog("\033[1;31mAll libc tests passed!\033[0m");
+        cdlog("\033[1;32mAll libc tests passed!\033[0m");
     }
 
-    printf("Leaf %s %s-%s\n", LEAF_VERSION, LEAF_ARCH, LEAF_BOOTLOADER);
-    cdlog("Kernel init finished.");
+    if (check_apic())
+    {
+        cdlog("\033[1;32mAPIC is supported by your CPU\033[0m");
+    }
+    else
+    {
+        cdlog("\033[1;32mError: APIC is not supported by your CPU!\033[0m");
+    }
+
+    cdlog("ready.");
     hcf();
 }

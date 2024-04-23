@@ -96,6 +96,9 @@ void update_memory()
             total_memory += entry->length;
         }
     }
+
+    if (total_memory < 64000000)
+        cdlog("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf requires atleast 64MB!\033[0m", bytes_to_mb(total_memory));
 }
 
 void *pmm_request_page()
