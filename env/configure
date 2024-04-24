@@ -20,6 +20,22 @@ if [ "$target_arch" = "x86_64" -o "$target_arch" = "x86" ]; then
     fi
 fi
 
+john_out="kernel/include/utils/john/";
+if [ "$target_arch" = "x86_64" -o "$target_arch" = "x86" ]; then
+    if [ ! -d "$john_out" ]; then
+        temp_dir=$(mktemp -d)
+        echo ">>> Downloading John for x86_64."
+        wget -O "$temp_dir/john.zip" "https://codeload.github.com/leaf-kernel/john/zip/refs/heads/main" -q
+        unzip -o "$temp_dir/john.zip" -d "$temp_dir/extracted" > /dev/null
+        mkdir -p "$john_out"
+        mv "$temp_dir/extracted/john-main/"* "$john_out"
+        rm -rf "$temp_dir"
+        echo ">>> Successfully downloaded john for the $target_arch target."
+    else
+        echo ">> John for $target_arch already exists! ("$john_out") will be using that."
+    fi
+fi
+
 if [ "$target_arch-$bootloader" = "x86_64-limine" ]; then
     if [ ! -d "arch/$target_arch/$bootloader" ]; then
         temp_dir=$(mktemp -d)
