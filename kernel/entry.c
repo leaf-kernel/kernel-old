@@ -36,7 +36,6 @@
 // Utility imports
 #include <utils/convertion.h>
 #include <utils/hash.h>
-#include <utils/lwjson/lwjson.h>
 #include <utils/check.h>
 
 // Limine requests
@@ -78,11 +77,11 @@ void _start(void)
     init_idt();
     init_pit();
     init_pmm();
+    init_apic();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
-    init_apic();
 
     TestResult testResult = check_libc();
     if (testResult.failed != 0)

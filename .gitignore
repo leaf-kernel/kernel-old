@@ -8,4 +8,5 @@
 /*.iso/
 /.DS_Store/
 /arch/x86_64/limine
+/arch/x86_64/modules/ramdisk
 /kernel/include/drivers/tty/nighterm

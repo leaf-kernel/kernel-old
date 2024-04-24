@@ -8,14 +8,12 @@
 void init_apic()
 {
 
-    if (check_apic())
+    if (!check_apic())
     {
-        cdlog("\033[1;32mAPIC is supported by your CPU\033[0m");
-    }
-    else
-    {
-        cdlog("\033[1;32mError: APIC is not supported by your CPU!\033[0m");
+        cdlog("\033[1;31mError: APIC is not supported by your CPU!\033[0m");
         hcf();
         return;
     }
+
+    cdlog("todo.");
 }
