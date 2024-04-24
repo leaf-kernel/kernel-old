@@ -18,6 +18,7 @@ struct MADTTable
     uint32_t Flags;
 } __attribute__((packed));
 
+extern struct MADTTable *madt_table;
 void init_madt(struct MADTTable *madt_table);
 
 #endif // __MADT_H__

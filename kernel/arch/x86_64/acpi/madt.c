@@ -10,5 +10,6 @@ void init_madt(struct MADTTable *madt_table)
         hcf();
     }
 
+    madt_table = madt_table;
     cdlog("done.");
 }

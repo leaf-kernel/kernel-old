@@ -18,6 +18,5 @@ void init_apic()
     }
 
     init_acpi();
-
     cdlog("todo.");
 }
