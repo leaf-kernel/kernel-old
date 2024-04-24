@@ -28,7 +28,7 @@ void init_madt()
         hcf();
     }
 
-    madt_table = (struct MADTTable *)((uint64_t)madt_ptr + 0xffff800000000000);
+    madt_table = (struct MADTTable *)(uintptr_t)PHYS_TO_VIRT(madt_ptr);
 
     dprintf("\n");
     cdlog("done.");

@@ -21,7 +21,7 @@ struct RSDPTable
 } __attribute__((packed));
 
 extern struct RSDPTable *rsdp_table;
-
+void *find_sdt(char *signature);
 void init_rsdt();
 
 #endif // __RSDT_H__

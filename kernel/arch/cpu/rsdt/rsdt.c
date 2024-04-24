@@ -5,7 +5,6 @@ struct RSDPTable *rsdp_table;
 
 void init_rsdt()
 {
-
     uint8_t rsdp_checksum = 0;
     uint8_t *rsdp_ptr = (uint8_t *)rsdp_request.response->address;
     for (uintptr_t i = 0; i < sizeof(struct RSDPTable); i++)
@@ -19,7 +18,7 @@ void init_rsdt()
         hcf();
     }
 
-    rsdp_table = (struct RSDPTable *)rsdp_ptr;
+    rsdp_table = (struct RSDPTable *)(uintptr_t)PHYS_TO_VIRT(rsdp_ptr);
 
     cdlog("0x%02x", rsdp_checksum);
 

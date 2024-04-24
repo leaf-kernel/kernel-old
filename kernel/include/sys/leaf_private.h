@@ -16,6 +16,9 @@ void *__LEAF_GET_VFS__();
 #define cplog(...) pcdebug_log(__func__, __VA_ARGS__)
 #endif
 
+#define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-0xffff800000000000)
+#define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + 0xffff800000000000)
+
 #endif
 #endif
 
