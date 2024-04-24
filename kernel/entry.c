@@ -37,6 +37,7 @@
 #include <utils/convertion.h>
 #include <utils/hash.h>
 #include <utils/check.h>
+#include <utils/john/john.h>
 
 // Limine requests
 #if defined(LEAF_LIMINE)
