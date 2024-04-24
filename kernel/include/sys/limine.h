@@ -7,5 +7,4 @@
 #include <limine/limine.h>
 #endif
 
-
 #endif // __LIMINE_LEAF_H__
