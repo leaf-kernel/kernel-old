@@ -6,6 +6,7 @@
 // Arch imports
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
+#include <arch/cpu/rsdt/rsdt.h>
 #include <arch/x86_64/idt/idt.h>
 #include <arch/x86_64/apic/apic.h>
 
