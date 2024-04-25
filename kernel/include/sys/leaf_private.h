@@ -31,6 +31,7 @@ void *__LEAF_GET_VFS__();
 
 #define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-0xffff800000000000)
 #define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + 0xffff800000000000)
+
 #define CONFIG_CPU_MAX 256
 
 #endif

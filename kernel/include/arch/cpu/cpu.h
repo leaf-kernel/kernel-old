@@ -10,7 +10,8 @@
 #include <stdbool.h>
 
 // Standard header
-struct ACPISDTHeader {
+struct ACPISDTHeader
+{
   char Signature[4];
   uint32_t Length;
   uint8_t Revision;
@@ -20,7 +21,8 @@ struct ACPISDTHeader {
   uint32_t OEMRevision;
   uint32_t CreatorID;
   uint32_t CreatorRevision;
-} __attribute__((packed));;
+} __attribute__((packed));
+;
 
 // CPU utils
 void hcf();
@@ -41,5 +43,9 @@ void check_all_features();
 // MSR
 void get_msr(uint32_t msr, uint32_t *lo, uint32_t *hi);
 void set_msr(uint32_t msr, uint32_t lo, uint32_t hi);
+
+// Register functions
+uint64_t _read_reg();
+void _write_reg();
 
 #endif // __CPU_H__
