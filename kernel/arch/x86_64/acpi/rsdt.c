@@ -16,7 +16,7 @@ void init_rsdt()
         g_xsdt = (xsdt_t *)(uintptr_t)PHYS_TO_VIRT(xsdp->xsdt_addr);
     }
 
-    struct MADTTable *madt = _find_sdt("APIC");
+    madt_t *madt = _find_sdt("APIC");
     if (madt == NULL)
     {
 
