@@ -85,6 +85,7 @@ void _start(void)
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
+#ifdef __LEAF_VERBOSE__
     TestResult testResult = check_libc();
     if (testResult.failed != 0)
     {
@@ -94,6 +95,7 @@ void _start(void)
     {
         cdlog("\033[1;32mAll libc tests passed!\033[0m");
     }
+#endif
 
     cdlog("ready.");
     hcf();
