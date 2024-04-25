@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-RUN brew install cmake xorriso wget nasm
+RUN brew install cmake xorriso wget nasm ninja
 
 ARG TARGET=x86_64
 ARG BOOTLOADER=limine
