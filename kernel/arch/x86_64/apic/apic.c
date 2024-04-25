@@ -16,7 +16,8 @@ void init_apic()
         hcf();
         return;
     }
-
+    cdlog("APIC is supported.");
     init_acpi();
+
     cdlog("todo.");
 }

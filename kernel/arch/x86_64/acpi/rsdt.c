@@ -23,7 +23,9 @@ void init_rsdt()
         cdlog("Failed to find MADT!");
         hcf();
     }
+
     init_madt(madt);
 
+    cdlog("cores: %d", g_acpi_cpu_count);
     cdlog("done");
 }
