@@ -113,6 +113,7 @@ Ensure you have the following tools installed:
 - `gcc` (Cross-compiler for the target architecture, e.g., x86_64-elf-gcc)
 - `binutils` (Cross-assembler and linker, e.g., x86_64-elf-binutils)
 - `cmake` (Build system)
+- `ninja` (Build tool)
 - `xorriso` (ISO creation tool)
 - `qemu` (Emulator for testing the kernel)
 - `docker` (For building using docker)

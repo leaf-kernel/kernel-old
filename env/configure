@@ -61,7 +61,7 @@ fi
 mkdir "build-$target_arch-$bootloader"
 pushd "build-$target_arch-$bootloader" > /dev/null
 
-cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain" -DLEAF_OFFSET="$(od -An -N4 -tu4 /dev/urandom)"
+cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain" -DLEAF_OFFSET="$(od -An -N4 -tu4 /dev/urandom)" -GNinja
 config_status=$?
 popd > /dev/null
 
