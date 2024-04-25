@@ -6,9 +6,6 @@
 
 #ifdef LEAF_INCLUDE_PRIVATE
 #define __LEAF_PRIVATE__
-#ifdef LEAF_DEBUG
-#define __LEAF_DEBUG_WRAPPERS__
-#endif
 #include <sys/leaf_private.h>
 #endif
 

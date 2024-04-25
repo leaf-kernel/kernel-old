@@ -226,10 +226,12 @@ TestResult __check_ctype()
 
         if (result_code)
         {
+            vcdlog("%s: passed", test->name);
             result.passed++;
         }
         else
         {
+            vcdlog("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -276,10 +278,12 @@ TestResult __check_string()
 
         if (result_code)
         {
+            vcdlog("%s: passed", test->name);
             result.passed++;
         }
         else
         {
+            vcdlog("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -310,10 +314,12 @@ TestResult __check_kheap()
 
         if (result_code)
         {
+            vcdlog("%s: passed", test->name);
             result.passed++;
         }
         else
         {
+            vcdlog("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -330,6 +336,10 @@ TestResult check_libc()
     ctype_result = __check_ctype();
     string_result = __check_string();
     kheap_result = __check_kheap();
+
+    vcdlog("ctype result %d/%d", ctype_result.passed, ctype_result.failed + ctype_result.passed);
+    vcdlog("string result %d/%d", string_result.passed, string_result.failed + string_result.passed);
+    vcdlog("kheap result %d/%d", kheap_result.passed, kheap_result.failed + kheap_result.passed);
 
     TestResult total_result = {ctype_result.passed + string_result.passed + kheap_result.passed,
                                ctype_result.failed + string_result.failed + kheap_result.failed};

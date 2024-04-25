@@ -7,6 +7,8 @@
 void *__LEAF_GET_INITRD__();
 void *__LEAF_GET_VFS__();
 
+#define __LEAF_VOID_REDIRECT__ (void)0
+
 #ifdef __LEAF_DEBUG_WRAPPERS__
 #include <sys/logger.h>
 #include <libc/stdio/printf.h>
@@ -14,6 +16,17 @@ void *__LEAF_GET_VFS__();
 #define cdlog(...) cdebug_log(__func__, __VA_ARGS__)
 #define plog(...) pdebug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
 #define cplog(...) pcdebug_log(__func__, __VA_ARGS__)
+
+#ifdef __LEAF_VERBOSE__
+#define vcdlog(...) cdebug_log(__func__, __VA_ARGS__)
+#else
+#define vcdlog(...) __LEAF_VOID_REDIRECT__
+#endif
+#else
+#define dlog(...) __LEAF_VOID_REDIRECT__
+#define cdlog(...) __LEAF_VOID_REDIRECT__
+#define plog(...) __LEAF_VOID_REDIRECT__
+#define cplog(...) __LEAF_VOID_REDIRECT__
 #endif
 
 #define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-0xffff800000000000)
