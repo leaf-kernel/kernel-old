@@ -66,9 +66,5 @@ void init_apic()
     }
 
     init_acpi();
-
-    _set_apic_base(_get_apic_base());
-    _write_reg(0xF0, _read_reg(0xF0) | 0x100);
-    cdlog("r/w for registers isnt impelemented so no APIC :(");
     cdlog("todo.");
 }

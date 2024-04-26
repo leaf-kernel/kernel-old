@@ -31,6 +31,7 @@
 
 // Sys import
 #include <sys/limine.h>
+#include <sys/stable.h>
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
@@ -84,6 +85,8 @@ void _start(void)
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
+
+    init_stable();
 
 #ifdef __LEAF_VERBOSE__
     TestResult testResult = check_libc();
