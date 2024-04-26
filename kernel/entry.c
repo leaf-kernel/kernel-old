@@ -101,5 +101,7 @@ void _start(void)
 #endif
 
     cdlog("ready.");
+
+    asm("int $1");
     hcf();
 }

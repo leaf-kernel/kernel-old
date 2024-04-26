@@ -31,7 +31,8 @@ table_entry_t _parse_entry(char *line)
 {
     table_entry_t entry = {
         .name = NULL,
-        .addr = 0};
+        .addr = 0,
+        .id = '\0'};
 
     size_t length = 0;
     while (line[length] != ' ' && line[length] != '\0')
@@ -52,34 +53,28 @@ table_entry_t _parse_entry(char *line)
     entry.addr = _hex_to_u64(address);
     kfree(address);
 
-    if (line[length + 1] == 'T')
+    entry.id = line[length + 1];
+
+    char *name_start = line + length + 3;
+
+    size_t name_length = 0;
+    while (name_start[name_length] != ' ' && name_start[name_length] != '\0')
     {
-        char *name_start = line + length + 3;
-        size_t name_length = 0;
-        while (name_start[name_length] != ' ' && name_start[name_length] != '\0')
-        {
-            ++name_length;
-        }
-
-        entry.name = (char *)kmalloc(name_length + 1);
-        if (entry.name == NULL)
-        {
-            dlog("Memory allocation failed for name");
-            return entry;
-        }
-
-        strncpy(entry.name, name_start, name_length);
-        entry.name[name_length] = '\0';
+        ++name_length;
     }
-    if (entry.name != NULL)
+
+    entry.name = (char *)kmalloc(name_length + 1);
+    if (entry.name == NULL)
     {
-        cdlog("Address: 0x%016x Label: %s", entry.addr, entry.name);
+        dlog("Memory allocation failed for name");
         return entry;
     }
-    else
-    {
-        return (table_entry_t){0};
-    }
+
+    strncpy(entry.name, name_start, name_length);
+    entry.name[name_length] = '\0';
+    cdlog("%-50s Address: 0x%-16llx ID: %-c", entry.name, entry.addr, entry.id);
+
+    return entry;
 }
 
 void init_stable()
@@ -158,8 +153,22 @@ void init_stable()
 
     for (int i = 0; i < line_count; ++i)
     {
-        table_entry_t entry = _parse_entry(map_lines[i]);
-        (void)entry;
+        if (map_lines[i][0] != '\0' || map_lines[i][0] != '\n')
+        {
+            table_entry_t entry = _parse_entry(map_lines[i]);
+            for (int j = 0; j < MAX_STABLE_COUNT; ++j)
+            {
+                if (st_entries[j].addr == 0)
+                {
+                    st_entries[j] = entry;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
     }
 
     for (int i = 0; i < line_count; ++i)
@@ -167,4 +176,18 @@ void init_stable()
     kfree(map_lines);
     kfree(line_sizes);
     kfree(map);
+    cdlog("done.");
+}
+
+table_entry_t get_symbol(uint64_t addr)
+{
+    for (int i = 0; i < MAX_STABLE_COUNT; i++)
+    {
+        if (st_entries[i].addr == addr)
+        {
+            return st_entries[i];
+        }
+    }
+
+    return (table_entry_t){0};
 }
