@@ -9,5 +9,6 @@
 /.DS_Store/
 /arch/x86_64/limine
 /arch/x86_64/modules/ramdisk
+/initrd/sys/kernel/kernel.map
 /kernel/include/drivers/tty/nighterm
 /kernel/include/utils/john

@@ -8,21 +8,23 @@
 table_entry_t st_entries[MAX_STABLE_COUNT];
 #define MAX_MAP_LINES MAX_STABLE_COUNT
 
-uint64_t _hex_to_u64(char *hex)
+uint8_t _hex_to_u8(char d)
 {
-    uint64_t val = 0;
-    while (*hex)
+    const char *hexdigits = "0123456789abcdef";
+    return strchr(hexdigits, d) - hexdigits;
+}
+
+uint64_t _hex_to_u64(const char *hex)
+{
+    uint64_t result = 0;
+    size_t len = strlen(hex);
+
+    for (size_t i = 0; i < len; i++)
     {
-        uint8_t byte = *hex++;
-        if (byte >= '0' && byte <= '9')
-            byte = byte - '0';
-        else if (byte >= 'a' && byte <= 'f')
-            byte = byte - 'a' + 10;
-        else if (byte >= 'A' && byte <= 'F')
-            byte = byte - 'A' + 10;
-        val = (val << 4) | (byte & 0xF);
+        result = (result << 4) + _hex_to_u8(hex[i]);
     }
-    return val;
+
+    return result;
 }
 
 table_entry_t _parse_entry(char *line)
