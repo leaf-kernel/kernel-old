@@ -17,6 +17,6 @@ typedef struct
 } table_entry_t;
 
 void init_stable();
-table_entry_t get_symbol(uint64_t addr);
+char *get_symbol_name(uint64_t addr);
 
 #endif // __STABLE_H__

@@ -35,8 +35,9 @@ void panic(const char *reason, const char *description, int_frame_t frame)
             frame.rflags, frame.rip, frame.cs, frame.ss);
 #endif
 
-    table_entry_t entry = get_symbol(frame.rip);
-    dprintf("\nfunction: %s\n", entry.name);
+    char *symbol = get_symbol_name(frame.rip);
+    if (symbol != NULL)
+        dprintf("\nfunction: %s\n", symbol);
     hcf();
 }
 

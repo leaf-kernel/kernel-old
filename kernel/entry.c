@@ -101,7 +101,7 @@ void _start(void)
 #endif
 
     cdlog("ready.");
-
-    asm("int $1");
+    char *entry = get_symbol_name((uint64_t)drive_read);
+    cdlog("Symbol test: %s", entry);
     hcf();
 }
