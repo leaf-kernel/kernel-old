@@ -4,6 +4,8 @@
 #ifdef LEAF_INCLUDE_PRIVATE
 #ifdef __LEAF_PRIVATE__
 
+#include <sys/leaf.h>
+
 void *__LEAF_GET_INITRD__();
 void *__LEAF_GET_VFS__();
 
@@ -29,8 +31,8 @@ void *__LEAF_GET_VFS__();
 #define cplog(...) __LEAF_VOID_REDIRECT__
 #endif
 
-#define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-0xffff800000000000)
-#define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + 0xffff800000000000)
+#define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-hhdm_offset)
+#define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + hhdm_offset)
 
 #define CONFIG_CPU_MAX 256
 
