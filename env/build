@@ -9,7 +9,7 @@ if [ ! -d "build-$target_arch-$bootloader" ]; then
 fi
 
 pushd "build-$target_arch-$bootloader" > /dev/null
-ninja
+ninja -j$(nproc)
 status=$?
 if [ $status -ne 0 ]; then
     echo -e ">>> \033[1m\033[31mFailed to build!\033[0m"

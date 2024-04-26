@@ -26,6 +26,7 @@ To build a bootable image, follow these steps:
 
 2. **Build the Kernel:**
 
+   ***By default the build scripts runs with the max ammount of jobs (aka ur ammount of cores). To change this change $(nproc) in env/build to the ammount of jobs.***
    Execute the `./env/build` script to compile the kernel and generate the bootable ISO image.
 
    ```bash
