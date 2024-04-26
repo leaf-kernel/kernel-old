@@ -101,7 +101,14 @@ void _start(void)
 #endif
 
     cdlog("ready.");
-    char *entry = get_symbol_name((uint64_t)drive_read);
-    cdlog("Symbol test: %s", entry);
+    char *entry = get_symbol_name((uint64_t)_start);
+    if (strcmp(entry, "_start") != 0)
+    {
+        cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
+    }
+    else
+    {
+        cdlog("Symbol test: %s", entry);
+    }
     hcf();
 }
