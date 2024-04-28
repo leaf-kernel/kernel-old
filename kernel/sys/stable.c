@@ -148,3 +148,16 @@ char *get_symbol_name(uint64_t addr)
 
     return NULL;
 }
+
+int get_symbol_int(uint64_t addr)
+{
+    for (int i = 0; i < line_count; i++)
+    {
+        if (st_entries[i].addr == addr)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}

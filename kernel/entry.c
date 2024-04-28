@@ -32,6 +32,7 @@
 // Sys import
 #include <sys/limine.h>
 #include <sys/stable.h>
+#include <sys/backtrace.h>
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
@@ -106,5 +107,6 @@ void _start(void)
     {
         cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
     }
+
     hlt();
 }

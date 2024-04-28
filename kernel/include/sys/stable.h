@@ -16,7 +16,10 @@ typedef struct
     char id;
 } table_entry_t;
 
+extern table_entry_t st_entries[MAX_STABLE_COUNT];
+
 void init_stable();
 char *get_symbol_name(uint64_t addr);
+int get_symbol_int(uint64_t addr);
 
 #endif // __STABLE_H__
