@@ -8,8 +8,14 @@ if [ ! -d "build-$target_arch-$bootloader" ]; then
     exit
 fi
 
+if [[ "$(uname)" == "Darwin" ]]; then
+    cores=$(sysctl -n hw.physicalcpu)
+else
+    cores=$(nproc)
+fi
+
 pushd "build-$target_arch-$bootloader" > /dev/null
-ninja -j$(nproc)
+ninja -j$cores
 status=$?
 if [ $status -ne 0 ]; then
     echo -e ">>> \033[1m\033[31mFailed to build!\033[0m"
