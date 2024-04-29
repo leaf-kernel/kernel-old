@@ -3,6 +3,7 @@
 #include <arch/cpu/cpuid.h>
 #include <arch/x86_64/acpi/acpi.h>
 #include <arch/x86_64/acpi/madt.h>
+#include <arch/x86_64/pic/pic.h>
 
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
@@ -66,5 +67,8 @@ void init_apic()
     }
 
     init_acpi();
-    cdlog("todo.");
+
+    // Disable legacy PIC
+    pic_disable();
+    cdlog("done.");
 }
