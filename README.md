@@ -94,6 +94,9 @@ To build a bootable image, follow these steps:
 - TAR File Parsing
 - Ramdisk (For copying files into memory using Limine modules)
 - Virtual File System (VFS for reading and writing files)
+- MADT (Multiple APIC Description Table)
+- Symbol Table and lookup (stable)
+- Backtrace
 
 ## Work in Progress
 
