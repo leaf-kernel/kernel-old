@@ -38,11 +38,13 @@ void panic(const char *reason, const char *description, int_frame_t frame, void 
 #endif
 
     table_entry_t *func = lookup_symbol(frame.rip);
-    dprintf("\nBacktrace: \r\n");
+    if (func != NULL)
+    {
+        dprintf("\nBacktrace: \r\n");
 
-    dprintf(" [%s] <%.16llx>\r\n", func->name);
-    backtrace(3, rbp);
-
+        dprintf(" [%s] <%.16llx>\r\n", func->name);
+        backtrace(3, rbp);
+    }
     hcf();
 }
 
