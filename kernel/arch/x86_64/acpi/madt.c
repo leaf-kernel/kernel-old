@@ -16,7 +16,7 @@ void init_madt(madt_t *madt)
     madt_table = madt;
     g_acpi_cpu_count = 0;
     g_lapic_addr = PHYS_TO_VIRT(madt->lapic_addr);
-    cdlog("lapic addr: 0x%.8llx", g_lapic_addr);
+    vcdlog("lapic addr: 0x%.8llx", g_lapic_addr);
 
     for (size_t i = 0; i < 16; i++)
     {
@@ -35,8 +35,8 @@ void init_madt(madt_t *madt)
         case APIC_LAPIC:
         {
             apic_lapic_t *lapic = (apic_lapic_t *)ptr;
-            cdlog("found lapic entry, id %i, flags 0x%x", g_acpi_cpu_count,
-                  lapic->flags);
+            vcdlog("found lapic entry, id %i, flags 0x%x", g_acpi_cpu_count,
+                   lapic->flags);
             if (g_acpi_cpu_count < CONFIG_CPU_MAX)
             {
                 g_acpi_lapic[g_acpi_cpu_count] = lapic;
@@ -49,36 +49,36 @@ void init_madt(madt_t *madt)
         {
             apic_ioapic_t *ioapic = (apic_ioapic_t *)ptr;
             g_ioapic_addr = PHYS_TO_VIRT(ioapic->ioapic_addr);
-            cdlog("found ioapic %i, addr: 0x%.8llx, gsi_base: %i",
-                  ioapic->ioapic_id, ioapic->ioapic_addr, ioapic->gsi_base);
+            vcdlog("found ioapic %i, addr: 0x%.8llx, gsi_base: %i",
+                   ioapic->ioapic_id, ioapic->ioapic_addr, ioapic->gsi_base);
             break;
         }
         case APIC_ISO:
         {
             apic_iso_t *iso = (apic_iso_t *)ptr;
             g_apic_isos[iso->irq] = iso;
-            cdlog("found ioapic iso, bus: %i, irq: %i, gsi: %i, flags: 0x%.4lx",
-                  iso->bus, iso->irq, iso->gsi, iso->flags);
+            vcdlog("found ioapic iso, bus: %i, irq: %i, gsi: %i, flags: 0x%.4lx",
+                   iso->bus, iso->irq, iso->gsi, iso->flags);
             break;
         }
         case APIC_IOAPIC_NMI:
         {
-            cdlog("found ioapic nmi");
+            vcdlog("found ioapic nmi");
             break;
         }
         case APIC_LAPIC_NMI:
         {
-            cdlog("found lapic nmi");
+            vcdlog("found lapic nmi");
             break;
         }
         case APIC_LAPIC_OVERRIDE:
         {
-            cdlog("found lapic address override");
+            vcdlog("found lapic address override");
             break;
         }
         case APIC_X2APIC:
         {
-            cdlog("found x2apic");
+            vcdlog("found x2apic");
             break;
         }
         default:

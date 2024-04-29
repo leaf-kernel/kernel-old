@@ -53,7 +53,7 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
         ramEntry->hash = hash_string(entry->files[i].path);
 
         initrd->content[i] = ramEntry;
-        cdlog("hash: 0x%08x", initrd->content[i]->hash);
+        vcdlog("hash: 0x%08x", initrd->content[i]->hash);
     }
 
     initrd->count = entry->fileCount;
