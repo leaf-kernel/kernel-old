@@ -12,6 +12,7 @@ void init_rsdt()
     g_rsdt = (rsdt_t *)(uintptr_t)PHYS_TO_VIRT(rsdp->rsdt_addr);
     if (_use_xsdt())
     {
+        vcdlog("Using XSDT!");
         xsdp_t *xsdp = (xsdp_t *)rsdp_request.response->address;
         g_xsdt = (xsdt_t *)(uintptr_t)PHYS_TO_VIRT(xsdp->xsdt_addr);
     }

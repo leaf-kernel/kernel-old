@@ -130,5 +130,6 @@ void tty_write(char ch)
     if (currentTTY != NULL && currentTTY->ctx != NULL)
     {
         nighterm_write(currentTTY->ctx, ch);
+        vcdlog("Wrote '%c' to tty%03d", ch, currentTTY->id);
     }
 }
