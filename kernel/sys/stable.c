@@ -144,7 +144,6 @@ char *get_symbol_name(uint64_t addr)
     {
         if (st_entries[i].addr == addr)
         {
-            cdlog("[x] name: %s addr: 0x%.16llx", st_entries[i].name, st_entries[i].addr);
             return st_entries[i].name;
         }
     }
