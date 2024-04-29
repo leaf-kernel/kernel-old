@@ -23,9 +23,18 @@ load_idt:
     push r13
     push r14
     push r15
+    mov rax, cr3
+    push rax
+    mov rax, cr2
+    push rax
+    mov rax, ds
+    push rax
 %endmacro
 
 %macro popaq 0
+    pop rax
+    pop rax
+    pop rax
 	pop r15
 	pop r14
 	pop r13

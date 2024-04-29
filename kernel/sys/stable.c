@@ -7,6 +7,7 @@
 
 table_entry_t st_entries[MAX_STABLE_COUNT];
 int line_count;
+int st_entry_count;
 
 uint8_t
 _hex_to_u8(char d)
@@ -121,6 +122,7 @@ void init_stable()
                     break;
                 }
             }
+            st_entry_count++;
         }
         else
         {

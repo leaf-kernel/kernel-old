@@ -16,6 +16,7 @@ typedef struct
     char id;
 } table_entry_t;
 
+extern int st_entry_count;
 extern table_entry_t st_entries[MAX_STABLE_COUNT];
 
 void init_stable();

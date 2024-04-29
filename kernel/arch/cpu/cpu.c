@@ -34,6 +34,7 @@ void panic(const char *reason, const char *description, int_frame_t frame)
             frame.r12, frame.r13, frame.r14, frame.r15);
     dprintf("  rfl: 0x%.16llx, rip: 0x%.16llx, cs:  0x%.16llx, ss:  0x%.16llx\r\n",
             frame.rflags, frame.rip, frame.cs, frame.ss);
+    dprintf("  ds: 0x%.16llx,  cr2: 0x%.16llx, cr3: 0x%.16llx\r\n", frame.ds, frame.cr2, frame.cr3);
 #endif
 
     hcf();

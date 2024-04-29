@@ -5,23 +5,20 @@
 
 void backtrace()
 {
-    uint64_t *base;
-    __asm__ volatile("mov %%rbp, %0" : "=g"(base)::"memory");
-    struct stackframe *frame = (struct stackframe *)*base;
+    struct stackframe *frame;
+    __asm__ volatile("mov %%rbp, %0" : "=g"(frame)::"memory");
 
     while (1)
     {
-        cdlog("rip: 0x%p", frame->rip);
-        cdlog("rbp: 0x%p", frame->rbp);
-        if (frame->rip == (uint64_t)NULL || base == NULL || frame->rip < (uint64_t)0xffffffff80000000)
+        if (frame->rip == (uint64_t)NULL || frame == NULL || frame->rip < (uint64_t)0xffffffff80000000)
         {
             break;
         }
 
         int idx = -1;
-        for (int i = 0; st_entries[i].addr < UINTPTR_MAX; i++)
+        for (int i = 0; i < st_entry_count; i++)
         {
-            if (st_entries[i].addr < frame->rip && st_entries[i + 1].addr >= frame->rip)
+            if (st_entries[i].addr < frame->rip && st_entries[i + 1].addr >= frame->rip && st_entries[i].id == 'T')
             {
                 idx = i;
             }
