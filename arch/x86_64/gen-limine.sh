@@ -1,6 +1,7 @@
 #!/bin/bash
 cd ../../
 mkdir -p initrd/sys/kernel
+rm initrd/sys/kernel/kernel.map
 nm -C --format=bsd build-x86_64-limine/kernel/Leaf-x86_64-raw.bin > initrd/sys/kernel/kernel.map
 mkdir -p arch/x86_64/modules
 tar -cvf arch/x86_64/modules/ramdisk initrd/* > /dev/null 2>&1

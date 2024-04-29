@@ -75,9 +75,6 @@ void _start(void)
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
 
-    // clear serial lolz
-    dprintf("\033c");
-
     init_idt();
     init_pit();
     init_pmm();
@@ -88,6 +85,11 @@ void _start(void)
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
 
     init_stable();
+    char *entry = get_symbol_name((uint64_t)_start);
+    if (strcmp(entry, "_start") != 0)
+    {
+        cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
+    }
 
 #ifdef __LEAF_VERBOSE__
     TestResult testResult = check_libc();
@@ -102,12 +104,6 @@ void _start(void)
 #endif
 
     cdlog("ready.");
-    char *entry = get_symbol_name((uint64_t)_start);
-    if (strcmp(entry, "_start") != 0)
-    {
-        cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
-    }
-
     backtrace();
     hlt();
 }

@@ -140,20 +140,22 @@ void init_stable()
 
 char *get_symbol_name(uint64_t addr)
 {
-    for (int i = 0; i < line_count; i++)
+    for (int i = 0; i < st_entry_count; i++)
     {
         if (st_entries[i].addr == addr)
         {
+            cdlog("[x] name: %s addr: 0x%.16llx", st_entries[i].name, st_entries[i].addr);
             return st_entries[i].name;
         }
     }
 
+    cdlog("Didnt find symbol for addr: 0x%.16llx", addr);
     return NULL;
 }
 
 int get_symbol_int(uint64_t addr)
 {
-    for (int i = 0; i < line_count; i++)
+    for (int i = 0; i < st_entry_count; i++)
     {
         if (st_entries[i].addr == addr)
         {
