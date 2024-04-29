@@ -10,11 +10,12 @@ void backtrace()
 
     while (frame)
     {
-        cdlog("%016lx", frame->rip);
         char *name = get_symbol_name((uint64_t)frame->rip);
 
         if (name != NULL)
-            cdlog("%s", name);
+            cdlog("[%s] <%.16llx>", name, frame->rip);
+        else
+            cdlog("[???] <%.16llx>", frame->rip);
 
         frame = frame->rbp;
     }

@@ -148,7 +148,6 @@ char *get_symbol_name(uint64_t addr)
         }
     }
 
-    cdlog("Didnt find symbol for addr: 0x%.16llx", addr);
     return NULL;
 }
 
