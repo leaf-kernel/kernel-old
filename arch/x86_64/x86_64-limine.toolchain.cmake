@@ -15,7 +15,7 @@ else()
     message(FATAL_ERROR "NASM compiler not found!")
 endif()
 
-set(COMMON_FLAGS "-std=c99 -ffreestanding -fno-stack-protector -fno-stack-check -fno-omit-frame-pointer -fno-lto -fPIE -m64 -march=x86-64 -mabi=sysv -mno-80387 -mno-mmx -msse -msse2 -mno-red-zone -MP")
+set(COMMON_FLAGS "-std=c99 -g -ffreestanding -fno-stack-protector -fno-stack-check -fno-omit-frame-pointer -fno-lto -fPIE -m64 -march=x86-64 -mabi=sysv -mno-80387 -mno-mmx -msse -msse2 -mno-red-zone -MP")
 
 set(CMAKE_C_FLAGS "${COMMON_FLAGS} -std=gnu11")
 set(CMAKE_CXX_FLAGS "${COMMON_FLAGS} -std=gnu++11")

@@ -8,33 +8,17 @@ void backtrace()
     struct stackframe *frame;
     __asm__ volatile("mov %%rbp, %0" : "=g"(frame)::"memory");
 
-    while (1)
+    while (frame)
     {
-        if (frame->rip == (uint64_t)NULL || frame == NULL || frame->rip < (uint64_t)0xffffffff80000000)
-        {
-            break;
-        }
+        cdlog("%016lx", frame->rip);
+        char *name = NULL;
 
-        int idx = -1;
-        for (int i = 0; i < st_entry_count; i++)
-        {
-            if (st_entries[i].addr < frame->rip && st_entries[i + 1].addr >= frame->rip && st_entries[i].id == 'T')
-            {
-                idx = i;
-            }
-        }
+        if (frame->rip != 0)
+            name = get_symbol_name(frame->rip);
 
-        if (idx < 0)
-        {
-            cdlog("    [%.16lx]  <\?\?\?>", frame->rip);
-        }
-        else
-        {
-            cdlog("    [%.16lx]  <%s+0x%04x>", frame->rip, st_entries[idx].name, frame->rip - st_entries[idx].addr);
-        }
+        if (name != NULL)
+            cdlog("%s", name);
 
         frame = frame->rbp;
     }
-
-    cdlog("End of trace.");
 }
