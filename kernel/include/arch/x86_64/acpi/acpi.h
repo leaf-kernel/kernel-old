@@ -5,6 +5,7 @@
 #include <sys/leaf.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <libc/string.h>
 
 typedef struct
 {

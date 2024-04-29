@@ -6,6 +6,10 @@
 
 #include <sys/leaf.h>
 
+#ifdef __LEAF_CONFIG__
+#include <sys/_config.h>
+#endif
+
 void *__LEAF_GET_INITRD__();
 void *__LEAF_GET_VFS__();
 
@@ -18,7 +22,6 @@ void *__LEAF_GET_VFS__();
 #define cdlog(...) cdebug_log(__func__, __VA_ARGS__)
 #define plog(...) pdebug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
 #define cplog(...) pcdebug_log(__func__, __VA_ARGS__)
-
 #ifdef __LEAF_VERBOSE__
 #define vcdlog(...) cdebug_log(__func__, __VA_ARGS__)
 #else
@@ -30,13 +33,10 @@ void *__LEAF_GET_VFS__();
 #define plog(...) __LEAF_VOID_REDIRECT__
 #define cplog(...) __LEAF_VOID_REDIRECT__
 #endif
+#endif
 
 #define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-hhdm_offset)
 #define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + hhdm_offset)
-
-#define CONFIG_CPU_MAX 256
-
-#endif
 #endif
 
 #endif // __LEAF_PRIVATE_H__
