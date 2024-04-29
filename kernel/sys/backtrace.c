@@ -12,6 +12,7 @@ void backtrace()
     while (1)
     {
         cdlog("rip: 0x%016x", frame->rip);
+        cdlog("rbp: 0x%016x", frame->rbp);
         if (frame->rip == (uint64_t)NULL || base == NULL || frame->rip < (uint64_t)0xffffffff80000000)
         {
             break;
