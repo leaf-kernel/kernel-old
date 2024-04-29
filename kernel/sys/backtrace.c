@@ -11,8 +11,8 @@ void backtrace()
 
     while (1)
     {
-        cdlog("rip: 0x%016x", frame->rip);
-        cdlog("rbp: 0x%016x", frame->rbp);
+        cdlog("rip: 0x%p", frame->rip);
+        cdlog("rbp: 0x%p", frame->rbp);
         if (frame->rip == (uint64_t)NULL || base == NULL || frame->rip < (uint64_t)0xffffffff80000000)
         {
             break;
@@ -25,7 +25,6 @@ void backtrace()
             {
                 idx = i;
             }
-            cdlog("%d", i);
         }
 
         if (idx < 0)
