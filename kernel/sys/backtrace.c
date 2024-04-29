@@ -3,23 +3,31 @@
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
-void backtrace()
+void backtrace(int indent, void *rbp)
 {
-    struct stackframe *frame;
-    __asm__ volatile("mov %%rbp, %0" : "=g"(frame)::"memory");
+    struct stackframe *frame = (struct stackframe *)rbp;
 
     while (frame)
     {
         if (frame->rip == 0)
             break;
-            
-        char *name = get_symbol_name((uint64_t)frame->rip);
 
-        if (name != NULL)
-            cdlog("[%s] <%.16llx>", name, frame->rip);
+        table_entry_t *symbol = lookup_symbol((uint64_t)frame->rip);
+
+        if (symbol != NULL)
+        {
+            for (int i = 0; i < indent; i++)
+                dprintf(" ");
+
+            dprintf("[%s] <%.16llx>\r\n", symbol->name, frame->rip);
+        }
         else
-            cdlog("[???] <%.16llx>", frame->rip);
+        {
+            for (int i = 0; i < indent; i++)
+                dprintf(" ");
 
+            dprintf("[???] <%.16llx>\r\n", frame->rip);
+        }
         frame = frame->rbp;
     }
 }

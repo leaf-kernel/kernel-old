@@ -163,3 +163,17 @@ int get_symbol_int(uint64_t addr)
 
     return -1;
 }
+
+table_entry_t *lookup_symbol(uint64_t addr)
+{
+
+    for (int i = 0; i < st_entry_count; i++)
+    {
+        if (addr >= st_entries[i].addr && addr < st_entries[i + 1].addr)
+        {
+            return &st_entries[i];
+        }
+    }
+
+    return NULL;
+}

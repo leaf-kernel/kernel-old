@@ -67,7 +67,6 @@ void *__LEAF_GET_VFS__()
 }
 
 // Kernel entry function
-
 void _start(void)
 {
 #if defined(LEAF_LIMINE)
@@ -102,8 +101,6 @@ void _start(void)
         cdlog("\033[1;32mAll libc tests passed!\033[0m");
     }
 #endif
-
     cdlog("ready.");
-    backtrace();
     hlt();
 }

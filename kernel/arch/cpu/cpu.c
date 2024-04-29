@@ -16,7 +16,7 @@ void hlt()
     }
 }
 
-void panic(const char *reason, const char *description, int_frame_t frame)
+void panic(const char *reason, const char *description, int_frame_t frame, void *rbp)
 {
     // TODO: Get the CPU ID
     int cpuId = 1;
@@ -36,6 +36,12 @@ void panic(const char *reason, const char *description, int_frame_t frame)
             frame.rflags, frame.rip, frame.cs, frame.ss);
     dprintf("  ds: 0x%.16llx,  cr2: 0x%.16llx, cr3: 0x%.16llx\r\n", frame.ds, frame.cr2, frame.cr3);
 #endif
+
+    table_entry_t *func = lookup_symbol(frame.rip);
+    dprintf("\nBacktrace: \r\n");
+
+    dprintf(" [%s] <%.16llx>\r\n", func->name);
+    backtrace(3, rbp);
 
     hcf();
 }

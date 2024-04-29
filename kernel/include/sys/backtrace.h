@@ -11,6 +11,6 @@ struct stackframe
     uint64_t rip;
 } __attribute__((packed));
 
-void backtrace();
+void backtrace(int indent, void *rbp);
 
 #endif // __BACKTRACE_H__
