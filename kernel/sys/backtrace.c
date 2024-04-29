@@ -10,6 +10,9 @@ void backtrace()
 
     while (frame)
     {
+        if (frame->rip == 0)
+            break;
+            
         char *name = get_symbol_name((uint64_t)frame->rip);
 
         if (name != NULL)
