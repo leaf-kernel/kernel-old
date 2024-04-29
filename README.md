@@ -143,6 +143,16 @@ To change some config you can change the defines in `kernel/include/sys/_config.
 ```
 *Enable verbose logging*
 
+```c
+#define __LEAF_DEBUG__
+```
+*Enables some debug output, enabled by default*
+
+```c
+#define __LEAF_DEBUG_WRAPPERS__
+```
+*Enables wrappers for debug logging, enabled by default*
+
 ## License
 
 This project is licensed under the [MIT License](https://github.com/leaf-kernel/kernel/blob/main/LICENSE).
