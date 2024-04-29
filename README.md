@@ -136,6 +136,13 @@ Ensure you have the following tools installed:
 | [x86_64-limine](https://github.com/limine-bootloader/limine) | ✅     |
 | [x86-leaf](https://github.com/leaf-kernel/bootloader)        | ❌     |
 
+## Config
+To change some config you can change the defines in `kernel/include/sys/_config.h`. Some defines are:
+```c
+#define __LEAF_VERBOSE__
+```
+*Enable verbose logging*
+
 ## License
 
 This project is licensed under the [MIT License](https://github.com/leaf-kernel/kernel/blob/main/LICENSE).
