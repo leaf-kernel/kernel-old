@@ -41,14 +41,15 @@ void panic(const char *reason, const char *description, int_frame_t frame, void 
     dprintf("\nBacktrace: \r\n");
     if (func != NULL)
     {
-        dprintf(" [%s] <%.16llx>\r\n", func->name, frame.rip);
+
+        dprintf("[%.16lx]\t<%s+0x%04x>\r\n ", frame.rip, func->name, frame.rip - func->addr);
     }
     else
     {
-        dprintf(" [???] <%.16llx>\r\n", frame.rip);
+        dprintf("[%.16lx]\t<\?\?\?>\r\n", frame.rip);
     }
 
-    backtrace(3, rbp);
+    backtrace(2, rbp);
     hcf();
 }
 

@@ -19,14 +19,14 @@ void backtrace(int indent, void *rbp)
             for (int i = 0; i < indent; i++)
                 dprintf(" ");
 
-            dprintf("[%s] <%.16llx>\r\n", symbol->name, frame->rip);
+            dprintf("[%.16lx]\t<%s+0x%04x>\r\n ", frame->rip, symbol->name, frame->rip - symbol->addr);
         }
         else
         {
             for (int i = 0; i < indent; i++)
                 dprintf(" ");
 
-            dprintf("[???] <%.16llx>\r\n", frame->rip);
+            dprintf("[%.16lx]\t<\?\?\?>\r\n", frame->rip);
         }
         frame = frame->rbp;
     }
