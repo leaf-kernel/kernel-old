@@ -108,5 +108,6 @@ void _start(void)
         cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
     }
 
+    backtrace();
     hlt();
 }
