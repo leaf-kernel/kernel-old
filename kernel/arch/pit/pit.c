@@ -1,13 +1,13 @@
 #include <arch/pit/pit.h>
 #include <drivers/serial/serial.h>
 #include <arch/cpu/cpu.h>
-#include <arch/x86_64/idt/idt.h>
 #include <arch/x86_64/pic/pic.h>
 #include <sys/logger.h>
 
 uint64_t uptime_secs;
 uint16_t uptime_milis;
 uint64_t countdown;
+int_frame_t *cur_frame;
 
 void pit_set_divisor(uint16_t divisor)
 {
@@ -40,9 +40,7 @@ void pit_set_count(uint16_t count)
 
 void pit_handler(int_frame_t *frame)
 {
-    // TODO: Store current frame for multitasking
-    (void)frame;
-
+    cur_frame = frame;
     pit_int();
 }
 

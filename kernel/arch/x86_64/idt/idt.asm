@@ -1,3 +1,7 @@
+section .data
+    global last_rbp
+    last_rbp dq 0
+
 section .text
 global load_idt
 
@@ -55,6 +59,7 @@ load_idt:
 extern excp_handler
 
 _int_stub:
+    mov [last_rbp], rbp
 	pushaq
 	cld
 	call excp_handler

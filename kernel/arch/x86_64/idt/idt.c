@@ -13,7 +13,7 @@
 idt_entry_t idt[IDT_ENTRIES];
 idt_pointer_t idt_p;
 void *irq_handlers[16];
-void *rbp;
+extern void *last_rbp;
 
 extern uint64_t isr_tbl[];
 
@@ -126,10 +126,9 @@ void init_idt()
 
 void excp_handler(int_frame_t frame)
 {
-    __asm__ volatile("mov %%rbp, %0" : "=g"(rbp)::"memory");
     if (frame.vector < 0x20)
     {
-        panic(exception_strings[frame.vector], exception_descriptions[frame.vector], frame, rbp);
+        panic(exception_strings[frame.vector], exception_descriptions[frame.vector], frame, last_rbp);
         hcf();
     }
     else if (frame.vector >= 0x20 && frame.vector <= 0x2f)

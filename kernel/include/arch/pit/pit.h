@@ -6,8 +6,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <arch/x86_64/idt/idt.h>
+
 #define PIT_COMMAND 0x43
 #define PIT_DATA 0x40
+
+extern int_frame_t *cur_frame;
 
 void pit_set_count(uint16_t count);
 uint16_t pit_read_count();
