@@ -33,5 +33,6 @@
 #define LVT_MASKED (1 << 16)
 
 void init_apic();
+void enable_apic();
 
 #endif // __APIC_H__

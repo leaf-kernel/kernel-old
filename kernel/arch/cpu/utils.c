@@ -23,3 +23,13 @@ unsigned long read_cr0()
     __asm__ volatile("mov %%cr0, %0" : "=r"(result));
     return result;
 }
+
+void _get_msr(uint32_t msr, uint32_t *lo, uint32_t *hi)
+{
+    asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+}
+
+void _set_msr(uint32_t msr, uint32_t lo, uint32_t hi)
+{
+    asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+}

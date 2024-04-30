@@ -1,6 +1,7 @@
-#include <arch/x86_64/apic/apic.h>
 #include <arch/cpu/cpu.h>
+#include <arch/cpu/utils.h>
 #include <arch/cpu/cpuid.h>
+#include <arch/x86_64/apic/apic.h>
 #include <arch/x86_64/acpi/acpi.h>
 #include <arch/x86_64/acpi/madt.h>
 #include <arch/x86_64/pic/pic.h>
@@ -8,45 +9,14 @@
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
-#define IA32_APIC_BASE_MSR 0x1B
-#define IA32_APIC_BASE_MSR_BSP 0x100
-#define IA32_APIC_BASE_MSR_ENABLE 0x800
-
-#define APIC_REGS_MSR_BASE 0x800
-
-// TODO: Move these MSR util function to its own header
-void _get_msr(uint32_t msr, uint32_t *lo, uint32_t *hi)
+uint32_t rreg(uint16_t offset)
 {
-    asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+    return *((uint32_t *)((uint64_t)0xfee00000 + offset));
 }
 
-void _set_msr(uint32_t msr, uint32_t lo, uint32_t hi)
+void wreg(uint16_t offset, uint32_t val)
 {
-    asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
-}
-
-void _set_apic_base(uintptr_t apic)
-{
-    uint32_t edx = 0;
-    uint32_t eax = (apic & 0xfffff0000) | IA32_APIC_BASE_MSR_ENABLE;
-
-#ifdef __PHYSICAL_MEMORY_EXTENSION__
-    edx = (apic >> 32) & 0x0f;
-#endif
-
-    _set_msr(IA32_APIC_BASE_MSR, eax, edx);
-}
-
-uintptr_t _get_apic_base()
-{
-    uint32_t eax, edx;
-    _get_msr(IA32_APIC_BASE_MSR, &eax, &edx);
-
-#ifdef __PHYSICAL_MEMORY_EXTENSION__
-    return (eax & 0xfffff000) | ((edx & 0x0f) << 32);
-#else
-    return (eax & 0xfffff000);
-#endif
+    *((uint32_t *)((uint64_t)0xfee00000 + offset)) = val;
 }
 
 void init_apic()
@@ -67,8 +37,20 @@ void init_apic()
     }
 
     init_acpi();
+    enable_apic();
 
-    // Disable legacy PIC
-    pic_disable();
     cdlog("done.");
+}
+
+void enable_apic()
+{
+    pic_disable();
+    wreg(0xF0, rreg(0xF0) | 0x100);
+    cdlog("Enabled APIC!");
+}
+
+void apic_eoi()
+{
+    wreg(0xB0, 0);
+    vcdlog("Sent end-of-interupts!");
 }
