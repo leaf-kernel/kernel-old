@@ -2,6 +2,7 @@
 #define __CONFIG_H__
 
 #define __LEAF_VERBOSE__
+// #define __LEAF_VVERBOSE__
 #define __LEAF_DEBUG_WRAPPERS__
 #define __LEAF_DEBUG__
 
