@@ -105,6 +105,5 @@ void _start(void)
     }
 #endif
     cdlog("Kernel init done.");
-    _int(1);
     hlt();
 }

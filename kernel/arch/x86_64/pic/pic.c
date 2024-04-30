@@ -93,7 +93,6 @@ void pic_sendEOI(int irq)
 void pic_disable()
 {
     pic_setMask(0xFFFF);
-    cdlog("disabled legacy PIC");
 }
 
 void pic_enable()

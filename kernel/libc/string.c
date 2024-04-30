@@ -1,5 +1,6 @@
 #include <libc/string.h>
 #include <sys/leaf.h>
+#include <arch/cpu/utils.h>
 #include <libc/stdio/printf.h>
 
 void *memcpy(void *dest, const void *src, size_t n)
