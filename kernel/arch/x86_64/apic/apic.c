@@ -46,7 +46,7 @@ void enable_apic()
 {
     pic_disable();
     wreg(0xF0, rreg(0xF0) | 0x100);
-    cdlog("Enabled APIC!");
+    cdlog("enabled APIC");
 }
 
 void apic_eoi()

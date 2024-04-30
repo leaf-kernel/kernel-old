@@ -1,3 +1,4 @@
+#define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 #include <arch/x86_64/pic/pic.h>
 #include <drivers/serial/serial.h>
@@ -92,6 +93,7 @@ void pic_sendEOI(int irq)
 void pic_disable()
 {
     pic_setMask(0xFFFF);
+    cdlog("disabled legacy PIC");
 }
 
 void pic_enable()
