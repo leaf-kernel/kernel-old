@@ -9,6 +9,7 @@ file(GLOB_RECURSE CC_FILES
 
 file(GLOB_RECURSE ASM_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.asm"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.s"
 )
 
 add_executable(${LEAF_TARGET} ${CC_FILES} ${ASM_FILES})

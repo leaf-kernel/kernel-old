@@ -13,7 +13,7 @@ VFS_t *init_vfs()
     }
 
     vfs->address = (uint64_t)vfs;
-    cdlog("0x%016x", vfs->address);
+    cdlog("vfs at 0x%0.16llx", vfs->address);
 
     vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
     if (vfs->drives == NULL)
@@ -64,7 +64,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type)
 
     vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
-    cdlog("0x%016x", driveAddr);
+    cdlog("mounted drive from 0x%.16llx", driveAddr);
     return STATUS_OK;
 }
 

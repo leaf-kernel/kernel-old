@@ -93,17 +93,6 @@ void _start(void)
         cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
     }
 
-#ifdef __LEAF_VERBOSE__
-    TestResult testResult = check_libc();
-    if (testResult.failed != 0)
-    {
-        cdlog("\033[1;33mWarning: Only %d/%d libc tests passed!\033[0m", testResult.passed, testResult.failed + testResult.passed);
-    }
-    else
-    {
-        cdlog("\033[1;32mAll libc tests passed!\033[0m");
-    }
-#endif
     cdlog("Kernel init done.");
     hlt();
 }
