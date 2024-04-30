@@ -75,6 +75,8 @@ void _start(void)
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
 
+    dprintf("\033c");
+
     init_idt();
     init_pit();
     init_pmm();
@@ -102,6 +104,6 @@ void _start(void)
         cdlog("\033[1;32mAll libc tests passed!\033[0m");
     }
 #endif
-    cdlog("ready.");
+    cdlog("Kernel init done.");
     hlt();
 }

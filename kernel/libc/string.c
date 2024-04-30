@@ -62,6 +62,7 @@ char *strncpy(char *dest, const char *src, size_t n)
     {
         *d = '\0';
     }
+
     return dest;
 }
 
@@ -108,6 +109,7 @@ int memcmp(const void *s1, const void *s2, size_t n)
         p1++;
         p2++;
     }
+
     return 0;
 }
 
@@ -118,6 +120,7 @@ int strcmp(const char *s1, const char *s2)
         s1++;
         s2++;
     }
+
     return *(unsigned char *)s1 - *(unsigned char *)s2;
 }
 
