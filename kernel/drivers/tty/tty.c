@@ -49,7 +49,7 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com)
         return;
     }
 
-    currentTTYid = 0;
+    currentTTYid = id;
     currentTTY = ttys[currentTTYid];
     struct nighterm_ctx *context = kmalloc(sizeof(struct nighterm_ctx));
     currentTTY->ctx = context;
