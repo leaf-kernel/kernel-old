@@ -95,6 +95,9 @@ void _start(void)
     }
 
     cdlog("Kernel init done.");
-    cdlog("Initialized on %s", _serial_cur_com_char);
+    cdlog("on %s", _serial_cur_com_char);
+
+    switch_serial(2, 0);
+    dprintf("Hello, World! on %s", _serial_cur_com_char);
     hlt();
 }
