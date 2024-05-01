@@ -1,0 +1,14 @@
+---
+IndentWidth: 4
+UseTab: Never
+TabWidth: 4
+
+BinPackParameters: true
+AlwaysBreakTemplateDeclarations: true
+
+AllowShortBlocksOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+SpacesBeforeTrailingComments: 2
+SpaceBeforeParens: Never

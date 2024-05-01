@@ -1,16 +1,15 @@
 #ifndef __STABLE_H__
 #define __STABLE_H__
 
-#include <stdint.h>
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #include <fs/vfs.h>
 
 #define MAX_STABLE_COUNT 65535
 
-typedef struct
-{
+typedef struct {
     uint64_t addr;
     char *name;
     char id;
@@ -25,4 +24,4 @@ int get_symbol_int(uint64_t addr);
 uint64_t get_symbol_addr(char *name);
 table_entry_t *lookup_symbol(uint64_t addr);
 
-#endif // __STABLE_H__
+#endif  // __STABLE_H__

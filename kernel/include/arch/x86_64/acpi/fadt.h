@@ -1,12 +1,11 @@
 #ifndef __FADT_H__
 #define __FADT_H__
 
-#include <arch/x86_64/acpi/rsdt.h>
 #include <arch/cpu/cpu.h>
+#include <arch/x86_64/acpi/rsdt.h>
 #include <stdint.h>
 
-typedef struct
-{
+typedef struct {
     uint8_t AddressSpace;
     uint8_t BitWidth;
     uint8_t BitOffset;
@@ -14,8 +13,7 @@ typedef struct
     uint64_t Address;
 } __attribute((packed)) generic_address_t;
 
-typedef struct
-{
+typedef struct {
     struct ACPISDTHeader h;
     uint32_t FirmwareCtrl;
     uint32_t Dsdt;
@@ -73,4 +71,4 @@ typedef struct
 extern fadt_t *fadt_table;
 void init_fadt(fadt_t *fadt);
 
-#endif // __FADT_H__
+#endif  // __FADT_H__

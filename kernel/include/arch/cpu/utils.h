@@ -13,4 +13,4 @@ void _set_msr(uint32_t msr, uint32_t lo, uint32_t hi);
 void _shutdown_emu();
 void _reboot();
 
-#endif // __CPU_UTILS_H__
+#endif  // __CPU_UTILS_H__

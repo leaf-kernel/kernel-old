@@ -24,4 +24,4 @@ void *pmm_request_pages(size_t numPages);
 void pmm_free(void *ptr);
 void pmm_free_pages(void *ptr, size_t numPages);
 
-#endif // __PMM_H__
+#endif  // __PMM_H__

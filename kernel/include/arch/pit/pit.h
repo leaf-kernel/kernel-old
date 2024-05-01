@@ -23,4 +23,4 @@ void pit_sleep(uint64_t millis);
 uint64_t pit_get_uptime_milis();
 uint64_t pit_get_uptime_secs();
 
-#endif // __PIT_H__
+#endif  // __PIT_H__

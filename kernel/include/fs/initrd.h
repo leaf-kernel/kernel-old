@@ -1,20 +1,18 @@
 #ifndef __INITRD_H__
 #define __INITRD_H__
 
-#include <fs/tar.h>
 #include <fs/path.h>
+#include <fs/tar.h>
 #include <stddef.h>
 #include <stdint.h>
 
-typedef struct
-{
+typedef struct {
     TARFile *file;
     uint32_t hash;
     PathComponent *path;
 } RamdiskEntry;
 
-typedef struct
-{
+typedef struct {
     RamdiskEntry **content;
     int count;
 } Ramdisk;
@@ -22,4 +20,4 @@ typedef struct
 Ramdisk *init_ramdisk(const char *raw, const size_t size);
 int find_file_by_hash(Ramdisk *initrd, uint32_t hash);
 
-#endif // __INITRD_H__
+#endif  // __INITRD_H__

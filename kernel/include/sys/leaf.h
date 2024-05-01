@@ -1,8 +1,8 @@
 #ifndef __LEAF_H__
 #define __LEAF_H__
 
-#include <utils/hash.h>
 #include <stdint.h>
+#include <utils/hash.h>
 
 #ifdef LEAF_INCLUDE_PRIVATE
 #define __LEAF_PRIVATE__
@@ -42,7 +42,7 @@
 // Helper functions
 #define STRINGIZE_HELPER(x...) #x
 #define STRINGIZE(x...) STRINGIZE_HELPER(x)
-#define ARCH_INCLUDE(a) STRINGIZE(arch/LEAF_ARCH_RAW/a)
+#define ARCH_INCLUDE(a) STRINGIZE(arch / LEAF_ARCH_RAW / a)
 
 // Global Variables
 extern volatile struct limine_framebuffer_request framebuffer_request;
@@ -54,4 +54,4 @@ extern uint64_t hhdm_offset;
 
 int main();
 
-#endif // __LEAF_H__
+#endif  // __LEAF_H__

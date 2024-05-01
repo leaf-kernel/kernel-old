@@ -15,4 +15,4 @@ int iscntrl(int c);
 int tolower(int c);
 int toupper(int c);
 
-#endif // __CTYPE_H__
+#endif  // __CTYPE_H__

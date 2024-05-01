@@ -5,15 +5,11 @@
 
 fadt_t *fadt_table;
 
-void init_fadt(fadt_t *fadt)
-{
-    if (strncmp(fadt->h.Signature, "FACP", 4) == 0)
-    {
+void init_fadt(fadt_t *fadt) {
+    if(strncmp(fadt->h.Signature, "FACP", 4) == 0) {
         cdlog("done.");
         fadt_table = fadt;
-    }
-    else
-    {
+    } else {
         dlog("Failed to init FADT");
         hcf();
     }

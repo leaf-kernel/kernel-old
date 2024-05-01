@@ -1,15 +1,15 @@
 #ifndef __MADT_H__
 #define __MADT_H__
 
-#include <stdint.h>
-#include <stdbool.h>
 #include <libc/string.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 #define LEAF_INCLUDE_PRIVATE
-#include <sys/leaf.h>
-#include <sys/limine.h>
 #include <arch/cpu/cpu.h>
 #include <arch/x86_64/acpi/rsdt.h>
+#include <sys/leaf.h>
+#include <sys/limine.h>
 
 #define APIC_LAPIC 0
 #define APIC_IOAPIC 1
@@ -19,28 +19,24 @@
 #define APIC_LAPIC_OVERRIDE 5
 #define APIC_X2APIC 9
 
-typedef struct
-{
+typedef struct {
     sdt_t header;
     uint32_t lapic_addr;
     uint32_t flags;
 } __attribute__((packed)) madt_t;
-typedef struct
-{
+typedef struct {
     uint8_t type;
     uint8_t length;
 } __attribute__((packed)) apic_header_t;
 
-typedef struct
-{
+typedef struct {
     apic_header_t header;
     uint8_t acpi_proc_id;
     uint8_t apic_id;
     uint32_t flags;
 } __attribute__((packed)) apic_lapic_t;
 
-typedef struct
-{
+typedef struct {
     apic_header_t header;
     uint8_t ioapic_id;
     uint8_t reserved;
@@ -48,8 +44,7 @@ typedef struct
     uint32_t gsi_base;
 } __attribute__((packed)) apic_ioapic_t;
 
-typedef struct
-{
+typedef struct {
     apic_header_t header;
     uint8_t bus;
     uint8_t irq;
@@ -66,4 +61,4 @@ extern apic_lapic_t *g_acpi_lapic[CONFIG_CPU_MAX];
 void init_madt(madt_t *madt_table);
 uint32_t madt_get_iso(uint32_t irq);
 
-#endif // __MADT_H__
+#endif  // __MADT_H__

@@ -1,0 +1,2 @@
+#!/bin/bash
+find kernel -type f \( -iname \*.c -o -iname \*.h \) -print0 | xargs -0 clang-format -i
