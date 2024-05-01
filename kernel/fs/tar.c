@@ -1,37 +1,31 @@
 #include <fs/tar.h>
 
-uint64_t TARGetSize(const char *in)
-{
+uint64_t TARGetSize(const char *in) {
     unsigned int size = 0;
     unsigned int count = 1;
 
-    for (int j = 11; j > 0; j--, count *= 8)
+    for(int j = 11; j > 0; j--, count *= 8)
         size += ((in[j - 1] - '0') * count);
 
     return size;
 }
 
-char *TARRemovePrefix(const char *str, const char *prefix)
-{
+char *TARRemovePrefix(const char *str, const char *prefix) {
     size_t prefix_len = strlen(prefix);
-    if (strncmp(str, prefix, prefix_len) == 0)
-    {
+    if(strncmp(str, prefix, prefix_len) == 0) {
         return strdup(str + prefix_len);
     }
     return strdup(str);
 }
 
-void tar_extract(const char *raw, uint64_t size, TAREntry *tar)
-{
+void tar_extract(const char *raw, uint64_t size, TAREntry *tar) {
     tar->files = NULL;
     tar->fileCount = 0;
 
-    for (uint64_t offset = 0; offset < size;)
-    {
+    for(uint64_t offset = 0; offset < size;) {
         TARHeader *header = (TARHeader *)(raw + offset);
 
-        if (header->filename[0] == '\0')
-        {
+        if(header->filename[0] == '\0') {
             break;
         }
 
@@ -42,14 +36,11 @@ void tar_extract(const char *raw, uint64_t size, TAREntry *tar)
         int num_components = 0;
         PathComponent *components = split_path(file.path, &num_components);
 
-        if (components != NULL)
-        {
+        if(components != NULL) {
             file.raw_path = components;
             file.number_path_comonents = num_components;
             file.name = components[num_components - 1].name;
-        }
-        else
-        {
+        } else {
             file.raw_path = NULL;
             file.number_path_comonents = 0;
             file.name = file.path;
@@ -57,37 +48,34 @@ void tar_extract(const char *raw, uint64_t size, TAREntry *tar)
 
         file.directory = header->typeflag[0] == '5';
 
-        if (!file.directory)
-        {
+        if(!file.directory) {
             file.content = (char *)kmalloc(file.size + 1);
             memcpy(file.content, raw + offset + 512, file.size);
             file.content[file.size] = '\0';
-        }
-        else
-        {
+        } else {
             file.content = "";
         }
 
-        TARFile *temp_files = krealloc(tar->files, (tar->fileCount + 1) * sizeof(TARFile));
-        if (temp_files == NULL)
-        {
-            debug_log(__FILE__, __LINE__, __func__, "Failed to allocate memory for temp file!");
+        TARFile *temp_files =
+            krealloc(tar->files, (tar->fileCount + 1) * sizeof(TARFile));
+        if(temp_files == NULL) {
+            debug_log(__FILE__, __LINE__, __func__,
+                      "Failed to allocate memory for temp file!");
             return;
         }
 
         tar->files = temp_files;
         tar->files[tar->fileCount] = file;
         tar->fileCount++;
-        vcdlog("{ name: \"%s\", directory: %s, size: %d }", file.name, file.directory ? "true" : "false", file.size);
+        vcdlog("{ name: \"%s\", directory: %s, size: %d }", file.name,
+               file.directory ? "true" : "false", file.size);
         offset += ((file.size + 511) / 512 + 1) * 512;
     }
 }
 
-void TARFree(TAREntry *tar)
-{
+void TARFree(TAREntry *tar) {
 
-    for (int i = 0; i < tar->fileCount; ++i)
-    {
+    for(int i = 0; i < tar->fileCount; ++i) {
         kfree(tar->files[i].path);
         kfree(tar->files[i].content);
     }

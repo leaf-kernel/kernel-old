@@ -1,46 +1,45 @@
 #include <fs/initrd.h>
-#include <sys/logger.h>
 #include <libc/stdlib/memory/kheap.h>
+#include <sys/logger.h>
 #include <utils/hash.h>
 
-Ramdisk *init_ramdisk(const char *raw, const size_t size)
-{
+Ramdisk *init_ramdisk(const char *raw, const size_t size) {
     Ramdisk *initrd = (Ramdisk *)kmalloc(sizeof(Ramdisk));
     TAREntry *entry = (TAREntry *)kmalloc(sizeof(TAREntry));
 
-    if (entry == NULL)
-    {
-        debug_log(__FILE__, __LINE__, __func__, "Failed to allocate memory for TAREntry!");
+    if(entry == NULL) {
+        debug_log(__FILE__, __LINE__, __func__,
+                  "Failed to allocate memory for TAREntry!");
         return NULL;
     }
 
-    if (initrd == NULL)
-    {
-        debug_log(__FILE__, __LINE__, __func__, "Failed to allocate memory for initrd!");
+    if(initrd == NULL) {
+        debug_log(__FILE__, __LINE__, __func__,
+                  "Failed to allocate memory for initrd!");
         kfree(entry);
         return NULL;
     }
 
     tar_extract(raw, size, entry);
 
-    initrd->content = (RamdiskEntry **)kmalloc(entry->fileCount * sizeof(RamdiskEntry *));
-    if (initrd->content == NULL)
-    {
-        debug_log(__FILE__, __LINE__, __func__, "Failed to allocate memory for RamdiskEntry pointers!");
+    initrd->content =
+        (RamdiskEntry **)kmalloc(entry->fileCount * sizeof(RamdiskEntry *));
+    if(initrd->content == NULL) {
+        debug_log(__FILE__, __LINE__, __func__,
+                  "Failed to allocate memory for RamdiskEntry pointers!");
         kfree(entry);
         kfree(initrd);
         return NULL;
     }
 
-    for (int i = 0; i < entry->fileCount; i++)
-    {
+    for(int i = 0; i < entry->fileCount; i++) {
         PathComponent *comp = entry->files[i].raw_path;
 
         RamdiskEntry *ramEntry = (RamdiskEntry *)kmalloc(sizeof(RamdiskEntry));
-        if (ramEntry == NULL)
-        {
-            debug_log(__FILE__, __LINE__, __func__, "Failed to allocate memory for RamdiskEntry!");
-            for (int j = 0; j < i; j++)
+        if(ramEntry == NULL) {
+            debug_log(__FILE__, __LINE__, __func__,
+                      "Failed to allocate memory for RamdiskEntry!");
+            for(int j = 0; j < i; j++)
                 kfree(initrd->content[j]);
             kfree(initrd->content);
             kfree(entry);
@@ -62,12 +61,9 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
     return initrd;
 }
 
-int find_file_by_hash(Ramdisk *initrd, uint32_t hash)
-{
-    for (int i = 0; i < initrd->count; i++)
-    {
-        if (initrd->content[i]->hash == hash)
-        {
+int find_file_by_hash(Ramdisk *initrd, uint32_t hash) {
+    for(int i = 0; i < initrd->count; i++) {
+        if(initrd->content[i]->hash == hash) {
             return i;
         }
     }

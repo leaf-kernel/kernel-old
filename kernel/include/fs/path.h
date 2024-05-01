@@ -4,8 +4,7 @@
 #include <libc/stdlib/memory/kheap.h>
 #include <libc/string.h>
 
-typedef struct
-{
+typedef struct {
     char *name;
     int directory;
 } PathComponent;
@@ -13,4 +12,4 @@ typedef struct
 PathComponent *split_path(const char *path, int *num_components);
 void free_components(PathComponent *components, int num_components);
 
-#endif // __PATH_H__
+#endif  // __PATH_H__

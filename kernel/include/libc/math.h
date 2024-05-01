@@ -7,4 +7,4 @@
 
 int abs(int x);
 
-#endif // __MATH_H_
+#endif  // __MATH_H_

@@ -1,34 +1,30 @@
-#include <sys/time/rtc.h>
 #include <drivers/serial/serial.h>
+#include <sys/time/rtc.h>
 
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
 char bcd;
 
-unsigned char read_register(unsigned char reg)
-{
+unsigned char read_register(unsigned char reg) {
     __asm__ volatile("cli");
     outb(RTC_COMMAND, reg);
     return inb(RTC_DATA);
     __asm__ volatile("sti");
 }
 
-void write_register(unsigned char reg, unsigned char value)
-{
+void write_register(unsigned char reg, unsigned char value) {
     __asm__ volatile("cli");
     outb(RTC_COMMAND, reg);
     outb(RTC_DATA, value);
     __asm__ volatile("sti");
 }
 
-unsigned char bcd2bin(unsigned char in_bcd)
-{
+unsigned char bcd2bin(unsigned char in_bcd) {
     return (bcd) ? ((in_bcd >> 4) * 10) + (in_bcd & 0x0F) : in_bcd;
 }
 
-void rtc_get(rtc_time_point *target)
-{
+void rtc_get(rtc_time_point *target) {
     target->seconds = bcd2bin(read_register(RTC_SECONDS));
     target->minutes = bcd2bin(read_register(RTC_MINUTES));
     target->hours = bcd2bin(read_register(RTC_HOURS));
@@ -45,8 +41,7 @@ void rtc_get(rtc_time_point *target)
     target->full[5] = target->year;
 }
 
-void init_rtc()
-{
+void init_rtc() {
     __asm__ volatile("cli");
     unsigned char status;
     status = read_register(RTC_STATUS);
@@ -60,12 +55,10 @@ void init_rtc()
     cdlog("done.");
 }
 
-char *_get_month(int month)
-{
+char *_get_month(int month) {
     char *a = NULL;
 
-    switch (month)
-    {
+    switch(month) {
     case 1:
         a = "January";
         break;
@@ -107,12 +100,10 @@ char *_get_month(int month)
     return a;
 }
 
-char *_get_day(int day)
-{
+char *_get_day(int day) {
     char *a = NULL;
 
-    switch (day)
-    {
+    switch(day) {
     case 1:
         a = "Sunday";
         break;

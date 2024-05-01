@@ -1,10 +1,10 @@
 #ifndef __PIC_H__
 #define __PIC_H__
 
-#include <stdint.h>
-#include <stddef.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #define PIC_REMAP_OFFSET 0x20
 
@@ -17,4 +17,4 @@ void pic_sendEOI(int irq);
 uint16_t pic_read_irq_request_register();
 uint16_t pic_read_in_service_register();
 
-#endif // __PIC_H__
+#endif  // __PIC_H__

@@ -1,18 +1,17 @@
 #ifndef __TAR_H__
 #define __TAR_H__
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <fs/path.h>
+#include <libc/ctype.h>
 #include <libc/math.h>
 #include <libc/string.h>
-#include <libc/ctype.h>
-#include <fs/path.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <sys/logger.h>
 
 #define RAMDISK_PATH_PREFIX "initrd"
 
-typedef struct
-{
+typedef struct {
     char filename[100];
     char mode[8];
     char uid[8];
@@ -23,8 +22,7 @@ typedef struct
     char typeflag[1];
 } TARHeader;
 
-typedef struct
-{
+typedef struct {
     PathComponent *raw_path;
     int number_path_comonents;
 
@@ -35,8 +33,7 @@ typedef struct
     bool directory;
 } TARFile;
 
-typedef struct
-{
+typedef struct {
     TARFile *files;
     int fileCount;
 } TAREntry;
@@ -44,4 +41,4 @@ typedef struct
 void tar_extract(const char *raw, uint64_t size, TAREntry *tar);
 void TARFree(TAREntry *tar);
 
-#endif // __TAR_H__
+#endif  // __TAR_H__

@@ -1,11 +1,10 @@
 #ifndef __CPUID_H__
 #define __CPUID_H__
 
-#include <stdint.h>
 #include <cpuid.h>
+#include <stdint.h>
 
-enum cpuid_requests
-{
+enum cpuid_requests {
     CPUID_GETVENDORSTRING,
     CPUID_GETFEATURES,
     CPUID_GETTLB,
@@ -17,8 +16,7 @@ enum cpuid_requests
     CPUID_INTELBRANDSTRINGEND,
 };
 
-enum cpuid_features
-{
+enum cpuid_features {
     CPUID_FEAT_ECX_SSE3 = 1 << 0,
     CPUID_FEAT_ECX_PCLMUL = 1 << 1,
     CPUID_FEAT_ECX_DTES64 = 1 << 2,
@@ -84,4 +82,4 @@ enum cpuid_features
 
 int cpuid_string(int code, uint32_t where[4]);
 
-#endif // __CPUID_H__
+#endif  // __CPUID_H__

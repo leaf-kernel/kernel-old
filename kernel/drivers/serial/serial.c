@@ -6,49 +6,39 @@ uint16_t __cur_port;
 bool _serial_has_been_init;
 char *_serial_cur_com_char;
 
-void iowait()
-{
-    outb(UNUSED, 0);
-}
+void iowait() { outb(UNUSED, 0); }
 
-void outb(uint16_t port, uint8_t value)
-{
+void outb(uint16_t port, uint8_t value) {
     __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(value));
 }
 
-void outw(uint16_t port, uint16_t value)
-{
+void outw(uint16_t port, uint16_t value) {
     __asm__ volatile("outw %1, %0" : : "dN"(port), "a"(value));
 }
 
-void outd(uint16_t port, uint32_t value)
-{
+void outd(uint16_t port, uint32_t value) {
     __asm__ volatile("outl %1, %0" : : "dN"(port), "a"(value));
 }
 
-uint8_t inb(uint16_t port)
-{
+uint8_t inb(uint16_t port) {
     uint8_t r;
     __asm__ volatile("inb %1, %0" : "=a"(r) : "dN"(port));
     return r;
 }
 
-uint16_t inw(uint16_t port)
-{
+uint16_t inw(uint16_t port) {
     uint16_t r;
     __asm__ volatile("inw %1, %0" : "=a"(r) : "dN"(port));
     return r;
 }
 
-uint32_t ind(uint16_t port)
-{
+uint32_t ind(uint16_t port) {
     uint32_t r;
     __asm__ volatile("inl %1, %0" : "=a"(r) : "dN"(port));
     return r;
 }
 
-bool _register_port(uint16_t port)
-{
+bool _register_port(uint16_t port) {
     outb(port + 1, 0x00);
     outb(port + 3, 0x80);
     outb(port + 0, 0x03);
@@ -58,8 +48,7 @@ bool _register_port(uint16_t port)
     outb(port + 4, 0x0B);
     outb(port + 4, 0x1E);
     outb(port + 0, 0xAE);
-    if (inb(port + 0) != 0xAE)
-    {
+    if(inb(port + 0) != 0xAE) {
         dlog("Failed to register port \"0x%04llx\"", port);
         return false;
     }
@@ -69,14 +58,10 @@ bool _register_port(uint16_t port)
     return true;
 }
 
-void init_serial()
-{
-    if (_register_port(_SERIAL_COM1))
-    {
+void init_serial() {
+    if(_register_port(_SERIAL_COM1)) {
         switch_serial(1, 0);
-    }
-    else
-    {
+    } else {
         dlog("Failed to initialize serial!");
         hcf();
     }
@@ -85,24 +70,17 @@ void init_serial()
     cdlog("done.");
 }
 
-int _serial_received()
-{
-    return inb(__cur_port + 5) & 1;
-}
+int _serial_received() { return inb(__cur_port + 5) & 1; }
 
-char read_serial()
-{
-    while (_serial_received() == 0)
+char read_serial() {
+    while(_serial_received() == 0)
         ;
 
     return inb(__cur_port);
 }
-void switch_serial(uint8_t id, uint16_t port)
-{
-    if (id != 0 && id <= 8)
-    {
-        switch (id)
-        {
+void switch_serial(uint8_t id, uint16_t port) {
+    if(id != 0 && id <= 8) {
+        switch(id) {
         case 1:
             __cur_port = _SERIAL_COM1;
             _serial_cur_com_char = "COM1";
@@ -140,9 +118,7 @@ void switch_serial(uint8_t id, uint16_t port)
             hcf();
             break;
         }
-    }
-    else
-    {
+    } else {
         __cur_port = port;
         _serial_cur_com_char = "???";
     }
@@ -150,14 +126,10 @@ void switch_serial(uint8_t id, uint16_t port)
     vvcdlog("Serial target: \"0x%04llx\"", __cur_port);
 }
 
-int _is_transmit_empty()
-{
-    return inb(__cur_port + 5) & 0x20;
-}
+int _is_transmit_empty() { return inb(__cur_port + 5) & 0x20; }
 
-void write_serial(char a)
-{
-    while (_is_transmit_empty() == 0)
+void write_serial(char a) {
+    while(_is_transmit_empty() == 0)
         ;
 
     outb(__cur_port, a);

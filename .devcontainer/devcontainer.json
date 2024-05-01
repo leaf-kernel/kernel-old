@@ -1,5 +1,8 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "name": "Debian",
+  "image": "mcr.microsoft.com/devcontainers/base:bullseye",
   "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {},
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {}
   }
 }

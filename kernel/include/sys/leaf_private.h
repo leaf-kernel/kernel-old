@@ -22,8 +22,8 @@ void *__LEAF_GET_VFS__();
 #endif
 
 #ifdef __LEAF_DEBUG_WRAPPERS__
-#include <sys/logger.h>
 #include <libc/stdio/printf.h>
+#include <sys/logger.h>
 #define dlog(...) debug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
 #define cdlog(...) cdebug_log(__func__, __VA_ARGS__)
 #define plog(...) pdebug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
@@ -52,4 +52,4 @@ void *__LEAF_GET_VFS__();
 #define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + hhdm_offset)
 #endif
 
-#endif // __LEAF_PRIVATE_H__
+#endif  // __LEAF_PRIVATE_H__

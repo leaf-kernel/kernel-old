@@ -2,11 +2,9 @@
 #include <libc/stdlib/memory/pmm.h>
 #include <sys/logger.h>
 
-void *kmalloc(size_t size)
-{
+void *kmalloc(size_t size) {
     char *PP = (char *)pmm_request_pages((size / PAGE_SIZE) + 1);
-    if (PP == NULL)
-    {
+    if(PP == NULL) {
         cdlog("Failed to allocate memory");
         return NULL;
     }
@@ -15,10 +13,8 @@ void *kmalloc(size_t size)
     return (void *)PP;
 }
 
-void kfree(void *tofree)
-{
-    if (tofree == NULL)
-    {
+void kfree(void *tofree) {
+    if(tofree == NULL) {
         return;
     }
     char *PP = (char *)tofree;
@@ -27,21 +23,17 @@ void kfree(void *tofree)
     pmm_free_pages(PP, (size / PAGE_SIZE) + 1);
 }
 
-void *kcalloc(size_t size)
-{
+void *kcalloc(size_t size) {
     void *kmallocVal = kmalloc(size);
-    if (kmallocVal == NULL)
-    {
+    if(kmallocVal == NULL) {
         return NULL;
     }
     memset(kmallocVal, 0, size);
     return kmallocVal;
 }
 
-void *krealloc(void *old, size_t size)
-{
-    if (old == NULL)
-    {
+void *krealloc(void *old, size_t size) {
+    if(old == NULL) {
         return kmalloc(size);
     }
 
@@ -50,11 +42,9 @@ void *krealloc(void *old, size_t size)
     size_t new_num_pages = (size / PAGE_SIZE) + 1;
     size_t old_num_pages = (old_size / PAGE_SIZE) + 1;
 
-    if (new_num_pages > old_num_pages)
-    {
+    if(new_num_pages > old_num_pages) {
         void *new_mem = pmm_request_pages(new_num_pages - old_num_pages);
-        if (new_mem == NULL)
-        {
+        if(new_mem == NULL) {
             cdlog("Failed to allocate additional memory pages");
             return NULL;
         }
@@ -63,9 +53,7 @@ void *krealloc(void *old, size_t size)
         kfree(old);
 
         return new_mem;
-    }
-    else
-    {
+    } else {
         return old;
     }
 }

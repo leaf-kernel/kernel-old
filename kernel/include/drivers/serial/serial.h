@@ -1,8 +1,8 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include <arch/cpu/cpu.h>
 #define LEAF_INCLUDE_PRIVATE
@@ -35,4 +35,4 @@ void write_serial(char a);
 extern bool _serial_has_been_init;
 extern char *_serial_cur_com_char;
 
-#endif // SERIAL_H
+#endif  // SERIAL_H

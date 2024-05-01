@@ -1,45 +1,36 @@
 #include <sys/stable.h>
 #define LEAF_INCLUDE_PRIVATE
-#include <sys/leaf.h>
-#include <libc/string.h>
-#include <libc/stdlib/memory/kheap.h>
 #include <libc/ctype.h>
+#include <libc/stdlib/memory/kheap.h>
+#include <libc/string.h>
+#include <sys/leaf.h>
 
 table_entry_t st_entries[MAX_STABLE_COUNT];
 int line_count;
 int st_entry_count;
 
-uint8_t
-_hex_to_u8(char d)
-{
+uint8_t _hex_to_u8(char d) {
     const char *hexdigits = "0123456789abcdef";
     return strchr(hexdigits, d) - hexdigits;
 }
 
-uint64_t _hex_to_u64(const char *hex)
-{
+uint64_t _hex_to_u64(const char *hex) {
     uint64_t result = 0;
     size_t len = strlen(hex);
 
-    for (size_t i = 0; i < len; i++)
-    {
+    for(size_t i = 0; i < len; i++) {
         result = (result << 4) + _hex_to_u8(hex[i]);
     }
 
     return result;
 }
 
-table_entry_t _parse_entry(char *line)
-{
-    table_entry_t entry = {
-        .name = NULL,
-        .addr = 0,
-        .id = '\0'};
+table_entry_t _parse_entry(char *line) {
+    table_entry_t entry = {.name = NULL, .addr = 0, .id = '\0'};
 
     size_t length = strcspn(line, " ");
     char *address = kmalloc(length + 1);
-    if (address == NULL)
-    {
+    if(address == NULL) {
         dlog("Memory allocation failed");
         return entry;
     }
@@ -55,8 +46,7 @@ table_entry_t _parse_entry(char *line)
     char *name_start = line + length + 3;
     size_t name_length = strcspn(name_start, " ");
     entry.name = kmalloc(name_length + 1);
-    if (entry.name == NULL)
-    {
+    if(entry.name == NULL) {
         dlog("Memory allocation failed for name");
         return entry;
     }
@@ -64,27 +54,25 @@ table_entry_t _parse_entry(char *line)
     strncpy(entry.name, name_start, name_length);
     entry.name[name_length] = '\0';
 
-    vvcdlog("%-50s Address: 0x%-16llx ID: %-c", entry.name, entry.addr, entry.id);
+    vvcdlog("%-50s Address: 0x%-16llx ID: %-c", entry.name, entry.addr,
+            entry.id);
 
     return entry;
 }
 
-void init_stable()
-{
+void init_stable() {
     vfs_op_status status;
     char *map = NULL;
     VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
 
     status = drive_read(vfs, 0, "/sys/kernel/kernel.map", &map);
-    if (status != STATUS_OK)
-    {
+    if(status != STATUS_OK) {
         dlog("Failed to read /sys/kernel/kernel.map!");
         return;
     }
 
     char **map_lines = kmalloc(sizeof(char *) * MAX_STABLE_COUNT);
-    if (map_lines == NULL)
-    {
+    if(map_lines == NULL) {
         dlog("Failed to allocate space for map lines!");
         kfree(map);
         return;
@@ -92,13 +80,11 @@ void init_stable()
 
     char *token = strtok(map, "\n");
     line_count = 0;
-    while (token != NULL && line_count < MAX_STABLE_COUNT)
-    {
+    while(token != NULL && line_count < MAX_STABLE_COUNT) {
         map_lines[line_count] = strdup(token);
-        if (map_lines[line_count] == NULL)
-        {
+        if(map_lines[line_count] == NULL) {
             dlog("Memory allocation failed for map line");
-            for (int i = 0; i < line_count; ++i)
+            for(int i = 0; i < line_count; ++i)
                 kfree(map_lines[i]);
             kfree(map_lines);
             kfree(map);
@@ -109,41 +95,31 @@ void init_stable()
     }
     kfree(map);
 
-    for (int i = 0; i < line_count; ++i)
-    {
-        if (map_lines[i][0] != '\0' && map_lines[i][0] != '\n')
-        {
+    for(int i = 0; i < line_count; ++i) {
+        if(map_lines[i][0] != '\0' && map_lines[i][0] != '\n') {
             table_entry_t entry = _parse_entry(map_lines[i]);
-            for (int j = 0; j < MAX_STABLE_COUNT; ++j)
-            {
-                if (st_entries[j].addr == 0)
-                {
+            for(int j = 0; j < MAX_STABLE_COUNT; ++j) {
+                if(st_entries[j].addr == 0) {
                     st_entries[j] = entry;
                     break;
                 }
             }
             st_entry_count++;
-        }
-        else
-        {
+        } else {
             break;
         }
     }
 
-    for (int k = 0; k < line_count; k++)
-    {
+    for(int k = 0; k < line_count; k++) {
         kfree(map_lines[k]);
     }
 
     kfree(map_lines);
 }
 
-char *get_symbol_name(uint64_t addr)
-{
-    for (int i = 0; i < st_entry_count; i++)
-    {
-        if (st_entries[i].addr == addr)
-        {
+char *get_symbol_name(uint64_t addr) {
+    for(int i = 0; i < st_entry_count; i++) {
+        if(st_entries[i].addr == addr) {
             return st_entries[i].name;
         }
     }
@@ -151,12 +127,9 @@ char *get_symbol_name(uint64_t addr)
     return NULL;
 }
 
-int get_symbol_int(uint64_t addr)
-{
-    for (int i = 0; i < st_entry_count; i++)
-    {
-        if (st_entries[i].addr == addr)
-        {
+int get_symbol_int(uint64_t addr) {
+    for(int i = 0; i < st_entry_count; i++) {
+        if(st_entries[i].addr == addr) {
             return i;
         }
     }
@@ -164,13 +137,10 @@ int get_symbol_int(uint64_t addr)
     return -1;
 }
 
-table_entry_t *lookup_symbol(uint64_t addr)
-{
+table_entry_t *lookup_symbol(uint64_t addr) {
 
-    for (int i = 0; i < st_entry_count; i++)
-    {
-        if (addr >= st_entries[i].addr && addr < st_entries[i + 1].addr)
-        {
+    for(int i = 0; i < st_entry_count; i++) {
+        if(addr >= st_entries[i].addr && addr < st_entries[i + 1].addr) {
             return &st_entries[i];
         }
     }
@@ -180,10 +150,8 @@ table_entry_t *lookup_symbol(uint64_t addr)
 
 uint64_t get_symbol_addr(char *name) {
 
-    for (int i = 0; i < st_entry_count; i++)
-    {
-        if (st_entries[i].name == name)
-        {
+    for(int i = 0; i < st_entry_count; i++) {
+        if(st_entries[i].name == name) {
             return st_entries[i].addr;
         }
     }

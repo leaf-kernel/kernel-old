@@ -13,8 +13,7 @@
 #define RTC_MONTH 0x08
 #define RTC_YEAR 0x09
 
-typedef struct
-{
+typedef struct {
     int seconds;
     int minutes;
     int hours;
@@ -30,4 +29,4 @@ void init_rtc();
 char *_get_month(int month);
 char *_get_day(int day);
 
-#endif // __RTC_H__
+#endif  // __RTC_H__
