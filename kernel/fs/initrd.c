@@ -21,7 +21,7 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size)
         return NULL;
     }
 
-    TARExtract(raw, size, entry);
+    tar_extract(raw, size, entry);
 
     initrd->content = (RamdiskEntry **)kmalloc(entry->fileCount * sizeof(RamdiskEntry *));
     if (initrd->content == NULL)

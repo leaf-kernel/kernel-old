@@ -34,6 +34,7 @@
 #include <sys/limine.h>
 #include <sys/stable.h>
 #include <sys/backtrace.h>
+#include <sys/time/rtc.h>
 #define LEAF_INCLUDE_PRIVATE
 #include <sys/leaf.h>
 
@@ -82,15 +83,26 @@ void _start(void)
     init_pit();
     init_pmm();
     init_apic();
+    init_rtc();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
     init_tty();
-    tty_spawn(0, NULL, 1); // Init tty000 and map it to COM1
+    tty_spawn(0, NULL, 1);
 
     cdlog("Kernel init done.");
-    cplog("Hello, World!");
+
+    rtc_time_point *time = (rtc_time_point *)kmalloc(sizeof(rtc_time_point));
+    if (time == NULL)
+    {
+        dlog("Failed to init time!");
+        hcf();
+    }
+
+    rtc_get(time);
+
+    cdlog("%.3s %s %d %d:%d:%d 20%d", _get_day(time->day_of_week), _get_month(time->month), time->day_of_month, time->hours, time->minutes, time->seconds, time->year);
     hlt();
 }
