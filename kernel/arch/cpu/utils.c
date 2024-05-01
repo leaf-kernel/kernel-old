@@ -44,7 +44,7 @@ void _shutdown_emu()
     outw(0x600, 0x34);
 }
 
-void _reboot()
+void _legacy_reboot()
 {
 #define KBRD_INTRFC 0x64
 
@@ -73,4 +73,14 @@ void _reboot()
 loop:
     asm volatile("hlt");
     goto loop;
+}
+
+void _reboot()
+{
+    if (_acpi_mode)
+    {
+        outb(fadt_table->ResetReg.Address, fadt_table->ResetValue);
+    }
+
+    _legacy_reboot();
 }

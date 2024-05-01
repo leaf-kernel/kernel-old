@@ -2,6 +2,7 @@
 #include <sys/leaf.h>
 #include <sys/time/rtc.h>
 #include <libc/stdlib/memory/kheap.h>
+#include <arch/cpu/utils.h>
 
 int main()
 {
@@ -14,6 +15,6 @@ int main()
 
     rtc_get(time);
     cplog("%.3s %s %d %d:%d:%d 20%d", _get_day(time->day_of_week), _get_month(time->month), time->day_of_month, time->hours, time->minutes, time->seconds, time->year);
-    hcf();
+    hlt();
     return LEAF_RETURN_SUCCESS;
 }
