@@ -23,6 +23,7 @@ typedef struct
 } TTY_t;
 
 void init_tty();
+void tty_destroy(uint8_t id);
 void tty_spawn(uint8_t id, char *font, uint8_t mapped_com);
 void tty_switch(uint8_t id);
 void tty_flush();

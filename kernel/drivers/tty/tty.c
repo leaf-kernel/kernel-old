@@ -35,6 +35,24 @@ void init_tty()
     cdlog("done.");
 }
 
+void tty_destroy(uint8_t id)
+{
+    if (id >= MAX_TTYS || ttys[id] == NULL)
+    {
+        return;
+    }
+
+    if (ttys[id]->ctx != NULL)
+    {
+        kfree(ttys[id]->ctx);
+        ttys[id]->ctx = NULL;
+    }
+
+    kfree(ttys[id]);
+    ttys[id] = NULL;
+    cdlog("tty%04d destroyed", id);
+}
+
 void tty_spawn(uint8_t id, char *font, uint8_t mapped_com)
 {
     if (id >= MAX_TTYS || ttys[id] != NULL)
@@ -112,15 +130,18 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com)
 
 void tty_switch(uint8_t id)
 {
-    ttys[id]->id = id;
-    currentTTYid = id;
-    currentTTY = ttys[id];
-    tty_flush();
+    if (ttys[id] != NULL)
+    {
+        ttys[id]->id = id;
+        currentTTYid = id;
+        currentTTY = ttys[id];
+        tty_flush();
+    }
 }
 
 void tty_flush()
 {
-    if (currentTTY != NULL && currentTTY->ctx != NULL)
+    if (currentTTY != NULL && currentTTY->ctx != NULL && currentTTY != NULL && ttys[currentTTYid] != NULL)
     {
         nighterm_flush(currentTTY->ctx, 27, 27, 27);
         nighterm_set_bg_color(currentTTY->ctx, 27, 27, 27);
