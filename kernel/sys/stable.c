@@ -177,3 +177,16 @@ table_entry_t *lookup_symbol(uint64_t addr)
 
     return NULL;
 }
+
+uint64_t get_symbol_addr(char *name) {
+
+    for (int i = 0; i < st_entry_count; i++)
+    {
+        if (st_entries[i].name == name)
+        {
+            return st_entries[i].addr;
+        }
+    }
+
+    return 0;
+}

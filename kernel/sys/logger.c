@@ -1,4 +1,5 @@
 #include <sys/logger.h>
+#include <sys/stable.h>
 
 void debug_log(const char *file, const int line, const char *function, const char *fmt, ...)
 {
@@ -14,7 +15,7 @@ void cdebug_log(const char *function, const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    dprintf("%s: ", function);
+    dprintf("%-*.*s: ", 14, 14, function);
     vdprintf(fmt, args);
     dprintf("\r\n");
     va_end(args);
