@@ -52,4 +52,6 @@ extern volatile struct limine_rsdp_request rsdp_request;
 extern struct limine_framebuffer *framebuffer;
 extern uint64_t hhdm_offset;
 
+int main();
+
 #endif // __LEAF_H__

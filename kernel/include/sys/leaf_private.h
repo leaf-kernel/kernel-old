@@ -15,6 +15,12 @@ void *__LEAF_GET_VFS__();
 
 #define __LEAF_VOID_REDIRECT__ (void)0
 
+#ifdef __LEAF_VVERBOSE__
+#ifndef __LEAF_VERBOSE__
+#define __LEAF_VERBOSE__
+#endif
+#endif
+
 #ifdef __LEAF_DEBUG_WRAPPERS__
 #include <sys/logger.h>
 #include <libc/stdio/printf.h>
@@ -22,6 +28,8 @@ void *__LEAF_GET_VFS__();
 #define cdlog(...) cdebug_log(__func__, __VA_ARGS__)
 #define plog(...) pdebug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
 #define cplog(...) pcdebug_log(__func__, __VA_ARGS__)
+#define __leaf_printf(...) printf(__VA_ARGS__)
+#define __leaf_dprintf(...) dprintf(__VA_ARGS__)
 #ifdef __LEAF_VERBOSE__
 #define vcdlog(...) cdebug_log(__func__, __VA_ARGS__)
 #else
