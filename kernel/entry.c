@@ -86,18 +86,11 @@ void _start(void)
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address), mod_request.response->modules[0]->size);
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
-
     init_stable();
-    char *entry = get_symbol_name((uint64_t)_start);
-    if (strcmp(entry, "_start") != 0)
-    {
-        cdlog("\033[1;31mSymbol lookup test failed!\033[0m");
-    }
+    init_tty();
+    tty_spawn(0, NULL, 1); // Init tty000 and map it to COM1
 
     cdlog("Kernel init done.");
-    cdlog("on %s", _serial_cur_com_char);
-
-    switch_serial(2, 0);
-    dprintf("Hello, World! on %s", _serial_cur_com_char);
+    cplog("Hello, World!");
     hlt();
 }

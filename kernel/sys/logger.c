@@ -34,7 +34,7 @@ void pcdebug_log(const char *function, const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    printf("%s: ", function);
+    printf("%-*.*s: ", 14, 14, function);
     vprintf(fmt, args);
     printf("\r\n");
     va_end(args);
