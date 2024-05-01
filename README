@@ -113,14 +113,9 @@ Architectures
 
 Architecture | Status
 -------------|-------
-x86-64       | ✅
-x86          | ❌
-
-
-Bootloaders                                                  | Status
--------------------------------------------------------------|-------
-[x86_64-limine](https://github.com/limine-bootloader/limine) | ✅
-[x86-leaf](https://github.com/leaf-kernel/bootloader)        | ❌
+x86-64       | Supported
+x86          | Not supported
+aarch64      | Not supported
 
 Config
 ------
