@@ -77,6 +77,7 @@ void _start(void)
 
     dprintf("\033c");
 
+    init_serial();
     init_idt();
     init_pit();
     init_pmm();
@@ -94,5 +95,6 @@ void _start(void)
     }
 
     cdlog("Kernel init done.");
+    cdlog("Initialized on %s", _serial_cur_com_char);
     hlt();
 }

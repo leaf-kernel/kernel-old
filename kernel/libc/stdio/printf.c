@@ -142,8 +142,11 @@ static inline void _out_dbg(char character, UNUSED void *buffer,
 {
     if (character == 0)
         return;
-    outb(QEMU_SERIAL_PORT,
-         character);
+
+    if (_serial_has_been_init)
+        write_serial(character);
+    else
+        outb(_SERIAL_COM1, character);
 }
 
 // internal null output
