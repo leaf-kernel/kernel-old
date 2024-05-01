@@ -91,13 +91,11 @@ void _start(void)
     init_stable();
     init_tty();
     tty_spawn(0, NULL, 1);
-    tty_spawn(1, NULL, 2);
-    tty_spawn(2, NULL, 3);
-    tty_switch(0);
 
     cdlog("Kernel init done. On tty%04d", currentTTYid);
 
     int status = main();
-    cdlog("Kernel exited with code %d", status);
+    cdlog("Kernel exited with code %d. Shuting down!", status);
+    _shutdown_emu();
     hlt();
 }

@@ -1,10 +1,13 @@
 
 #include <arch/x86_64/apic/apic.h>
 #include <arch/x86_64/acpi/rsdt.h>
+#include <arch/x86_64/acpi/fadt.h>
+#include <drivers/serial/serial.h>
 #include <sys/limine.h>
 #include <sys/leaf.h>
 
 bool _xsdt_is_available;
+bool _acpi_mode;
 
 void init_acpi()
 {
@@ -21,7 +24,11 @@ void init_acpi()
         _xsdt_is_available = true;
         init_rsdt();
     }
-
+    outb(fadt_table->SMI_CommandPort, fadt_table->AcpiEnable);
+    while (inw(fadt_table->PM1aControlBlock) & 1 == 0)
+        ;
+    cdlog("Switched to ACPI mode!");
+    _acpi_mode = true;
     cdlog("done");
 }
 

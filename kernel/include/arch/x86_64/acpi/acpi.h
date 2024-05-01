@@ -38,6 +38,8 @@ typedef struct
     uint32_t creator_revision;
 } __attribute__((packed)) sdt_t;
 
+extern bool _acpi_mode;
+
 void init_acpi();
 
 void *_find_sdt(char *signature);
