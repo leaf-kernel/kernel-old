@@ -17,5 +17,6 @@ int main()
 
     cplog("%.3s %s %d %d:%d:%d 20%d", _get_day(time->day_of_week), _get_month(time->month), time->day_of_month, time->hours, time->minutes, time->seconds, time->year);
 
+    hlt(); // Dont quit the kernel :^)
     return 0;
 }

@@ -1,6 +1,7 @@
 #include <arch/x86_64/acpi/acpi.h>
 #include <arch/x86_64/acpi/rsdt.h>
 #include <arch/x86_64/acpi/madt.h>
+#include <arch/x86_64/acpi/fadt.h>
 
 xsdt_t *g_xsdt;
 rsdt_t *g_rsdt;
@@ -26,6 +27,15 @@ void init_rsdt()
     }
 
     init_madt(madt);
+    fadt_t *fadt = _find_sdt("FACP");
+    if (madt == NULL)
+    {
+
+        cdlog("Failed to find FADT!");
+        hcf();
+    }
+
+    init_fadt(fadt);
 
     cdlog("cores: %d", g_acpi_cpu_count);
     cdlog("done");
