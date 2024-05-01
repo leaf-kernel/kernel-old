@@ -68,6 +68,12 @@ void *__LEAF_GET_VFS__()
     return (void *)vfs;
 }
 
+void _init_N_ttys(int n)
+{
+    for (int i = 0; i < n; i++)
+        tty_spawn(i, NULL, i + 1);
+}
+
 // Kernel entry function
 void _start(void)
 {
@@ -90,9 +96,7 @@ void _start(void)
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
     init_tty();
-    tty_spawn(0, NULL, 1);
-    tty_spawn(1, NULL, 2);
-    tty_spawn(2, NULL, 3);
+    _init_N_ttys(8);
     tty_switch(0);
 
     cdlog("Kernel init done. On tty%04d", currentTTYid);
