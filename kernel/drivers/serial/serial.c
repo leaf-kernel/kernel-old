@@ -2,7 +2,14 @@
 
 #define UNUSED 0x80
 
-void iowait() { outb(UNUSED, 0); }
+uint16_t __cur_port;
+bool _serial_has_been_init;
+char *_serial_cur_com_char;
+
+void iowait()
+{
+    outb(UNUSED, 0);
+}
 
 void outb(uint16_t port, uint8_t value)
 {
@@ -38,4 +45,120 @@ uint32_t ind(uint16_t port)
     uint32_t r;
     __asm__ volatile("inl %1, %0" : "=a"(r) : "dN"(port));
     return r;
+}
+
+bool _register_port(uint16_t port)
+{
+    outb(port + 1, 0x00);
+    outb(port + 3, 0x80);
+    outb(port + 0, 0x03);
+    outb(port + 1, 0x00);
+    outb(port + 3, 0x03);
+    outb(port + 2, 0xC7);
+    outb(port + 4, 0x0B);
+    outb(port + 4, 0x1E);
+    outb(port + 0, 0xAE);
+    if (inb(port + 0) != 0xAE)
+    {
+        dlog("Failed to register port \"0x%04llx\"", port);
+        return false;
+    }
+
+    outb(port + 4, 0x0F);
+    vcdlog("Registered port \"0x%04llx\"", port);
+    return true;
+}
+
+void init_serial()
+{
+    if (_register_port(_SERIAL_COM1))
+    {
+        switch_serial(1, 0);
+    }
+    else
+    {
+        dlog("Failed to initialize serial!");
+        hcf();
+    }
+
+    _serial_has_been_init = true;
+    cdlog("done.");
+}
+
+int _serial_received()
+{
+    return inb(__cur_port + 5) & 1;
+}
+
+char read_serial()
+{
+    while (_serial_received() == 0)
+        ;
+
+    return inb(__cur_port);
+}
+void switch_serial(uint8_t id, uint16_t port)
+{
+    if (id != 0 && id <= 8)
+    {
+        switch (id)
+        {
+        case 1:
+            __cur_port = _SERIAL_COM1;
+            _serial_cur_com_char = "COM1";
+            break;
+        case 2:
+            __cur_port = _SERIAL_COM2;
+            _serial_cur_com_char = "COM2";
+            break;
+        case 3:
+            __cur_port = _SERIAL_COM3;
+            _serial_cur_com_char = "COM3";
+            break;
+        case 4:
+            __cur_port = _SERIAL_COM4;
+            _serial_cur_com_char = "COM4";
+            break;
+        case 5:
+            __cur_port = _SERIAL_COM5;
+            _serial_cur_com_char = "COM5";
+            break;
+        case 6:
+            __cur_port = _SERIAL_COM6;
+            _serial_cur_com_char = "COM6";
+            break;
+        case 7:
+            __cur_port = _SERIAL_COM7;
+            _serial_cur_com_char = "COM7";
+            break;
+        case 8:
+            __cur_port = _SERIAL_COM8;
+            _serial_cur_com_char = "COM8";
+            break;
+        default:
+            dlog("Invalid COM id!");
+            hcf();
+            break;
+        }
+    }
+    else
+    {
+        __cur_port = port;
+        _serial_cur_com_char = "???";
+    }
+
+    vcdlog("Serial target: \"0x%04llx\"", __cur_port);
+}
+
+int _is_transmit_empty()
+{
+    return inb(__cur_port + 5) & 0x20;
+}
+
+void write_serial(char a)
+{
+    while (_is_transmit_empty() == 0)
+        ;
+
+    outb(__cur_port, a);
 }
