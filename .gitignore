@@ -12,3 +12,4 @@
 /initrd/sys/kernel/kernel.map
 /kernel/include/drivers/tty/nighterm
 /kernel/include/utils/john
+COM*

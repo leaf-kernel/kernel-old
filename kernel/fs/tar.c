@@ -21,7 +21,7 @@ char *TARRemovePrefix(const char *str, const char *prefix)
     return strdup(str);
 }
 
-void TARExtract(const char *raw, uint64_t size, TAREntry *tar)
+void tar_extract(const char *raw, uint64_t size, TAREntry *tar)
 {
     tar->files = NULL;
     tar->fileCount = 0;

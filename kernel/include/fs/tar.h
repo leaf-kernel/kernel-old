@@ -41,7 +41,7 @@ typedef struct
     int fileCount;
 } TAREntry;
 
-void TARExtract(const char *raw, uint64_t size, TAREntry *tar);
+void tar_extract(const char *raw, uint64_t size, TAREntry *tar);
 void TARFree(TAREntry *tar);
 
 #endif // __TAR_H__

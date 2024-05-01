@@ -147,7 +147,7 @@ void switch_serial(uint8_t id, uint16_t port)
         _serial_cur_com_char = "???";
     }
 
-    vcdlog("Serial target: \"0x%04llx\"", __cur_port);
+    vvcdlog("Serial target: \"0x%04llx\"", __cur_port);
 }
 
 int _is_transmit_empty()

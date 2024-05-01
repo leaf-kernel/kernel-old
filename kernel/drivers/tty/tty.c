@@ -35,7 +35,7 @@ void init_tty()
     cdlog("done.");
 }
 
-void tty_spawn(uint8_t id, char *font)
+void tty_spawn(uint8_t id, char *font, uint8_t mapped_com)
 {
     if (id >= MAX_TTYS || ttys[id] != NULL)
     {
@@ -53,6 +53,7 @@ void tty_spawn(uint8_t id, char *font)
     currentTTY = ttys[currentTTYid];
     struct nighterm_ctx *context = kmalloc(sizeof(struct nighterm_ctx));
     currentTTY->ctx = context;
+    currentTTY->mapped_com = mapped_com;
 
     int s;
     if (font != NULL)
@@ -103,7 +104,10 @@ void tty_spawn(uint8_t id, char *font)
     }
 
     tty_switch(id);
-    cdlog("tty%04d", id);
+    if (mapped_com > 0 && mapped_com <= 8)
+        cdlog("tty%04d mapped to COM%d", id, mapped_com);
+    else
+        cdlog("tty%04d mapped to nothing", id);
 }
 
 void tty_switch(uint8_t id)
@@ -130,6 +134,12 @@ void tty_write(char ch)
     if (currentTTY != NULL && currentTTY->ctx != NULL)
     {
         nighterm_write(currentTTY->ctx, ch);
-        vcdlog("Wrote '%c' to tty%03d", ch, currentTTY->id);
+        vvcdlog("Wrote '%c' to tty%03d", ch, currentTTY->id);
+    }
+
+    if (currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0)
+    {
+        switch_serial(currentTTY->mapped_com, 0);
+        write_serial(ch);
     }
 }
