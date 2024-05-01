@@ -3,6 +3,7 @@ target_arch=${1:-x86_64}
 bootloader=${2:-limine}
 toolchain=${3:-arch/$target_arch/$target_arch-$bootloader.toolchain.cmake}
 
+./env/format
 
 nighterm_out="kernel/include/drivers/tty/nighterm/";
 if [ "$target_arch" = "x86_64" -o "$target_arch" = "x86" ]; then
