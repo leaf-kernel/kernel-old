@@ -99,7 +99,6 @@ void _start(void)
 
     int status = main();
     cdlog("Kernel exited with code %d. Shuting down!", status);
-    _reboot();
     _shutdown_emu();
     hlt();
 }
