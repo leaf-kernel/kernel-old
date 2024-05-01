@@ -108,15 +108,6 @@ Ensure you have the following tools installed:
 - 'qemu' (Emulator for testing the kernel)
 - 'docker' (For building using docker)
 
-Architectures
--------------
-
-Architecture | Status
--------------|-------
-x86-64       | Supported
-x86          | Not supported
-aarch64      | Not supported
-
 Config
 ------
 
