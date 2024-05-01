@@ -70,6 +70,7 @@ typedef struct
     generic_address_t X_GPE1Block;
 } __attribute((packed)) fadt_t;
 
+extern fadt_t *fadt_table;
 void init_fadt(fadt_t *fadt);
 
 #endif // __FADT_H__

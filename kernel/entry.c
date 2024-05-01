@@ -98,6 +98,8 @@ void _start(void)
     cdlog("Kernel init done. On tty%04d", currentTTYid);
 
     int status = main();
-    cdlog("Kernel exited with code %d", status);
+    cdlog("Kernel exited with code %d. Shuting down!", status);
+    _reboot();
+    _shutdown_emu();
     hlt();
 }
