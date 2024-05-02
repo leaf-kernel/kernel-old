@@ -1,4 +1,6 @@
 #include <arch/cpu/cpuid.h>
+#include <libc/stdlib/memory/kheap.h>
+#include <stddef.h>
 
 int cpuid_string(int code, uint32_t where[4]) {
     asm volatile("cpuid"

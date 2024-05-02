@@ -55,16 +55,24 @@ void panic(const char *reason, const char *description, int_frame_t frame,
     hcf();
 }
 
-// Utils functions (CPUID)
-void get_intel_cpu_brand_string(char *brand_string) {
-    uint32_t brand[12];
+char *get_intel_brand() {
+#define MAX_BRAND_STRING_LENGTH 48
+    if(cpuid_string(CPUID_INTELEXTENDED, NULL) < CPUID_INTELBRANDSTRINGEND)
+        return NULL;
+
+    char *brand_string =
+        (char *)kmalloc(MAX_BRAND_STRING_LENGTH * sizeof(char));
+    if(!brand_string)
+        return NULL;
+
+    uint32_t brand[4];
+    memset(brand, 0, sizeof(brand));
 
     cpuid_string(CPUID_INTELBRANDSTRING, brand);
-    cpuid_string(CPUID_INTELBRANDSTRINGMORE, brand + 4);
-    cpuid_string(CPUID_INTELBRANDSTRINGEND, brand + 8);
 
     memcpy(brand_string, brand, sizeof(brand));
-    brand_string[sizeof(brand)] = '\0';
+
+    return brand_string;
 }
 
 void get_cpu_vendor_string(char *vendor_string) {
