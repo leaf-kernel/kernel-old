@@ -12,9 +12,9 @@ int main() {
     }
 
     rtc_get(time);
-    printf("%.3s %s %d %d:%d:%d 20%d\n", _get_day(time->day_of_week),
-           _get_month(time->month), time->day_of_month, time->hours,
-           time->minutes, time->seconds, time->year);
+    cplog("%.3s %s %d %d:%d:%d 20%d", _get_day(time->day_of_week),
+          _get_month(time->month), time->day_of_month, time->hours,
+          time->minutes, time->seconds, time->year);
     hlt();
     return LEAF_RETURN_SUCCESS;
 }

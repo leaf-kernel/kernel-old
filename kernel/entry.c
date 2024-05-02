@@ -14,6 +14,7 @@
 // Memory imports
 #include <libc/stdlib/memory/kheap.h>
 #include <libc/stdlib/memory/pmm.h>
+#include <libc/stdlib/memory/vmm.h>
 
 // Logging imports
 #include <drivers/tty/tty.h>
@@ -79,6 +80,7 @@ void _start(void) {
     init_idt();
     init_pit();
     init_pmm();
+    init_vmm();
     init_apic();
     init_rtc();
 
