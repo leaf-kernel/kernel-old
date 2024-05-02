@@ -51,7 +51,7 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
     ttys[id] = kmalloc(sizeof(TTY_t));
     if(ttys[id] == NULL) {
         debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to allocate memory for tty%04d!", id);
+                  "Failed to allocate memory for tty%03d!", id);
         return;
     }
 
@@ -87,15 +87,15 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     if(s != NIGHTERM_SUCCESS) {
         debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to initialize nighterm for tty%04d!", id);
+                  "Failed to initialize nighterm for tty%03d!", id);
         return;
     }
 
     tty_switch(id);
     if(mapped_com > 0 && mapped_com <= 8)
-        cdlog("tty%04d mapped to COM%d", id, mapped_com);
+        cdlog("tty%03d mapped to COM%d", id, mapped_com);
     else
-        cdlog("tty%04d mapped to nothing", id);
+        cdlog("tty%03d mapped to nothing", id);
 }
 
 void tty_switch(uint8_t id) {

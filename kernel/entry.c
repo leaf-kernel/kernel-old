@@ -74,15 +74,15 @@ void _start(void) {
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
 
-    dprintf("\033c");
-
     init_serial();
+    flush_serial();
+    init_rtc();
+
     init_idt();
     init_pit();
     init_pmm();
     init_vmm();
     init_apic();
-    init_rtc();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),
                           mod_request.response->modules[0]->size);
@@ -92,10 +92,17 @@ void _start(void) {
     init_tty();
     tty_spawn(0, NULL, 1);
 
-    cdlog("Kernel init done. On tty%04d", currentTTYid);
-
+    cdlog("Kernel init done. On tty%03d", currentTTYid);
     int status = main();
-    cdlog("Kernel exited with code %d. Shuting down!", status);
+
+    cdlog("Kernel exited with code %d.", status);
+
+    if(status != LEAF_RETURN_SUCCESS) {
+        cdlog("Something went wrong! Rebooting");
+        _reboot();
+    }
+
+    cdlog("Successfully quit! Shuting down");
     _shutdown_emu();
     hlt();
 }

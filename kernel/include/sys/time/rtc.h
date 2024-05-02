@@ -24,7 +24,8 @@ typedef struct {
     int full[6];
 } rtc_time_point;
 
-void rtc_get(rtc_time_point *time);
+rtc_time_point rtc_get();
+uint64_t time_diff_seconds(rtc_time_point start, rtc_time_point end);
 void init_rtc();
 char *_get_month(int month);
 char *_get_day(int day);
