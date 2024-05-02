@@ -134,3 +134,9 @@ void write_serial(char a) {
 
     outb(__cur_port, a);
 }
+
+void flush_serial() {
+    write_serial(27);
+    write_serial(99);
+    write_serial(0);
+}
