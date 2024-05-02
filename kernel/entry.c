@@ -74,9 +74,8 @@ void _start(void) {
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
 
-    dprintf("\033c");
-
     init_serial();
+    flush_serial();
     init_rtc();
 
     init_idt();
@@ -93,8 +92,7 @@ void _start(void) {
     init_tty();
     tty_spawn(0, NULL, 1);
 
-    cdlog("Kernel init done. On tty%04d", currentTTYid);
-
+    cdlog("Kernel init done. On tty%03d", currentTTYid);
     int status = main();
     cdlog("Kernel exited with code %d. Shuting down!", status);
     _shutdown_emu();

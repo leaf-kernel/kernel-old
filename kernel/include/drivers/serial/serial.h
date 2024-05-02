@@ -31,6 +31,7 @@ void init_serial();
 void switch_serial(uint8_t id, uint16_t port);
 char read_serial();
 void write_serial(char a);
+void flush_serial();
 
 extern bool _serial_has_been_init;
 extern char *_serial_cur_com_char;
