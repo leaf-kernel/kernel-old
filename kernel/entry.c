@@ -94,7 +94,15 @@ void _start(void) {
 
     cdlog("Kernel init done. On tty%03d", currentTTYid);
     int status = main();
-    cdlog("Kernel exited with code %d. Shuting down!", status);
+
+    cdlog("Kernel exited with code %d.", status);
+
+    if(status != LEAF_RETURN_SUCCESS) {
+        cdlog("Something went wrong! Rebooting");
+        _reboot();
+    }
+
+    cdlog("Successfully quit! Shuting down");
     _shutdown_emu();
     hlt();
 }

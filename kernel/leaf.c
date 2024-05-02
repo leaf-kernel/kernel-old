@@ -10,10 +10,10 @@
 
 int main() {
     rtc_time_point time = rtc_get();
+
     cplog("%.3s %s %d %d:%d:%d 20%d", _get_day(time.day_of_week),
           _get_month(time.month), time.day_of_month, time.hours, time.minutes,
           time.seconds, time.year);
 
-    hlt();
     return LEAF_RETURN_SUCCESS;
 }
