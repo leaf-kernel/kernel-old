@@ -77,12 +77,13 @@ void _start(void) {
     dprintf("\033c");
 
     init_serial();
+    init_rtc();
+
     init_idt();
     init_pit();
     init_pmm();
     init_vmm();
     init_apic();
-    init_rtc();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),
                           mod_request.response->modules[0]->size);
