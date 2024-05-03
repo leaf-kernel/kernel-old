@@ -92,6 +92,7 @@ void _start(void) {
     init_stable();
     init_tty();
     tty_spawn(0, NULL, 1);
+    __LEAF_ENABLE_LOG();
 
     cdlog("Kernel init done. On tty%03d", currentTTYid);
     int status = main();

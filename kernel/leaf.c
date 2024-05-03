@@ -14,12 +14,12 @@ int main() {
     __LEAF_DISABLE_LOG();
     tty_spawn(1, NULL, 2);
     __LEAF_ENABLE_LOG();
-    cdlog("root @ tty%03d", currentTTYid);
+    printf("root @ tty%03d\r\n", currentTTYid);
     rtc_time_point time = rtc_get();
 
-    cplog("%.3s %s %d %d:%d:%d 20%d", _get_day(time.day_of_week),
-          _get_month(time.month), time.day_of_month, time.hours, time.minutes,
-          time.seconds, time.year);
+    printf("%.3s %s %d %d:%d:%d 20%d\r\n", _get_day(time.day_of_week),
+           _get_month(time.month), time.day_of_month, time.hours, time.minutes,
+           time.seconds, time.year);
 
     hlt();
     return LEAF_RETURN_SUCCESS;
