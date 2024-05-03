@@ -63,7 +63,12 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     int s;
     if(font != NULL) {
-        char *out;
+        char *out = (char*)kmalloc(sizeof(char));
+        if(out == NULL) {
+            dlog("Failed to allocate memory for the font buffer for tty%03d", id);
+            hcf();
+        }
+            
         vfs_op_status status;
         status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
 
