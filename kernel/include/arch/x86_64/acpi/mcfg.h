@@ -19,5 +19,12 @@ typedef struct {
 } __attribute__((packed)) device_config;
 
 void init_mcfg(mcfg_t *h);
+void iterate_pci();
+
+uint32_t *pci_getaddr(uint8_t bus, uint8_t dev, uint8_t func, uint8_t off);
+
+uint32_t pci_read(uint8_t bus, uint8_t dev, uint8_t func, uint8_t off);
+void pci_write(uint8_t bus, uint8_t dev, uint8_t func, uint8_t off,
+               uint32_t val);
 
 #endif  // __MCFG_H__

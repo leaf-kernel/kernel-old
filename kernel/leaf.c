@@ -4,7 +4,7 @@
 #include <arch/cpu/cpu.h>
 #include <arch/cpu/cpuid.h>
 #include <arch/cpu/utils.h>
-#include <drivers/pci/pci.h>
+#include <arch/x86_64/acpi/mcfg.h>
 #include <fs/vfs.h>
 #include <libc/stdlib/memory/kheap.h>
 #include <sys/_config.h>
@@ -19,7 +19,7 @@ int main() {
            _get_month(time.month), time.day_of_month, time.hours, time.minutes,
            time.seconds, time.year);
 
-    init_pci();
+    iterate_pci();
 
     hlt();
     return LEAF_RETURN_SUCCESS;
