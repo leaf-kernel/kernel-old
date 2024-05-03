@@ -138,5 +138,8 @@ void flush_serial() {
         write_serial(27);
         write_serial(99);
     }
-    write_serial(0);
+
+    if(_leaf_should_flush_serial) {
+        write_serial(0);
+    }
 }

@@ -19,7 +19,7 @@ void cdebug_log(const char *function, const char *fmt, ...) {
     if(_leaf_log) {
         va_list args;
         va_start(args, fmt);
-        dprintf("%-*.*s: ", 18, 18, function);
+        dprintf("[%-*.*s]: ", 14, 14, function);
         vdprintf(fmt, args);
         dprintf("\r\n");
         va_end(args);
@@ -40,7 +40,7 @@ void pcdebug_log(const char *function, const char *fmt, ...) {
     if(_leaf_log) {
         va_list args;
         va_start(args, fmt);
-        printf("%-*.*s: ", 18, 18, function);
+        printf("[%-*.*s]: ", 14, 14, function);
         vprintf(fmt, args);
         printf("\r\n");
         va_end(args);

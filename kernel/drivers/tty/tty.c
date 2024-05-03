@@ -63,12 +63,13 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     int s;
     if(font != NULL) {
-        char *out = (char*)kmalloc(sizeof(char));
+        char *out = (char *)kmalloc(sizeof(char));
         if(out == NULL) {
-            dlog("Failed to allocate memory for the font buffer for tty%03d", id);
+            dlog("Failed to allocate memory for the font buffer for tty%03d",
+                 id);
             hcf();
         }
-            
+
         vfs_op_status status;
         status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
 
@@ -98,9 +99,9 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     tty_switch(id);
     if(mapped_com > 0 && mapped_com <= 8)
-        cdlog("tty%03d mapped to COM%d", id, mapped_com);
+        cdlog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
     else
-        cdlog("tty%03d mapped to nothing", id);
+        cdlog("Spawned tty%03d (tty%03d -> NULL)", id, id);
 }
 
 void tty_switch(uint8_t id) {

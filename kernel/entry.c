@@ -64,6 +64,7 @@ Ramdisk *initrd;
 VFS_t *vfs;
 bool _leaf_log;
 bool _leaf_should_clear_serial;
+bool _leaf_should_flush_serial;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -78,6 +79,9 @@ void _start(void) {
 #endif
     __LEAF_ENABLE_LOG();
     init_serial();
+    __LEAF_FLUSH_SERIAL();
+    __LEAF_CLEAR_SERIAL();
+    flush_serial();
     init_rtc();
 
     init_idt();
@@ -93,7 +97,10 @@ void _start(void) {
     init_stable();
     init_tty();
     __LEAF_DONT_CLEAR_SERIAL();
+    __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
+    __LEAF_FLUSH_SERIAL();
+    __LEAF_CLEAR_SERIAL();
 
     cdlog("Kernel init done. On tty%03d", currentTTYid);
     int status = main();
