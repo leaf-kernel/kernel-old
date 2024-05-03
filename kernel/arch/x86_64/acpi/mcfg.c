@@ -37,7 +37,7 @@ void iterate_pci() {
                 if(vendor_id == 0x0000 || vendor_id == 0xFFFF) {
                     continue;
                 }
-                cplog(
+                cdlog(
                     "PCI Bus: %02d Device: %02d ID: %04X Function: %d USB: %s",
                     (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF), device_id,
                     ((uint8_t)((function & 0xFF))),
