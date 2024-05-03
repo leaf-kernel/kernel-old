@@ -37,6 +37,7 @@
 #include <sys/stable.h>
 #include <sys/time/rtc.h>
 #define LEAF_INCLUDE_PRIVATE
+#include <sys/_config.h>
 #include <sys/leaf.h>
 
 // Utility imports
@@ -61,6 +62,7 @@ struct limine_framebuffer *framebuffer;
 uint64_t hhdm_offset;
 Ramdisk *initrd;
 VFS_t *vfs;
+bool _leaf_log;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -73,9 +75,8 @@ void _start(void) {
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
-
+    __LEAF_ENABLE_LOG();
     init_serial();
-    flush_serial();
     init_rtc();
 
     init_idt();

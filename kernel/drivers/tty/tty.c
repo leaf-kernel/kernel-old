@@ -103,6 +103,7 @@ void tty_switch(uint8_t id) {
         ttys[id]->id = id;
         currentTTYid = id;
         currentTTY = ttys[id];
+        switch_serial(currentTTY->mapped_com, 0);
         tty_flush();
     }
 }
@@ -110,6 +111,7 @@ void tty_switch(uint8_t id) {
 void tty_flush() {
     if(currentTTY != NULL && currentTTY->ctx != NULL && currentTTY != NULL &&
        ttys[currentTTYid] != NULL) {
+        flush_serial();
         nighterm_flush(currentTTY->ctx, 27, 27, 27);
         nighterm_set_bg_color(currentTTY->ctx, 27, 27, 27);
         nighterm_set_fg_color(currentTTY->ctx, 255, 255, 255);
@@ -120,7 +122,6 @@ void tty_flush() {
 void tty_write(char ch) {
     if(currentTTY != NULL && currentTTY->ctx != NULL) {
         nighterm_write(currentTTY->ctx, ch);
-        vvcdlog("Wrote '%c' to tty%03d", ch, currentTTY->id);
     }
 
     if(currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0) {
