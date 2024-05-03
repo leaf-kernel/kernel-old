@@ -15,5 +15,6 @@ int main() {
           _get_month(time.month), time.day_of_month, time.hours, time.minutes,
           time.seconds, time.year);
 
+    hlt();
     return LEAF_RETURN_SUCCESS;
 }
