@@ -12,10 +12,10 @@
 #include <utils/parsing/ini.h>
 
 int main() {
-    printf("root @ tty%03d\r\n", currentTTYid);
+    cplog("root @ tty%03d", currentTTYid);
     rtc_time_point time = rtc_get();
 
-    printf("%.3s %s %d %d:%d:%d 20%d\r\n", _get_day(time.day_of_week),
+    cplog("%.3s %s %d %d:%d:%d 20%d", _get_day(time.day_of_week),
            _get_month(time.month), time.day_of_month, time.hours, time.minutes,
            time.seconds, time.year);
 
