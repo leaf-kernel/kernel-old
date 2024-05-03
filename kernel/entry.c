@@ -63,6 +63,7 @@ uint64_t hhdm_offset;
 Ramdisk *initrd;
 VFS_t *vfs;
 bool _leaf_log;
+bool _leaf_should_clear_serial;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -91,10 +92,10 @@ void _start(void) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
     init_tty();
+    __LEAF_DONT_CLEAR_SERIAL();
     tty_spawn(0, NULL, 1);
-    __LEAF_ENABLE_LOG();
 
-    cdlog("Kernel init done. On tty%03d", currentTTYid);
+    cdlog("Kernel init done. On tty%03d\n", currentTTYid);
     int status = main();
 
     cdlog("Kernel exited with code %d.", status);

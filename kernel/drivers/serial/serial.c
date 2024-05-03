@@ -134,7 +134,9 @@ void write_serial(char a) {
 }
 
 void flush_serial() {
-    write_serial(27);
-    write_serial(99);
+    if(_leaf_should_clear_serial) {
+        write_serial(27);
+        write_serial(99);
+    }
     write_serial(0);
 }

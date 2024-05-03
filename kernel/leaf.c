@@ -12,9 +12,6 @@
 #include <utils/parsing/ini.h>
 
 int main() {
-    __LEAF_DISABLE_LOG();
-    tty_spawn(1, NULL, 2);
-    __LEAF_ENABLE_LOG();
     printf("root @ tty%03d\r\n", currentTTYid);
     rtc_time_point time = rtc_get();
 
