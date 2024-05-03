@@ -11,7 +11,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define MAX_TTYS 50
+#define MAX_TTYS 10
 
 extern uint8_t currentTTYid;
 
