@@ -1,2 +1,2 @@
 #!/bin/bash
-./run.sh x86_64 limine --display none --serial stdio -smp $(nproc) -m 2G -machine q35 ${@}
+./run.sh x86_64 limine --display none --serial stdio -smp $(nproc) -m 2G -machine q35 "$@"
