@@ -10,6 +10,6 @@ struct stackframe {
     uint64_t rip;
 } __attribute__((packed));
 
-void backtrace(int indent, void *rbp);
+void backtrace(void *rbp, uint64_t caller);
 
 #endif  // __BACKTRACE_H__

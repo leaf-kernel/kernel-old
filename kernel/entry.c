@@ -79,8 +79,8 @@ void _start(void) {
 #endif
     __LEAF_ENABLE_LOG();
     init_serial();
-    __LEAF_FLUSH_SERIAL();
-    __LEAF_CLEAR_SERIAL();
+    __LEAF_DONT_CLEAR_SERIAL();
+    __LEAF_DONT_FLUSH_SERIAL();
     flush_serial();
     init_rtc();
 
@@ -96,17 +96,14 @@ void _start(void) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
     init_tty();
-    __LEAF_DONT_CLEAR_SERIAL();
-    __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
-    __LEAF_FLUSH_SERIAL();
-    __LEAF_CLEAR_SERIAL();
 
     cdlog("Kernel init done. On tty%03d", currentTTYid);
 
     tty_spawn(1, NULL, 1);
-    int status = main();
 
+    dprintf("\r\n-- Post Kernel Begin --\r\n");
+    int status = main();
     cdlog("Kernel exited with code %d.", status);
 
     if(status != LEAF_RETURN_SUCCESS) {

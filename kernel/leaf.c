@@ -12,8 +12,6 @@
 #include <utils/parsing/ini.h>
 
 int main() {
-    flush_serial();  // Flush the serial before we start post-kinit.
-
     printf("Hello, World on tty%03d!\r\n", currentTTYid);
     hlt();
     return LEAF_RETURN_SUCCESS;

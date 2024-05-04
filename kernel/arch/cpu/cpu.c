@@ -17,7 +17,7 @@ void panic(const char *reason, const char *description, int_frame_t frame,
            void *rbp) {
     // TODO: Get the CPU ID
     int cpuId = 1;
-    dprintf("\r\n\npanic(cpu %d @ 0x%016llx) type: %d (Name: %s)!\r\n", cpuId,
+    dprintf("\r\npanic(cpu %d @ 0x%016llx) type: %d (Name: %s)!\r\n", cpuId,
             frame.rip, frame.vector, reason);
 #ifdef LEAF_DEBUG
     dprintf("Description: %s\r\n", description);
@@ -40,18 +40,8 @@ void panic(const char *reason, const char *description, int_frame_t frame,
     dprintf("  ds: 0x%.16llx,  cr2: 0x%.16llx, cr3: 0x%.16llx\r\n", frame.ds,
             frame.cr2, frame.cr3);
 #endif
-
-    table_entry_t *func = lookup_symbol(frame.rip);
-    dprintf("\nBacktrace: \r\n");
-    if(func != NULL) {
-
-        dprintf("[%.16lx]\t<%s+0x%04x>\r\n ", frame.rip, func->name,
-                frame.rip - func->addr);
-    } else {
-        dprintf("[%.16lx]\t<\?\?\?>\r\n", frame.rip);
-    }
-
-    backtrace(2, rbp);
+    dprintf("\r\n");
+    backtrace(rbp, frame.rip);
     hcf();
 }
 
