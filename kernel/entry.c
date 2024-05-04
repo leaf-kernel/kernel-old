@@ -103,6 +103,8 @@ void _start(void) {
     __LEAF_CLEAR_SERIAL();
 
     cdlog("Kernel init done. On tty%03d", currentTTYid);
+
+    tty_spawn(1, NULL, 1);
     int status = main();
 
     cdlog("Kernel exited with code %d.", status);
