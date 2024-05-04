@@ -63,7 +63,13 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     int s;
     if(font != NULL) {
-        char *out;
+        char *out = (char *)kmalloc(sizeof(char));
+        if(out == NULL) {
+            dlog("Failed to allocate memory for the font buffer for tty%03d",
+                 id);
+            hcf();
+        }
+
         vfs_op_status status;
         status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
 
@@ -93,9 +99,9 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     tty_switch(id);
     if(mapped_com > 0 && mapped_com <= 8)
-        cdlog("tty%03d mapped to COM%d", id, mapped_com);
+        cdlog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
     else
-        cdlog("tty%03d mapped to nothing", id);
+        cdlog("Spawned tty%03d (tty%03d -> NULL)", id, id);
 }
 
 void tty_switch(uint8_t id) {
@@ -103,6 +109,7 @@ void tty_switch(uint8_t id) {
         ttys[id]->id = id;
         currentTTYid = id;
         currentTTY = ttys[id];
+        switch_serial(currentTTY->mapped_com, 0);
         tty_flush();
     }
 }
@@ -110,8 +117,9 @@ void tty_switch(uint8_t id) {
 void tty_flush() {
     if(currentTTY != NULL && currentTTY->ctx != NULL && currentTTY != NULL &&
        ttys[currentTTYid] != NULL) {
-        nighterm_flush(currentTTY->ctx, 27, 27, 27);
-        nighterm_set_bg_color(currentTTY->ctx, 27, 27, 27);
+        flush_serial();
+        nighterm_flush(currentTTY->ctx, 0, 0, 0);
+        nighterm_set_bg_color(currentTTY->ctx, 0, 0, 0);
         nighterm_set_fg_color(currentTTY->ctx, 255, 255, 255);
         nighterm_set_cursor_position(currentTTY->ctx, 0, 0);
     }
@@ -120,7 +128,6 @@ void tty_flush() {
 void tty_write(char ch) {
     if(currentTTY != NULL && currentTTY->ctx != NULL) {
         nighterm_write(currentTTY->ctx, ch);
-        vvcdlog("Wrote '%c' to tty%03d", ch, currentTTY->id);
     }
 
     if(currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0) {

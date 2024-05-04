@@ -35,10 +35,6 @@
 #define LEAF_UUID "Unknown"
 #endif
 
-#ifndef LEAF_OFFSET
-#define LEAF_OFFSET "69420"
-#endif
-
 // Helper functions
 #define STRINGIZE_HELPER(x...) #x
 #define STRINGIZE(x...) STRINGIZE_HELPER(x)

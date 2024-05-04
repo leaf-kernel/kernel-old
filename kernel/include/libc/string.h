@@ -24,5 +24,6 @@ void *memset(void *s, int c, size_t n);
 char *strtok(char *str, const char *delim);
 size_t strlen(const char *s);
 char *strdup(const char *s);
+void strrev(char *str);
 
 #endif /* __STRING_H__ */

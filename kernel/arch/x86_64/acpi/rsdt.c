@@ -1,6 +1,7 @@
 #include <arch/x86_64/acpi/acpi.h>
 #include <arch/x86_64/acpi/fadt.h>
 #include <arch/x86_64/acpi/madt.h>
+#include <arch/x86_64/acpi/mcfg.h>
 #include <arch/x86_64/acpi/rsdt.h>
 
 xsdt_t *g_xsdt;
@@ -11,7 +12,7 @@ void init_rsdt() {
 
     g_rsdt = (rsdt_t *)(uintptr_t)PHYS_TO_VIRT(rsdp->rsdt_addr);
     if(_use_xsdt()) {
-        vcdlog("Using XSDT!");
+        cdlog("Using XSDT!");
         xsdp_t *xsdp = (xsdp_t *)rsdp_request.response->address;
         g_xsdt = (xsdt_t *)(uintptr_t)PHYS_TO_VIRT(xsdp->xsdt_addr);
     }
@@ -32,6 +33,15 @@ void init_rsdt() {
     }
 
     init_fadt(fadt);
+
+    mcfg_t *mcfg = _find_sdt("MCFG");
+    if(mcfg == NULL) {
+
+        cdlog("Failed to find MCFG!");
+        hcf();
+    }
+
+    init_mcfg(mcfg);
 
     cdlog("cores: %d", g_acpi_cpu_count);
     cdlog("done");

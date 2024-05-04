@@ -37,6 +37,7 @@
 #include <sys/stable.h>
 #include <sys/time/rtc.h>
 #define LEAF_INCLUDE_PRIVATE
+#include <sys/_config.h>
 #include <sys/leaf.h>
 
 // Utility imports
@@ -61,6 +62,9 @@ struct limine_framebuffer *framebuffer;
 uint64_t hhdm_offset;
 Ramdisk *initrd;
 VFS_t *vfs;
+bool _leaf_log;
+bool _leaf_should_clear_serial;
+bool _leaf_should_flush_serial;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -73,8 +77,10 @@ void _start(void) {
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
-
+    __LEAF_ENABLE_LOG();
     init_serial();
+    __LEAF_FLUSH_SERIAL();
+    __LEAF_CLEAR_SERIAL();
     flush_serial();
     init_rtc();
 
@@ -90,7 +96,11 @@ void _start(void) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
     init_tty();
+    __LEAF_DONT_CLEAR_SERIAL();
+    __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
+    __LEAF_FLUSH_SERIAL();
+    __LEAF_CLEAR_SERIAL();
 
     cdlog("Kernel init done. On tty%03d", currentTTYid);
     int status = main();

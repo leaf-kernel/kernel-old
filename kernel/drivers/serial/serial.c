@@ -122,8 +122,6 @@ void switch_serial(uint8_t id, uint16_t port) {
         __cur_port = port;
         _serial_cur_com_char = "???";
     }
-
-    vvcdlog("Serial target: \"0x%04llx\"", __cur_port);
 }
 
 int _is_transmit_empty() { return inb(__cur_port + 5) & 0x20; }
@@ -136,7 +134,12 @@ void write_serial(char a) {
 }
 
 void flush_serial() {
-    write_serial(27);
-    write_serial(99);
-    write_serial(0);
+    if(_leaf_should_clear_serial) {
+        write_serial(27);
+        write_serial(99);
+    }
+
+    if(_leaf_should_flush_serial) {
+        write_serial(0);
+    }
 }
