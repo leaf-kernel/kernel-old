@@ -87,7 +87,7 @@ void _start(void) {
     init_idt();
     init_pit();
     init_pmm();
-    init_vmm();
+    // init_vmm();
     init_apic();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),

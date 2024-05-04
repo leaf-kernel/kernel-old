@@ -12,6 +12,7 @@
 #include <utils/parsing/ini.h>
 
 int main() {
+    printf("Hello, World!\r\n");
     hlt();
     return LEAF_RETURN_SUCCESS;
 }
