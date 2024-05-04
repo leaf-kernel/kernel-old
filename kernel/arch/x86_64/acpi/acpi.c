@@ -30,8 +30,9 @@ void init_acpi() {
 
 void *_find_sdt(char *signature) {
     int entry_divisor = (_use_xsdt() ? 8 : 4);
-    int entries =
-        (g_rsdt->header.length - sizeof(g_xsdt->header)) / entry_divisor;
+    int header_length =
+        _use_xsdt() ? g_xsdt->header.length : g_rsdt->header.length;
+    int entries = (header_length - sizeof(sdt_t)) / entry_divisor;
     for(int i = 0; i < entries; i++) {
         sdt_t *header = NULL;
         if(_use_xsdt()) {

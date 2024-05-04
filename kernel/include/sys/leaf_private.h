@@ -48,7 +48,7 @@ void *__LEAF_GET_VFS__();
 #endif
 #endif
 
-#define VIRT_TO_PHYS(addr) ((uint64_t)(addr)-hhdm_offset)
+#define VIRT_TO_PHYS(addr) ((uint64_t)(addr) - hhdm_offset)
 #define PHYS_TO_VIRT(addr) ((uint64_t)(addr) + hhdm_offset)
 #endif
 
