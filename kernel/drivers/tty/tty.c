@@ -57,44 +57,19 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     currentTTYid = id;
     currentTTY = ttys[currentTTYid];
-    struct nighterm_ctx *context = kmalloc(sizeof(struct nighterm_ctx));
-    currentTTY->ctx = context;
     currentTTY->mapped_com = mapped_com;
 
-    int s;
-    if(font != NULL) {
-        char *out = (char *)kmalloc(sizeof(char));
-        if(out == NULL) {
-            dlog("Failed to allocate memory for the font buffer for tty%03d",
-                 id);
-            hcf();
-        }
+    currentTTY->ctx = flanterm_fb_init(
+        NULL, NULL, framebuffer->address, framebuffer->width,
+        framebuffer->height, framebuffer->pitch, framebuffer->red_mask_size,
+        framebuffer->red_mask_shift, framebuffer->green_mask_size,
+        framebuffer->green_mask_shift, framebuffer->blue_mask_size,
+        framebuffer->blue_mask_shift, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, 0, 0, 1, 0, 0, 0);
 
-        vfs_op_status status;
-        status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
-
-        if(status == STATUS_OK) {
-            s = nighterm_initialize(currentTTY->ctx, out, framebuffer->address,
-                                    framebuffer->width, framebuffer->height,
-                                    framebuffer->pitch, framebuffer->bpp,
-                                    kmalloc, kfree);
-        } else {
-            s = nighterm_initialize(currentTTY->ctx, NULL, framebuffer->address,
-                                    framebuffer->width, framebuffer->height,
-                                    framebuffer->pitch, framebuffer->bpp,
-                                    kmalloc, kfree);
-        }
-    } else {
-        s = nighterm_initialize(currentTTY->ctx, NULL, framebuffer->address,
-                                framebuffer->width, framebuffer->height,
-                                framebuffer->pitch, framebuffer->bpp, kmalloc,
-                                kfree);
-    }
-
-    if(s != NIGHTERM_SUCCESS) {
-        debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to initialize nighterm for tty%03d!", id);
-        return;
+    if(currentTTY->ctx == NULL) {
+        dlog("Failed to initialize Flanterm for tty%03d!", id);
+        hcf();
     }
 
     tty_switch(id);
@@ -118,16 +93,13 @@ void tty_flush() {
     if(currentTTY != NULL && currentTTY->ctx != NULL && currentTTY != NULL &&
        ttys[currentTTYid] != NULL) {
         flush_serial();
-        nighterm_flush(currentTTY->ctx, 0, 0, 0);
-        nighterm_set_bg_color(currentTTY->ctx, 0, 0, 0);
-        nighterm_set_fg_color(currentTTY->ctx, 255, 255, 255);
-        nighterm_set_cursor_position(currentTTY->ctx, 0, 0);
+        flanterm_context_reinit(currentTTY->ctx);
     }
 }
 
 void tty_write(char ch) {
     if(currentTTY != NULL && currentTTY->ctx != NULL) {
-        nighterm_write(currentTTY->ctx, ch);
+        flanterm_write(currentTTY->ctx, &ch, sizeof(ch));
     }
 
     if(currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0) {
