@@ -29,6 +29,7 @@
 #include <utils/convertion.h>
 
 int main() {
+    _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
     update_memory();
 
     if(total_memory < 64000000)
@@ -44,6 +45,7 @@ int main() {
             time.day_of_month, time.hours, time.minutes, time.seconds,
             currentTTYid);
 
+// Dont care about this just a lil easter egg
 #ifdef __LEAF_GAY_SEX__
     plog_ok(
         "\033[1mGay Sex\033[0m: Nathan was in his dorm, stroking his hard 9 "
