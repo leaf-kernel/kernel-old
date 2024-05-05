@@ -14,7 +14,7 @@
 #include <utils/parsing/ini.h>
 
 int main() {
-    plog_ok("Reached target \033[1mpost-kinit\033[0m\r\n");
+    plog_ok("Reached target \033[1mpost-kinit\033[0m");
     _int(1);
 
     hlt();
