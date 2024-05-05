@@ -57,22 +57,16 @@ bool _register_port(uint16_t port) {
     }
 
     outb(port + 4, 0x0F);
-    vcdlog("Registered port \"0x%04llx\"", port);
+    vcplog("Registered port \"0x%04llx\"", port);
     return true;
 }
 
-bool _init_serial() { return _register_port(_SERIAL_COM1); }
-
 void init_serial() {
-    if(_init_serial()) {
-        switch_serial(1, 0);
-    } else {
-        dlog("Failed to initialize serial!");
-        hcf();
-    }
+    _register_port(_SERIAL_COM1);
+    switch_serial(1, 0);
 
     _serial_has_been_init = true;
-    cdlog("done.");
+    cplog("done.");
 }
 
 int _serial_received() { return inb(__cur_port + 5) & 1; }

@@ -6,22 +6,20 @@
 VFS_t *init_vfs() {
     VFS_t *vfs = (VFS_t *)kmalloc(sizeof(VFS_t));
     if(vfs == NULL) {
-        debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to allocate memory for VFS stuct!");
+        plog("Failed to allocate memory for VFS stuct!");
         return NULL;
     }
 
     vfs->address = (uint64_t)vfs;
-    cdlog("vfs at 0x%0.16llx", vfs->address);
+    cplog("vfs at 0x%0.16llx", vfs->address);
 
     vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
     if(vfs->drives == NULL) {
-        debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to allocate memory for VFS drives!");
+        plog("Failed to allocate memory for VFS drives!");
         return NULL;
     }
 
-    cdlog("done.");
+    cplog("done.");
     return vfs;
 }
 
@@ -56,7 +54,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type) {
 
     vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
-    cdlog("mounted drive from 0x%.16llx", driveAddr);
+    cplog("mounted drive from 0x%.16llx", driveAddr);
     return STATUS_OK;
 }
 
@@ -84,20 +82,19 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId) {
         vfs->drives = NULL;
     }
 
-    cdlog("-0x%016x", driveToRemove->driveAddr);
+    cplog("-0x%016x", driveToRemove->driveAddr);
 
     return STATUS_OK;
 }
 
 vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
     if(vfs == NULL) {
-        debug_log(__FILE__, __LINE__, __func__,
-                  "A null pointer to the VFS was passed!");
+        plog("A null pointer to the VFS was passed!");
         return STATUS_INVALID_ARGUMENTS;
     }
 
     if(driveId > vfs->numDrives) {
-        debug_log(__FILE__, __LINE__, __func__, "Invalid driveId passed!");
+        plog("Invalid driveId passed!");
         return STATUS_INVALID_ARGUMENTS;
     }
 
@@ -115,10 +112,10 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
             (*out)[i] = tempEntry->file->content[i];
         }
 
-        cdlog("done.");
+        cplog("done.");
         break;
     default:
-        debug_log(__FILE__, __LINE__, __func__, "Invalid drive type !");
+        plog("Invalid drive type !");
         return STATUS_INVALID_DRIVE_TYPE;
     }
 

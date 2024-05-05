@@ -9,12 +9,12 @@ void backtrace(void *rbp, uint64_t caller) {
 
     rtc_time_point time = rtc_get();
 
-    dprintf("┌───────────────────────────────────────────────────┐\r\n");
-    dprintf(
+    printf("┌───────────────────────────────────────────────────┐\r\n");
+    printf(
         "│ Backtrace at %.3s %.3s %.2d %.2d:%.2d:%.2d 20%.2d             │\r\n",
         _get_day(time.day_of_week), _get_month(time.month), time.day_of_month,
         time.hours, time.minutes, time.seconds, time.year);
-    dprintf("├───────────────────────────────────────────────────┤\r\n");
+    printf("├───────────────────────────────────────────────────┤\r\n");
 
     table_entry_t *func = lookup_symbol(caller);
     if(func != NULL) {
@@ -24,9 +24,9 @@ void backtrace(void *rbp, uint64_t caller) {
         int func_name_length = strlen(func_name);
         if(func_name_length > 25)
             func_name[22] = func_name[23] = func_name[24] = '.';
-        dprintf("│ [%.16lx]\t<%-25s> │\r\n", caller, func_name);
+        printf("│ [%.16lx]\t<%-25s> │\r\n", caller, func_name);
     } else {
-        dprintf("│ [%.16lx]\t<\?\?\?>   │\r\n", caller);
+        printf("│ [%.16lx]\t<\?\?\?>   │\r\n", caller);
     }
 
     while(frame) {
@@ -42,12 +42,12 @@ void backtrace(void *rbp, uint64_t caller) {
             int symbol_name_length = strlen(symbol_name);
             if(symbol_name_length > 25)
                 symbol_name[22] = symbol_name[23] = symbol_name[24] = '.';
-            dprintf("│ ↕ [%.16lx]\t<%-25s> │\r\n", frame->rip, symbol_name);
+            printf("│ ↕ [%.16lx]\t<%-25s> │\r\n", frame->rip, symbol_name);
         } else {
-            dprintf("│ ↕ [%.16lx]\t<\?\?\?>   │\r\n", frame->rip);
+            printf("│ ↕ [%.16lx]\t<\?\?\?>   │\r\n", frame->rip);
         }
         frame = frame->rbp;
     }
 
-    dprintf("└───────────────────────────────────────────────────┘\r\n");
+    printf("└───────────────────────────────────────────────────┘\r\n");
 }
