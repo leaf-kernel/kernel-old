@@ -85,23 +85,17 @@ void _start(void) {
     __LEAF_FLUSH_SERIAL();
     __LEAF_ENABLE_PRE_LOG();
     init_serial();
-    __LEAF_DONT_CLEAR_SERIAL();
-    __LEAF_DONT_FLUSH_SERIAL();
     flush_serial();
     init_rtc();
-
     init_idt();
     init_pit();
     init_pmm();
 
+    __LEAF_DONT_CLEAR_SERIAL();
+    __LEAF_DONT_FLUSH_SERIAL();
     init_tty();
+    tty_spawn(0, NULL, 1);
 
-    tty_spawn(
-        0, NULL,
-        0);  // Dont map tty000 to any COM port, this will make the TTY slow.
-
-    currentTTY->ctx->cursor_enabled = false;
-    tty_flush();
     init_vmm();
     init_apic();
 

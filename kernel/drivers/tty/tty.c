@@ -113,6 +113,10 @@ void tty_write(char ch) {
     if(currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0) {
         switch_serial(currentTTY->mapped_com, 0);
         write_serial(ch);
+    } else {
+        // Default to COM1.
+        switch_serial(0, _SERIAL_COM1);
+        write_serial(ch);
     }
 }
 
