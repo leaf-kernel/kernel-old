@@ -99,7 +99,7 @@ void _start(void) {
     tty_spawn(
         0, NULL,
         0);  // Dont map tty000 to any COM port, this will make the TTY slow.
-    // init_vmm();
+    init_vmm();
     init_apic();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),

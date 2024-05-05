@@ -56,7 +56,7 @@ void pcdebug_log(const char *function, const char *fmt, ...) {
 }
 
 void plog_ok(const char *fmt, ...) {
-    if(_leaf_log) {
+    if(_leaf_log && _leaf_disable_pre_log) {
         va_list args;
         va_start(args, fmt);
         printf("[ \033[32mSUCCESS\033[0m ] ");
@@ -67,10 +67,21 @@ void plog_ok(const char *fmt, ...) {
 }
 
 void plog_fail(const char *fmt, ...) {
-    if(_leaf_log) {
+    if(_leaf_log && _leaf_disable_pre_log) {
         va_list args;
         va_start(args, fmt);
-        printf("[ \033[31mFAILED\033[0m ] ");
+        printf("[ \033[31mFAILED\033[0m  ] ");
+        vprintf(fmt, args);
+        printf("\r\n");
+        va_end(args);
+    }
+}
+
+void plog_fatal(const char *fmt, ...) {
+    if(_leaf_log && _leaf_disable_pre_log) {
+        va_list args;
+        va_start(args, fmt);
+        printf("[ \033[91mFATAL\033[0m   ] ");
         vprintf(fmt, args);
         printf("\r\n");
         va_end(args);
@@ -78,7 +89,7 @@ void plog_fail(const char *fmt, ...) {
 }
 
 void plog_warn(const char *fmt, ...) {
-    if(_leaf_log) {
+    if(_leaf_log && _leaf_disable_pre_log) {
         va_list args;
         va_start(args, fmt);
         printf("[ \033[33mWARNING\033[0m ] ");

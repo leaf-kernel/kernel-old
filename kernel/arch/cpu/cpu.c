@@ -17,8 +17,10 @@ void panic(const char *reason, const char *description, int_frame_t frame,
            void *rbp) {
     // TODO: Get the CPU ID
     int cpuId = 1;
-    printf("\r\npanic(cpu %d @ 0x%016llx) type: %d (Name: %s)!\r\n", cpuId,
-           frame.rip, frame.vector, reason);
+    plog_fatal("panic(cpu %d @ 0x%016llx) type: %d (Name: %s)!\r\n", cpuId,
+               frame.rip, frame.vector, reason);
+    cplog("panic(cpu %d @ 0x%016llx) type: %d (Name: %s)!", cpuId, frame.rip,
+          frame.vector, reason);
 #ifdef LEAF_DEBUG
     printf("Description: %s\r\n", description);
     printf("Register dump:\r\n");
