@@ -66,6 +66,7 @@ bool _leaf_log;
 bool _leaf_should_clear_serial;
 bool _leaf_should_flush_serial;
 bool _leaf_should_flush_tty;
+bool _leaf_disable_pre_log;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -82,6 +83,7 @@ void _start(void) {
     __LEAF_FLUSH_TTY();
     __LEAF_CLEAR_SERIAL();
     __LEAF_FLUSH_SERIAL();
+    __LEAF_ENABLE_PRE_LOG();
     init_serial();
     __LEAF_DONT_CLEAR_SERIAL();
     __LEAF_DONT_FLUSH_SERIAL();
@@ -106,7 +108,7 @@ void _start(void) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
-    plog_warn("COM1 -> COM8 are unused!");
+    cplog("kinit done. tty%03d", currentTTYid);
     int status = main();
 
     if(status != LEAF_RETURN_SUCCESS) {

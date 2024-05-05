@@ -4,6 +4,8 @@
 
 void debug_log(const char *file, const int line, const char *function,
                const char *fmt, ...) {
+    if(_leaf_disable_pre_log)
+        return;
     if(_leaf_log) {
 
         va_list args;
@@ -16,6 +18,8 @@ void debug_log(const char *file, const int line, const char *function,
 }
 
 void cdebug_log(const char *function, const char *fmt, ...) {
+    if(_leaf_disable_pre_log)
+        return;
     if(_leaf_log) {
         va_list args;
         va_start(args, fmt);
@@ -27,6 +31,8 @@ void cdebug_log(const char *function, const char *fmt, ...) {
 }
 void pdebug_log(const char *file, const int line, const char *function,
                 const char *fmt, ...) {
+    if(_leaf_disable_pre_log)
+        return;
     if(_leaf_log) {
         va_list args;
         va_start(args, fmt);
@@ -37,6 +43,8 @@ void pdebug_log(const char *file, const int line, const char *function,
     }
 }
 void pcdebug_log(const char *function, const char *fmt, ...) {
+    if(_leaf_disable_pre_log)
+        return;
     if(_leaf_log) {
         va_list args;
         va_start(args, fmt);

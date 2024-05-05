@@ -25,12 +25,16 @@
 // Real-time clock related headers
 #include <sys/time/rtc.h>
 
-// Utility headers for parsing
-#include <utils/parsing/ini.h>
+// Utility headers
+#include <utils/convertion.h>
 
 int main() {
+    __LEAF_DISABLE_PRE_LOG();  // Disable pre-log. cdebug_log and whatnot
+
     plog_ok("Reached target \033[1mpost-kinit\033[0m");
-    _int(1);
+
+    update_memory();
+    plog_ok("%d bytes OK", free_memory);
 
     hlt();
     return LEAF_RETURN_SUCCESS;
