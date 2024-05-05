@@ -44,6 +44,7 @@ int main() {
             _get_day(time.day_of_week), _get_month(time.month),
             time.day_of_month, time.hours, time.minutes, time.seconds,
             currentTTYid);
+    _int(3);
 
     hlt();
     return LEAF_RETURN_SUCCESS;
