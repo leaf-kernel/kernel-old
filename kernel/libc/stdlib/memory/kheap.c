@@ -5,7 +5,7 @@
 void *kmalloc(size_t size) {
     char *PP = (char *)pmm_request_pages((size / PAGE_SIZE) + 1);
     if(PP == NULL) {
-        cdlog("Failed to allocate memory");
+        cplog("Failed to allocate memory");
         return NULL;
     }
     *((size_t *)PP) = size;
@@ -45,7 +45,7 @@ void *krealloc(void *old, size_t size) {
     if(new_num_pages > old_num_pages) {
         void *new_mem = pmm_request_pages(new_num_pages - old_num_pages);
         if(new_mem == NULL) {
-            cdlog("Failed to allocate additional memory pages");
+            cplog("Failed to allocate additional memory pages");
             return NULL;
         }
 

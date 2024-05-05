@@ -33,7 +33,7 @@ void init_pmm() {
             if(top_address > higher_address)
                 higher_address = top_address;
 
-            vcdlog("Usable entry at 0x%.llx, Top Address: 0x%.llx, Higher "
+            vcplog("Usable entry at 0x%.llx, Top Address: 0x%.llx, Higher "
                    "Address: 0x%.llx",
                    entry->base, top_address, higher_address);
         }
@@ -69,12 +69,12 @@ void init_pmm() {
 
     update_memory();
     if(total_memory < 64000000)
-        cdlog("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf "
+        cplog("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf "
               "requires atleast 64MB!\033[0m",
               bytes_to_mb(total_memory));
     else
-        cdlog("%dMB ok.", bytes_to_mb(total_memory));
-    cdlog("done.");
+        cplog("%dMB ok.", bytes_to_mb(total_memory));
+    cplog("done.");
 }
 
 void update_memory() {

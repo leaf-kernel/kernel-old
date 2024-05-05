@@ -1,7 +1,8 @@
 #ifndef __TTY_H__
 #define __TTY_H__
 
-#include <drivers/tty/nighterm/nighterm.h>
+#include <drivers/tty/flanterm/backends/fb.h>
+#include <drivers/tty/flanterm/flanterm.h>
 #include <libc/stdlib/memory/kheap.h>
 #include <sys/logger.h>
 #define LEAF_INCLUDE_PRIVATE
@@ -16,7 +17,7 @@
 extern uint8_t currentTTYid;
 
 typedef struct {
-    struct nighterm_ctx *ctx;
+    struct flanterm_context *ctx;
     uint8_t id;
     uint8_t mapped_com;
 } TTY_t;

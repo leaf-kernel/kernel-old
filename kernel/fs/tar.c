@@ -67,7 +67,7 @@ void tar_extract(const char *raw, uint64_t size, TAREntry *tar) {
         tar->files = temp_files;
         tar->files[tar->fileCount] = file;
         tar->fileCount++;
-        vcdlog("{ name: \"%s\", directory: %s, size: %d }", file.name,
+        vcplog("{ name: \"%s\", directory: %s, size: %d }", file.name,
                file.directory ? "true" : "false", file.size);
         offset += ((file.size + 511) / 512 + 1) * 512;
     }

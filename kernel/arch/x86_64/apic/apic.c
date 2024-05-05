@@ -20,13 +20,13 @@ void wreg(uint16_t offset, uint32_t val) {
 void init_apic() {
 
     if(!check_apic()) {
-        cdlog("\033[1;31mError: APIC is not supported by your CPU!\033[0m");
+        cplog("\033[1;31mError: APIC is not supported by your CPU!\033[0m");
         hcf();
         return;
     }
 
     if(!check_msr()) {
-        cdlog("\033[1;31mError: MSR is not supported by your CPU!\033[0m");
+        cplog("\033[1;31mError: MSR is not supported by your CPU!\033[0m");
         hcf();
         return;
     }
@@ -34,16 +34,16 @@ void init_apic() {
     init_acpi();
     enable_apic();
 
-    cdlog("done.");
+    cplog("done.");
 }
 
 void enable_apic() {
     pic_disable();
     wreg(0xF0, rreg(0xF0) | 0x100);
-    cdlog("enabled APIC");
+    cplog("enabled APIC");
 }
 
 void apic_eoi() {
     wreg(0xB0, 0);
-    vcdlog("Sent end-of-interupts!");
+    vcplog("Sent end-of-interupts!");
 }

@@ -5,19 +5,19 @@ toolchain=${3:-arch/$target_arch/$target_arch-$bootloader.toolchain.cmake}
 
 ./env/format
 
-nighterm_out="kernel/include/drivers/tty/nighterm/";
+flanterm_out="kernel/include/drivers/tty/flanterm/";
 if [ "$target_arch" = "x86_64" -o "$target_arch" = "x86" ]; then
-    if [ ! -d "$nighterm_out" ]; then
+    if [ ! -d "$flanterm_out" ]; then
         temp_dir=$(mktemp -d)
-        echo ">>> Downloading nighterm for x86_64."
-        wget -O "$temp_dir/nighterm.zip" "https://codeload.github.com/aurixos/nex/zip/refs/heads/main" -q
-        unzip -o "$temp_dir/nighterm.zip" -d "$temp_dir/extracted" > /dev/null
-        mkdir -p "$nighterm_out"
-        mv "$temp_dir/extracted/nex-main/"* "$nighterm_out"
+        echo ">>> Downloading Flanterm for x86_64."
+        wget -O "$temp_dir/flanterm.zip" "https://codeload.github.com/mintsuki/flanterm/zip/refs/heads/trunk" -q
+        unzip -o "$temp_dir/flanterm.zip" -d "$temp_dir/extracted" > /dev/null
+        mkdir -p "$flanterm_out"
+        mv "$temp_dir/extracted/flanterm-trunk/"* "$flanterm_out"
         rm -rf "$temp_dir"
-        echo ">>> Successfully downloaded nighterm for the $target_arch target."
+        echo ">>> Successfully downloaded Flanterm for the $target_arch target."
     else
-        echo ">> Nighterm for $target_arch already exists! ("$nighterm_out") will be using that."
+        echo ">> Flanterm for $target_arch already exists! ("$flanterm_out") will be using that."
     fi
 fi
 

@@ -14,7 +14,9 @@
 #include <utils/parsing/ini.h>
 
 int main() {
-    printf("Hello, World on tty%03d!\r\n", currentTTYid);
+    plog_ok("Reached target \033[1mpost-kinit\033[0m\r\n");
+    _int(1);
+
     hlt();
     return LEAF_RETURN_SUCCESS;
 }

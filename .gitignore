@@ -10,7 +10,7 @@
 /arch/x86_64/limine
 /arch/x86_64/modules/ramdisk
 /initrd/sys/kernel/kernel.map
-/kernel/include/drivers/tty/nighterm
+/kernel/include/drivers/tty/flanterm
 /kernel/include/utils/john
 COM*
 README.md
