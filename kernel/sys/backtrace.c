@@ -10,10 +10,11 @@ void backtrace(void *rbp, uint64_t caller) {
     rtc_time_point time = rtc_get();
 
     printf("┌───────────────────────────────────────────────────┐\r\n");
-    printf(
-        "│ Backtrace at %.3s %.3s %.2d %.2d:%.2d:%.2d 20%.2d             │\r\n",
-        _get_day(time.day_of_week), _get_month(time.month), time.day_of_month,
-        time.hours, time.minutes, time.seconds, time.year);
+    printf("│ Backtrace at %.3s %.3s %.2d %.2d:%.2d:%.2d @ tty%03d         "
+           "│\r\n",
+           _get_day(time.day_of_week), _get_month(time.month),
+           time.day_of_month, time.hours, time.minutes, time.seconds,
+           currentTTYid);
     printf("├───────────────────────────────────────────────────┤\r\n");
 
     table_entry_t *func = lookup_symbol(caller);

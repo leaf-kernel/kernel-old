@@ -37,8 +37,6 @@ int main() {
     plog_ok("%d bytes OK", free_memory);
     plog_ok("@ tty%03d", currentTTYid);
 
-    _int(1);
-
     hlt();
     return LEAF_RETURN_SUCCESS;
 }
