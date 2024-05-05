@@ -99,6 +99,9 @@ void _start(void) {
     tty_spawn(
         0, NULL,
         0);  // Dont map tty000 to any COM port, this will make the TTY slow.
+
+    currentTTY->ctx->cursor_enabled = false;
+    tty_flush();
     init_vmm();
     init_apic();
 

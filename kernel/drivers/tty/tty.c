@@ -99,7 +99,7 @@ void tty_flush() {
         flush_serial();
 
         if(_leaf_should_flush_tty) {
-            flanterm_context_reinit(currentTTY->ctx);
+            currentTTY->ctx->double_buffer_flush(currentTTY->ctx);
         }
     }
 }
@@ -114,4 +114,9 @@ void tty_write(char ch) {
         switch_serial(currentTTY->mapped_com, 0);
         write_serial(ch);
     }
+}
+
+void _tty_flag_set(bool *flag, bool value) {
+    *flag = value;
+    tty_flush();
 }

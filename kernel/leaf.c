@@ -30,6 +30,8 @@
 
 int main() {
     __LEAF_DISABLE_PRE_LOG();  // Disable pre-log. cdebug_log and whatnot
+    _tty_flag_set(&currentTTY->ctx->cursor_enabled,
+                  false);  // Make sure to disable the cursor
 
     plog_ok("Reached target \033[1mpost-kinit\033[0m");
 
