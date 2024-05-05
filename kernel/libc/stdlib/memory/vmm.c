@@ -52,5 +52,5 @@ void init_vmm() {
         dlog("Failed to allocate memory for PML4 array");
         hcf();
     }
-    cplog("done.");
+    vvcplog("done.");
 }

@@ -26,7 +26,7 @@ void init_tty() {
         }
     }
 
-    cplog("done.");
+    vvcplog("done.");
 }
 
 void tty_destroy(uint8_t id) {
@@ -41,7 +41,7 @@ void tty_destroy(uint8_t id) {
 
     kfree(ttys[id]);
     ttys[id] = NULL;
-    cplog("tty%04d destroyed", id);
+    vcplog("tty%04d destroyed", id);
 }
 
 void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
@@ -75,9 +75,9 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     tty_switch(id);
     if(mapped_com > 0 && mapped_com <= 8)
-        cplog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
+        vcplog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
     else
-        cplog("Spawned tty%03d (tty%03d -> NULL)", id, id);
+        vcplog("Spawned tty%03d (tty%03d -> NULL)", id, id);
 }
 
 void tty_switch(uint8_t id) {

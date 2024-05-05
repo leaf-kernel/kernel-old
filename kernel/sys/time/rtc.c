@@ -63,7 +63,7 @@ void init_rtc() {
     bcd = !(status & 0x04);
     write_register(RTC_STATUS, status);
     __asm__ volatile("sti");
-    cplog("done.");
+    vvcplog("done.");
 }
 
 char *_get_month(int month) {

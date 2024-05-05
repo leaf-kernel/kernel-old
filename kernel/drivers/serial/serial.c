@@ -66,7 +66,7 @@ void init_serial() {
     switch_serial(1, 0);
 
     _serial_has_been_init = true;
-    cplog("done.");
+    vvcplog("done.");
 }
 
 int _serial_received() { return inb(__cur_port + 5) & 1; }

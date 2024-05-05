@@ -69,12 +69,12 @@ void init_pmm() {
 
     update_memory();
     if(total_memory < 64000000)
-        cplog("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf "
-              "requires atleast 64MB!\033[0m",
-              bytes_to_mb(total_memory));
+        vcplog("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf "
+               "requires atleast 64MB!\033[0m",
+               bytes_to_mb(total_memory));
     else
-        cplog("%dMB ok.", bytes_to_mb(total_memory));
-    cplog("done.");
+        vcplog("%dMB ok.", bytes_to_mb(total_memory));
+    vvcplog("done.");
 }
 
 void update_memory() {

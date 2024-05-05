@@ -150,7 +150,7 @@ void init_idt() {
     load_idt((uint64_t)&idt_p);
     pic_enable();
     asm("cli");
-    cplog("done.");
+    vvcplog("done.");
 }
 
 void excp_handler(int_frame_t frame) {
@@ -170,7 +170,7 @@ void excp_handler(int_frame_t frame) {
 
         pic_sendEOI(irq);
     } else if(frame.vector == 0x80) {
-        cplog("Handeling system call!");
+        vcplog("Handeling system call!");
     }
 }
 

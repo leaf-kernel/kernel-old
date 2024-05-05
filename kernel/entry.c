@@ -111,7 +111,8 @@ void _start(void) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
-    cplog("kinit done. tty%03d", currentTTYid);
+    __LEAF_DISABLE_PRE_LOG();  // Disable pre-log. cdebug_log and whatnot
+    plog_ok("Reached target \033[1mpost-kinit\033[0m");
     int status = main();
 
     if(status != LEAF_RETURN_SUCCESS) {

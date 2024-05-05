@@ -15,10 +15,10 @@ void init_mcfg(mcfg_t *h) {
 
     num_entries = (h->h.length - sizeof(mcfg_t)) / sizeof(device_config);
     entries = (device_config *)((uint8_t *)h + sizeof(mcfg_t));
-    cplog("Entries: %d", num_entries);
+    vcplog("Entries: %d", num_entries);
     for(int i = 0; i < num_entries; i++)
         vcplog("Base Address: 0x%.16llx", entries[i].base_address);
-    cplog("done.");
+    vvcplog("done.");
 }
 
 void iterate_pci() {
@@ -37,7 +37,7 @@ void iterate_pci() {
                 if(vendor_id == 0x0000 || vendor_id == 0xFFFF) {
                     continue;
                 }
-                cplog(
+                vcplog(
                     "PCI Bus: %02d Device: %02d ID: %04X Function: %d USB: %s",
                     (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF), device_id,
                     ((uint8_t)((function & 0xFF))),

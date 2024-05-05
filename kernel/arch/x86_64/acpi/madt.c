@@ -71,7 +71,7 @@ void init_madt(madt_t *madt) {
             break;
         }
         default: {
-            cplog("found invalid madt entry %i", header->type);
+            vcplog("found invalid madt entry %i", header->type);
             break;
         }
         }
@@ -79,7 +79,7 @@ void init_madt(madt_t *madt) {
         ptr += header->length;
     }
 
-    cplog("done");
+    vvcplog("done.");
 }
 
 uint32_t madt_get_iso(uint32_t irq) {
