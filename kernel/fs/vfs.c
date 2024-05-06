@@ -107,18 +107,35 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
     case TYPE_INITRD:
         uint32_t hash = hash_string(fileName);
         int fileId = find_file_by_hash((Ramdisk *)temp->driveAddr, hash);
+
+        if(fileId == -1) {
+            plog("%s not found!", fileName);
+            plog_fail("%s not found!", fileName);
+            return STATUS_ERROR_FILE_NOT_FOUND;
+        }
+
         RamdiskEntry *tempEntry =
             (RamdiskEntry *)((Ramdisk *)temp->driveAddr)->content[fileId];
-        *out = (char *)kmalloc(tempEntry->file->size);
 
-        for(int i = 0; i < tempEntry->file->size; ++i) {
-            (*out)[i] = tempEntry->file->content[i];
+        if(tempEntry->file->path == NULL) {
+            plog("%s not found!", fileName);
+            plog_fail("%s not found!", fileName);
+            return STATUS_ERROR_FILE_NOT_FOUND;
         }
+
+        *out = (char *)kmalloc(tempEntry->file->size);
+        if(*out == NULL) {
+            plog("Failed to allocate memory for file content!");
+            return STATUS_MALLOC_FAILURE;
+        }
+
+        size_t numBytes = tempEntry->file->size * sizeof((*out)[0]);
+        memcpy((*out), tempEntry->file->content, numBytes);
 
         cdlog("done.");
         break;
     default:
-        debug_log(__FILE__, __LINE__, __func__, "Invalid drive type !");
+        plog("Invalid drive type ! %d", temp->driveType);
         return STATUS_INVALID_DRIVE_TYPE;
     }
 

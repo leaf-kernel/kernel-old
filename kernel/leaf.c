@@ -27,6 +27,10 @@
 #include <utils/check.h>
 #include <utils/convertion.h>
 
+// Parsing headers
+#include <utils/parsing/elf.h>
+#include <utils/parsing/ini.h>
+
 int main() {
     _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
     update_memory();
@@ -51,17 +55,19 @@ int main() {
     iterate_pci();
     plog_ok("------------------");
 
-    // char *hello;
-    // vfs_op_status status;
+    char *hello;
+    vfs_op_status status;
 
-    // VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
+    VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
 
-    // status = drive_read(vfs, 0, "/sys/kernel/run/drivers/hello", &hello);
+    status = drive_read(vfs, 0, "/sys/run/drivers/hello", &hello);
 
-    // if(status != STATUS_OK) {
-    //     plog_fatal("Failed to read \"/sys/kernel/run/drivers/hello\"!");
-    //     return LEAF_RETURN_FATAL;
-    // }
+    if(status != STATUS_OK) {
+        plog_fatal("Failed to read \"/sys/run/drivers/hello\"!");
+        return LEAF_RETURN_FATAL;
+    }
+
+    plog_ok("Reached target \033[1mdrivers\033[0m");
 
     hlt();
     return LEAF_RETURN_SUCCESS;
