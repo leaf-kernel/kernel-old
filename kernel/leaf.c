@@ -54,21 +54,9 @@ int main() {
     plog_ok("------- PCI ------");
     iterate_pci();
     plog_ok("------------------");
-
-    char *hello;
-    vfs_op_status status;
-
-    VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
-
-    status = drive_read(vfs, 0, "/sys/run/drivers/hello", &hello);
-
-    if(status != STATUS_OK) {
-        plog_fatal("Failed to read \"/sys/run/drivers/hello\"!");
-        return LEAF_RETURN_FATAL;
-    }
-
     plog_ok("Reached target \033[1mdrivers\033[0m");
-    parse_elf(hello);
+    parse_elf("/sys/run/drivers/hello");
+    plog_warn("Failed to finish target \033[1mdrivers\033[0m, no VMM :(");
     hlt();
     return LEAF_RETURN_SUCCESS;
 }

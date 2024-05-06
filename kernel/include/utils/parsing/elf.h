@@ -30,6 +30,17 @@ typedef struct {
     Elf64_Half e_shstrndx;
 } Elf64_Ehdr;
 
+typedef struct {
+    uint32_t p_type;
+    uint32_t p_flags;
+    uint64_t p_offset;
+    uint64_t p_vaddr;
+    uint64_t p_paddr;
+    uint64_t p_filesz;
+    uint64_t p_memsz;
+    uint64_t p_align;
+} Elf64_Phdr;
+
 enum Elf_Ident {
     EI_MAG0 = 0,
     EI_MAG1 = 1,
@@ -53,10 +64,19 @@ enum Elf_Ident {
 
 enum Elf_Type { ET_NONE = 0, ET_REL = 1, ET_EXEC = 2 };
 
-#define EM_X86_64 (62)
+enum Elf_PType {
+    PT_NULL = 0,
+    PT_LOAD = 1,
+    PT_DYNAMIC = 2,
+    PT_INTERP = 3,
+    PT_NOTE = 4
+};
+
+#define EM_X86_64 (0x3E)
+
 #define EV_CURRENT (1)
 
 bool elf_check_file(Elf64_Ehdr *hdr);
-void parse_elf(const char *file);
+void parse_elf(const char *name);
 
 #endif
