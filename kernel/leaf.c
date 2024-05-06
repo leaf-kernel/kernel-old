@@ -47,6 +47,12 @@ int main() {
                   result.passed + result.failed);
     }
 
+    plog_ok("------- PCI ------");
+    iterate_pci();
+    plog_ok("------------------");
+
+    _int(3);
+
     hlt();
     return LEAF_RETURN_SUCCESS;
 }

@@ -1,15 +1,18 @@
 #include <arch/x86_64/acpi/mcfg.h>
 #include <arch/x86_64/acpi/rsdt.h>
 #define LEAF_INCLUDE_PRIVATE
+#include <sys/_config.h>
 #include <sys/leaf.h>
 
 uint32_t num_entries;
 device_config *entries;
+bool _support_pcie;
 
 void init_mcfg(mcfg_t *h) {
     if(h == NULL) {
-        dlog("Failed to find the MCFG table!");
-        hcf();
+        cplog("\033[31mERROR\033[0m: Your computer doesnt support PCIe");
+        plog_fail("Your computer doesnt support PCIe");
+        _support_pcie = false;
         return;
     }
 
@@ -18,10 +21,17 @@ void init_mcfg(mcfg_t *h) {
     vcplog("Entries: %d", num_entries);
     for(int i = 0; i < num_entries; i++)
         vcplog("Base Address: 0x%.16llx", entries[i].base_address);
+
+    _support_pcie = true;
     vvcplog("done.");
 }
 
 void iterate_pci() {
+    if(!_support_pcie) {
+        cplog("\033[31mERROR\033[0m: Your computer doesnt support PCIe");
+        plog_fail("Your computer doesnt support PCIe");
+        return;
+    }
     for(int bus = 0; bus < 8; bus++) {
         for(int device = 0; device < 32; device++) {
             int numfuncs = pci_read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
@@ -37,12 +47,18 @@ void iterate_pci() {
                 if(vendor_id == 0x0000 || vendor_id == 0xFFFF) {
                     continue;
                 }
-                vcplog(
-                    "PCI Bus: %02d Device: %02d ID: %04X Function: %d USB: %s",
-                    (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF), device_id,
-                    ((uint8_t)((function & 0xFF))),
-                    ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
-                                                                  : "no");
+                cplog("PCI Bus: %02d Device: %02d ID: %04X Function: "
+                      "%d USB: %s",
+                      (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF),
+                      device_id, ((uint8_t)((function & 0xFF))),
+                      ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
+                                                                    : "no");
+                plog_ok("PCI Bus: %02d Device: %02d ID: %04X Function: %d "
+                        "USB: %s",
+                        (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF),
+                        device_id, ((uint8_t)((function & 0xFF))),
+                        ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
+                                                                      : "no");
             }
         }
     }

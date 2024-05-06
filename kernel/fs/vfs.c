@@ -23,7 +23,8 @@ VFS_t *init_vfs() {
     return vfs;
 }
 
-vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type) {
+vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type,
+                          uint8_t id) {
     if(vfs == NULL) {
         return STATUS_INVALID_ARGUMENTS;
     }
@@ -52,9 +53,16 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type) {
         vfs->drives = temp;
     }
 
-    vfs->drives[vfs->numDrives++] = *newDrive;
+    if(vfs->drives[id].driveAddr == 0) {
+        vfs->drives[id] = *newDrive;
+    } else {
+        plog("Failed to mount drive from 0x%.16llx with id %d. ERROR: Drive "
+             "with id %d already exists",
+             driveAddr, id, id);
+        return STATUS_DRIVE_ID_ALREADY_EXISTS;
+    }
     kfree(newDrive);
-    vcplog("mounted drive from 0x%.16llx", driveAddr);
+    vcplog("mounted drive from 0x%.16llx with id %d", driveAddr, id);
     return STATUS_OK;
 }
 
@@ -115,7 +123,7 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
         vvcplog("done.");
         break;
     default:
-        plog("Invalid drive type !");
+        plog("Invalid drive type! Got %d", temp->driveType);
         return STATUS_INVALID_DRIVE_TYPE;
     }
 

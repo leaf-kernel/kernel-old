@@ -35,11 +35,6 @@ void init_rsdt() {
     init_fadt(fadt);
 
     mcfg_t *mcfg = _find_sdt("MCFG");
-    if(mcfg == NULL) {
-
-        plog("Failed to find MCFG!");
-        hcf();
-    }
 
     init_mcfg(mcfg);
 

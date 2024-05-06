@@ -64,12 +64,20 @@ table_entry_t _parse_entry(char *line) {
 
 void init_stable() {
     vfs_op_status status;
-    char *map = NULL;
+    char *map = (char *)kmalloc(MAX_STABLE_COUNT * sizeof(char *));
+
+    if(map == NULL) {
+        plog("Failed to allocate space for symbol table!");
+        return;
+    }
+
     VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
 
+    // Read the map of the ramdisk. ID: 0
     status = drive_read(vfs, 0, "/sys/kernel/kernel.map", &map);
     if(status != STATUS_OK) {
         plog("Failed to read /sys/kernel/kernel.map!");
+        hcf();
         return;
     }
 
