@@ -17,7 +17,6 @@ typedef enum {
     STATUS_MALLOC_FAILURE,
     STATUS_INVALID_ARGUMENTS,
     STATUS_INVALID_DRIVE_TYPE,
-    STATUS_DRIVE_ID_ALREADY_EXISTS,
     STATUS_UNKNOWN_ERROR
 } vfs_op_status;
 
@@ -33,8 +32,7 @@ typedef struct {
 } VFS_t;
 
 VFS_t *init_vfs();
-vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type,
-                          uint8_t id);
+vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type);
 vfs_op_status umount_drive(VFS_t *vfs, int driveId);
 vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out);
 

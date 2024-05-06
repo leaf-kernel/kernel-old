@@ -6,25 +6,26 @@
 VFS_t *init_vfs() {
     VFS_t *vfs = (VFS_t *)kmalloc(sizeof(VFS_t));
     if(vfs == NULL) {
-        plog("Failed to allocate memory for VFS stuct!");
+        debug_log(__FILE__, __LINE__, __func__,
+                  "Failed to allocate memory for VFS stuct!");
         return NULL;
     }
 
     vfs->address = (uint64_t)vfs;
-    vcplog("vfs at 0x%0.16llx", vfs->address);
+    cdlog("vfs at 0x%0.16llx", vfs->address);
 
     vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
     if(vfs->drives == NULL) {
-        plog("Failed to allocate memory for VFS drives!");
+        debug_log(__FILE__, __LINE__, __func__,
+                  "Failed to allocate memory for VFS drives!");
         return NULL;
     }
 
-    vvcplog("done.");
+    cdlog("done.");
     return vfs;
 }
 
-vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type,
-                          uint8_t id) {
+vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type) {
     if(vfs == NULL) {
         return STATUS_INVALID_ARGUMENTS;
     }
@@ -53,16 +54,9 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type,
         vfs->drives = temp;
     }
 
-    if(vfs->drives[id].driveAddr == 0) {
-        vfs->drives[id] = *newDrive;
-    } else {
-        plog("Failed to mount drive from 0x%.16llx with id %d. ERROR: Drive "
-             "with id %d already exists",
-             driveAddr, id, id);
-        return STATUS_DRIVE_ID_ALREADY_EXISTS;
-    }
+    vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
-    vcplog("mounted drive from 0x%.16llx with id %d", driveAddr, id);
+    cdlog("mounted drive from 0x%.16llx", driveAddr);
     return STATUS_OK;
 }
 
@@ -90,28 +84,24 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId) {
         vfs->drives = NULL;
     }
 
-    vcplog("-0x%016x", driveToRemove->driveAddr);
+    cdlog("-0x%016x", driveToRemove->driveAddr);
 
     return STATUS_OK;
 }
 
 vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
     if(vfs == NULL) {
-        plog("A null pointer to the VFS was passed!");
+        debug_log(__FILE__, __LINE__, __func__,
+                  "A null pointer to the VFS was passed!");
         return STATUS_INVALID_ARGUMENTS;
     }
 
     if(driveId > vfs->numDrives) {
-        plog("Invalid driveId passed!");
+        debug_log(__FILE__, __LINE__, __func__, "Invalid driveId passed!");
         return STATUS_INVALID_ARGUMENTS;
     }
 
     drive_t *temp = &vfs->drives[driveId];
-    if(temp == NULL) {
-        plog_fail("Drive with id %u not found", driveId);
-        plog("Drive with id %u not found", driveId);
-        return STATUS_DRIVE_NOT_FOUND;
-    }
 
     switch(temp->driveType) {
     case TYPE_INITRD:
@@ -119,21 +109,16 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
         int fileId = find_file_by_hash((Ramdisk *)temp->driveAddr, hash);
         RamdiskEntry *tempEntry =
             (RamdiskEntry *)((Ramdisk *)temp->driveAddr)->content[fileId];
-
-        if(tempEntry == NULL) {
-            return STATUS_ERROR_FILE_NOT_FOUND;
-        }
-
         *out = (char *)kmalloc(tempEntry->file->size);
 
         for(int i = 0; i < tempEntry->file->size; ++i) {
             (*out)[i] = tempEntry->file->content[i];
         }
 
-        vvcplog("done.");
+        cdlog("done.");
         break;
     default:
-        plog("Invalid drive type! Got %d", temp->driveType);
+        debug_log(__FILE__, __LINE__, __func__, "Invalid drive type !");
         return STATUS_INVALID_DRIVE_TYPE;
     }
 

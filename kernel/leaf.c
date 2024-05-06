@@ -51,17 +51,17 @@ int main() {
     iterate_pci();
     plog_ok("------------------");
 
-    char *hello;
-    vfs_op_status status;
+    // char *hello;
+    // vfs_op_status status;
 
-    VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
+    // VFS_t *vfs = (VFS_t *)__LEAF_GET_VFS__();
 
-    status = drive_read(vfs, 0, "/sys/kernel/run/drivers/hello", &hello);
+    // status = drive_read(vfs, 0, "/sys/kernel/run/drivers/hello", &hello);
 
-    if(status != STATUS_OK) {
-        plog_fatal("Failed to read \"/sys/kernel/run/drivers/hello\"!");
-        return LEAF_RETURN_FATAL;
-    }
+    // if(status != STATUS_OK) {
+    //     plog_fatal("Failed to read \"/sys/kernel/run/drivers/hello\"!");
+    //     return LEAF_RETURN_FATAL;
+    // }
 
     hlt();
     return LEAF_RETURN_SUCCESS;

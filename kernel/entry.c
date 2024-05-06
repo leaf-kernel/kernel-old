@@ -111,7 +111,7 @@ void _start(void) {
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),
                           mod_request.response->modules[0]->size);
     vfs = init_vfs();
-    mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD, 0);
+    mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
     __LEAF_DISABLE_PRE_LOG();  // Disable pre-log. cdebug_log and whatnot
