@@ -68,7 +68,7 @@ int main() {
     }
 
     plog_ok("Reached target \033[1mdrivers\033[0m");
-
+    parse_elf(hello);
     hlt();
     return LEAF_RETURN_SUCCESS;
 }
