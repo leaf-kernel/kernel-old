@@ -107,6 +107,11 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
     }
 
     drive_t *temp = &vfs->drives[driveId];
+    if(temp == NULL) {
+        plog_fail("Drive with id %u not found", driveId);
+        plog("Drive with id %u not found", driveId);
+        return STATUS_DRIVE_NOT_FOUND;
+    }
 
     switch(temp->driveType) {
     case TYPE_INITRD:
@@ -114,6 +119,11 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
         int fileId = find_file_by_hash((Ramdisk *)temp->driveAddr, hash);
         RamdiskEntry *tempEntry =
             (RamdiskEntry *)((Ramdisk *)temp->driveAddr)->content[fileId];
+
+        if(tempEntry == NULL) {
+            return STATUS_ERROR_FILE_NOT_FOUND;
+        }
+
         *out = (char *)kmalloc(tempEntry->file->size);
 
         for(int i = 0; i < tempEntry->file->size; ++i) {

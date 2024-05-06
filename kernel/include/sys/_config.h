@@ -1,8 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define __LEAF_VERBOSE__
-#define __LEAF_VVERBOSE__
+// #define __LEAF_VERBOSE__
+// #define __LEAF_VVERBOSE__
 // #define __LEAF_MAP_TTY__
 
 // Extra-Extra verbose logging is only for the symbol table atm.
