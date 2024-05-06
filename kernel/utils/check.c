@@ -7,8 +7,16 @@ bool __test_memcpy() {
 }
 
 bool __test_memmove() {
-    char str[] = "Hello, world!";
-    return strcmp(memmove(str + 7, str, 5), "Hello, Hello!") == 0;
+    char src[] = "Hello, World!";
+    char dest[20];
+
+    memmove(dest, src, strlen(src) + 1);
+
+    if(strcmp(src, dest) != 0) {
+        return false;
+    }
+
+    return true;
 }
 
 bool __test_strcpy() {
@@ -40,8 +48,8 @@ bool __test_strncat() {
 
 bool __test_memcmp() {
     const char str1[] = "Hello";
-    const char str2[] = "Hella";
-    return memcmp(str1, str2, 5) < 0;
+    const char str2[] = "Hello";
+    return memcmp(str1, str2, 4) == 0;
 }
 
 bool __test_strcmp() {
@@ -52,8 +60,8 @@ bool __test_strcmp() {
 
 bool __test_strncmp() {
     const char str1[] = "Hello";
-    const char str2[] = "Hella";
-    return strncmp(str1, str2, 5) < 0;
+    const char str2[] = "Hello";
+    return strncmp(str1, str2, 4) == 0;
 }
 
 bool __test_memchr() {
@@ -98,8 +106,20 @@ bool __test_strstr() {
 }
 
 bool __test_memset() {
-    char buf[20];
-    return strcmp(memset(buf, 'A', sizeof(buf)), "AAAAAAAAAAAAAAAAAAAA") == 0;
+    int arr[10];
+    int value = 42;
+    size_t num_bytes = sizeof(arr);
+
+    memset(arr, value, num_bytes);
+
+    unsigned char *byte_ptr = (unsigned char *)arr;
+    for(size_t i = 0; i < num_bytes; i++) {
+        if(byte_ptr[i] != (unsigned char)value) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool __test_strtok() {

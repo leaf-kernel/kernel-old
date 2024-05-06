@@ -115,8 +115,11 @@ void tty_write(char ch) {
         write_serial(ch);
     } else {
         // Default to COM1.
+
+#ifdef __LEAF_VVVERBOSE__
         switch_serial(0, _SERIAL_COM1);
         write_serial(ch);
+#endif
     }
 }
 

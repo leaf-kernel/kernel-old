@@ -39,10 +39,7 @@ int main() {
         plog_ok("%d bytes OK", total_memory);
     }
 
-    __LEAF_ENABLE_PRE_LOG();
     TestResult result = check_libc();
-    __LEAF_DISABLE_PRE_LOG();
-
     if(result.failed == 0 && result.passed > 0) {
         plog_ok("All libc test passed.");
     } else {
