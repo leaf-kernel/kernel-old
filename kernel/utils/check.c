@@ -120,6 +120,32 @@ bool __test_strdup() {
     return (dup_str != NULL) && strcmp(dup_str, str) == 0;
 }
 
+bool __test_isalnum() { return isalnum('a'); }
+
+bool __test_isalpha() { return isalpha('a'); }
+
+bool __test_isdigit() { return isdigit('5'); }
+
+bool __test_isxdigit() { return isxdigit('F'); }
+
+bool __test_islower() { return islower('a'); }
+
+bool __test_isupper() { return isupper('A'); }
+
+bool __test_isspace() { return isspace(' '); }
+
+bool __test_ispunct() { return ispunct('.'); }
+
+bool __test_isgraph() { return isgraph('a'); }
+
+bool __test_isprint() { return isprint('a'); }
+
+bool __test_iscntrl() { return iscntrl('\n'); }
+
+bool __test_tolower() { return tolower('A') == 'a'; }
+
+bool __test_toupper() { return toupper('a') == 'A'; }
+
 bool __test_kmalloc() {
     void *ptr = kmalloc(16);
     if(ptr == NULL)
@@ -178,19 +204,21 @@ TestResult __check_ctype() {
 
     struct Test {
         const char *name;
-        int (*function)(int);
+        bool (*function)();
     };
 
     const struct Test tests[] = {
-        {"isalnum", isalnum},   {"isalpha", isalpha}, {"isdigit", isdigit},
-        {"isxdigit", isxdigit}, {"islower", islower}, {"isupper", isupper},
-        {"isspace", isspace},   {"ispunct", ispunct}, {"isgraph", isgraph},
-        {"isprint", isprint},   {"iscntrl", iscntrl}, {"tolower", tolower},
-        {"toupper", toupper}};
+        {"isalnum", __test_isalnum}, {"isalpha", __test_isalpha},
+        {"isdigit", __test_isdigit}, {"isxdigit", __test_isxdigit},
+        {"islower", __test_islower}, {"isupper", __test_isupper},
+        {"isspace", __test_isspace}, {"ispunct", __test_ispunct},
+        {"isgraph", __test_isgraph}, {"isprint", __test_isprint},
+        {"iscntrl", __test_iscntrl}, {"tolower", __test_tolower},
+        {"toupper", __test_toupper}};
 
     for(size_t i = 0; i < sizeof(tests) / sizeof(tests[0]); ++i) {
         const struct Test *test = &tests[i];
-        int result_code = test->function('a');
+        bool result_code = test->function();
 
         if(result_code) {
             vcplog("%s: passed", test->name);

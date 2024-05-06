@@ -19,6 +19,7 @@ extern bool _leaf_should_clear_serial;
 extern bool _leaf_should_flush_serial;
 extern bool _leaf_should_flush_tty;
 extern bool _leaf_disable_pre_log;
+extern bool _leaf_should_log_serial_always;
 
 #define __LEAF_DISABLE_LOG() _leaf_log = false;
 #define __LEAF_ENABLE_LOG() _leaf_log = true;
@@ -30,5 +31,7 @@ extern bool _leaf_disable_pre_log;
 #define __LEAF_DONT_FLUSH_TTY() _leaf_should_flush_tty = false;
 #define __LEAF_ENABLE_PRE_LOG() _leaf_disable_pre_log = false;
 #define __LEAF_DISABLE_PRE_LOG() _leaf_disable_pre_log = true;
+#define __LEAF_LOG_SERIAL_ALWAYS() _leaf_should_log_serial_always = true;
+#define __LEAF_DONT_LOG_SERIAL_ALWAYS() _leaf_should_log_serial_always = false;
 
 #endif  // __CONFIG_H__

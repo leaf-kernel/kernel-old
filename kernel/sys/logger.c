@@ -41,6 +41,15 @@ void pdebug_log(const char *file, const int line, const char *function,
         printf("\r\n");
         va_end(args);
     }
+
+    if(_leaf_should_log_serial_always) {
+        va_list args;
+        va_start(args, fmt);
+        printf("%s:%d (%s) - ", file, line, function);
+        vprintf(fmt, args);
+        printf("\r\n");
+        va_end(args);
+    }
 }
 void pcdebug_log(const char *function, const char *fmt, ...) {
     if(_leaf_disable_pre_log)
@@ -51,6 +60,15 @@ void pcdebug_log(const char *function, const char *fmt, ...) {
         printf("[%-*.*s]: ", 14, 14, function);
         vprintf(fmt, args);
         printf("\r\n");
+        va_end(args);
+    }
+
+    if(_leaf_should_log_serial_always) {
+        va_list args;
+        va_start(args, fmt);
+        dprintf("[%-*.*s]: ", 14, 14, function);
+        vdprintf(fmt, args);
+        dprintf("\r\n");
         va_end(args);
     }
 }

@@ -67,6 +67,7 @@ bool _leaf_should_clear_serial;
 bool _leaf_should_flush_serial;
 bool _leaf_should_flush_tty;
 bool _leaf_disable_pre_log;
+bool _leaf_should_log_serial_always;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -84,12 +85,15 @@ void _start(void) {
     __LEAF_CLEAR_SERIAL();
     __LEAF_FLUSH_SERIAL();
     __LEAF_ENABLE_PRE_LOG();
+
+    __LEAF_LOG_SERIAL_ALWAYS();
     init_serial();
     flush_serial();
     init_rtc();
     init_idt();
     init_pit();
     init_pmm();
+    __LEAF_DONT_LOG_SERIAL_ALWAYS();
 
     __LEAF_DONT_CLEAR_SERIAL();
     __LEAF_DONT_FLUSH_SERIAL();
