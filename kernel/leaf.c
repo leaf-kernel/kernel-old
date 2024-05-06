@@ -19,13 +19,12 @@
 // System configuration headers
 #include <sys/_config.h>
 
-// Backtrace related headers
+// System headers
 #include <sys/backtrace.h>
-
-// Real-time clock related headers
 #include <sys/time/rtc.h>
 
 // Utility headers
+#include <utils/check.h>
 #include <utils/convertion.h>
 
 int main() {
@@ -44,7 +43,15 @@ int main() {
             _get_day(time.day_of_week), _get_month(time.month),
             time.day_of_month, time.hours, time.minutes, time.seconds,
             currentTTYid);
-    _int(3);
+
+    TestResult result = check_libc();
+
+    if(result.failed == 0 && result.passed > 0) {
+        plog_ok("All libc test passed.");
+    } else {
+        plog_warn("Only %d/%d libc tests passed.", result.passed,
+                  result.passed + result.failed);
+    }
 
     hlt();
     return LEAF_RETURN_SUCCESS;
