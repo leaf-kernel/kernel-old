@@ -1,4 +1,5 @@
 #include <drivers/tty/tty.h>
+#include <sys/_config.h>
 
 TTY_t **ttys;
 uint8_t currentTTYid;
@@ -25,7 +26,7 @@ void init_tty() {
         }
     }
 
-    cdlog("done.");
+    vvcplog("done.");
 }
 
 void tty_destroy(uint8_t id) {
@@ -40,7 +41,7 @@ void tty_destroy(uint8_t id) {
 
     kfree(ttys[id]);
     ttys[id] = NULL;
-    cdlog("tty%04d destroyed", id);
+    vcplog("tty%04d destroyed", id);
 }
 
 void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
@@ -57,51 +58,26 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     currentTTYid = id;
     currentTTY = ttys[currentTTYid];
-    struct nighterm_ctx *context = kmalloc(sizeof(struct nighterm_ctx));
-    currentTTY->ctx = context;
     currentTTY->mapped_com = mapped_com;
 
-    int s;
-    if(font != NULL) {
-        char *out = (char *)kmalloc(sizeof(char));
-        if(out == NULL) {
-            dlog("Failed to allocate memory for the font buffer for tty%03d",
-                 id);
-            hcf();
-        }
+    currentTTY->ctx = flanterm_fb_init(
+        (void *)kmalloc, (void *)kfree, framebuffer->address,
+        framebuffer->width, framebuffer->height, framebuffer->pitch,
+        framebuffer->red_mask_size, framebuffer->red_mask_shift,
+        framebuffer->green_mask_size, framebuffer->green_mask_shift,
+        framebuffer->blue_mask_size, framebuffer->blue_mask_shift, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 0, 0);
 
-        vfs_op_status status;
-        status = drive_read((VFS_t *)__LEAF_GET_VFS__(), 0, font, &out);
-
-        if(status == STATUS_OK) {
-            s = nighterm_initialize(currentTTY->ctx, out, framebuffer->address,
-                                    framebuffer->width, framebuffer->height,
-                                    framebuffer->pitch, framebuffer->bpp,
-                                    kmalloc, kfree);
-        } else {
-            s = nighterm_initialize(currentTTY->ctx, NULL, framebuffer->address,
-                                    framebuffer->width, framebuffer->height,
-                                    framebuffer->pitch, framebuffer->bpp,
-                                    kmalloc, kfree);
-        }
-    } else {
-        s = nighterm_initialize(currentTTY->ctx, NULL, framebuffer->address,
-                                framebuffer->width, framebuffer->height,
-                                framebuffer->pitch, framebuffer->bpp, kmalloc,
-                                kfree);
-    }
-
-    if(s != NIGHTERM_SUCCESS) {
-        debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to initialize nighterm for tty%03d!", id);
-        return;
+    if(currentTTY->ctx == NULL) {
+        dlog("Failed to initialize Flanterm for tty%03d!", id);
+        hcf();
     }
 
     tty_switch(id);
     if(mapped_com > 0 && mapped_com <= 8)
-        cdlog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
+        vcplog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
     else
-        cdlog("Spawned tty%03d (tty%03d -> NULL)", id, id);
+        vcplog("Spawned tty%03d (tty%03d -> NULL)", id, id);
 }
 
 void tty_switch(uint8_t id) {
@@ -109,7 +85,10 @@ void tty_switch(uint8_t id) {
         ttys[id]->id = id;
         currentTTYid = id;
         currentTTY = ttys[id];
-        switch_serial(currentTTY->mapped_com, 0);
+
+        if(currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0)
+            switch_serial(currentTTY->mapped_com, 0);
+
         tty_flush();
     }
 }
@@ -118,20 +97,30 @@ void tty_flush() {
     if(currentTTY != NULL && currentTTY->ctx != NULL && currentTTY != NULL &&
        ttys[currentTTYid] != NULL) {
         flush_serial();
-        nighterm_flush(currentTTY->ctx, 0, 0, 0);
-        nighterm_set_bg_color(currentTTY->ctx, 0, 0, 0);
-        nighterm_set_fg_color(currentTTY->ctx, 255, 255, 255);
-        nighterm_set_cursor_position(currentTTY->ctx, 0, 0);
+
+        if(_leaf_should_flush_tty) {
+            currentTTY->ctx->double_buffer_flush(currentTTY->ctx);
+        }
     }
 }
 
 void tty_write(char ch) {
-    if(currentTTY != NULL && currentTTY->ctx != NULL) {
-        nighterm_write(currentTTY->ctx, ch);
-    }
+    if(currentTTY == NULL || currentTTY->ctx == NULL)
+        return;
+    else
+        flanterm_write(currentTTY->ctx, &ch, sizeof(ch));
 
     if(currentTTY->mapped_com <= 8 && currentTTY->mapped_com > 0) {
         switch_serial(currentTTY->mapped_com, 0);
         write_serial(ch);
+    } else {
+        // Default to COM1.
+        switch_serial(0, _SERIAL_COM1);
+        write_serial(ch);
     }
+}
+
+void _tty_flag_set(bool *flag, bool value) {
+    *flag = value;
+    tty_flush();
 }

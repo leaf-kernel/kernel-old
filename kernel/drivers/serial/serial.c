@@ -38,6 +38,9 @@ uint32_t ind(uint16_t port) {
     return r;
 }
 
+int _is_transmit_empty() { return inb(__cur_port + 5) & 0x20; }
+int _iis_transmit_empty(uint16_t port) { return inb(port + 5) & 0x20; }
+
 bool _register_port(uint16_t port) {
     outb(port + 1, 0x00);
     outb(port + 3, 0x80);
@@ -47,27 +50,23 @@ bool _register_port(uint16_t port) {
     outb(port + 2, 0xC7);
     outb(port + 4, 0x0B);
     outb(port + 4, 0x1E);
-    outb(port + 0, 0xAE);
-    if(inb(port + 0) != 0xAE) {
+    outb(port + 0, 0x69);
+    if(inb(port + 0) != 0x69) {
         dlog("Failed to register port \"0x%04llx\"", port);
         return false;
     }
 
     outb(port + 4, 0x0F);
-    vcdlog("Registered port \"0x%04llx\"", port);
+    vcplog("Registered port \"0x%04llx\"", port);
     return true;
 }
 
 void init_serial() {
-    if(_register_port(_SERIAL_COM1)) {
-        switch_serial(1, 0);
-    } else {
-        dlog("Failed to initialize serial!");
-        hcf();
-    }
+    _register_port(_SERIAL_COM1);
+    switch_serial(1, 0);
 
     _serial_has_been_init = true;
-    cdlog("done.");
+    vvcplog("done.");
 }
 
 int _serial_received() { return inb(__cur_port + 5) & 1; }
@@ -124,13 +123,12 @@ void switch_serial(uint8_t id, uint16_t port) {
     }
 }
 
-int _is_transmit_empty() { return inb(__cur_port + 5) & 0x20; }
-
 void write_serial(char a) {
     while(_is_transmit_empty() == 0)
         ;
 
-    outb(__cur_port, a);
+    if(a != '\0')
+        outb(__cur_port, a);
 }
 
 void flush_serial() {

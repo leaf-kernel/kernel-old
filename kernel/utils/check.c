@@ -193,10 +193,10 @@ TestResult __check_ctype() {
         int result_code = test->function('a');
 
         if(result_code) {
-            vcdlog("%s: passed", test->name);
+            vcplog("%s: passed", test->name);
             result.passed++;
         } else {
-            vcdlog("%s: failed", test->name);
+            vcplog("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -229,10 +229,10 @@ TestResult __check_string() {
         bool result_code = test->function();
 
         if(result_code) {
-            vcdlog("%s: passed", test->name);
+            vcplog("%s: passed", test->name);
             result.passed++;
         } else {
-            vcdlog("%s: failed", test->name);
+            vcplog("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -258,10 +258,10 @@ TestResult __check_kheap() {
         bool result_code = test->function();
 
         if(result_code) {
-            vcdlog("%s: passed", test->name);
+            vcplog("%s: passed", test->name);
             result.passed++;
         } else {
-            vcdlog("%s: failed", test->name);
+            vcplog("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -278,11 +278,11 @@ TestResult check_libc() {
     string_result = __check_string();
     kheap_result = __check_kheap();
 
-    vcdlog("ctype result %d/%d", ctype_result.passed,
+    vcplog("ctype result %d/%d", ctype_result.passed,
            ctype_result.failed + ctype_result.passed);
-    vcdlog("string result %d/%d", string_result.passed,
+    vcplog("string result %d/%d", string_result.passed,
            string_result.failed + string_result.passed);
-    vcdlog("kheap result %d/%d", kheap_result.passed,
+    vcplog("kheap result %d/%d", kheap_result.passed,
            kheap_result.failed + kheap_result.passed);
 
     TestResult total_result = {

@@ -15,7 +15,7 @@ void init_madt(madt_t *madt) {
     madt_table = madt;
     g_acpi_cpu_count = 0;
     g_lapic_addr = PHYS_TO_VIRT(madt->lapic_addr);
-    vcdlog("lapic addr: 0x%.8llx", g_lapic_addr);
+    vcplog("lapic addr: 0x%.8llx", g_lapic_addr);
 
     for(size_t i = 0; i < 16; i++) {
         g_apic_isos[i] = NULL;
@@ -30,7 +30,7 @@ void init_madt(madt_t *madt) {
         switch(header->type) {
         case APIC_LAPIC: {
             apic_lapic_t *lapic = (apic_lapic_t *)ptr;
-            vcdlog("found lapic entry, id %i, flags 0x%x", g_acpi_cpu_count,
+            vcplog("found lapic entry, id %i, flags 0x%x", g_acpi_cpu_count,
                    lapic->flags);
             if(g_acpi_cpu_count < CONFIG_CPU_MAX) {
                 g_acpi_lapic[g_acpi_cpu_count] = lapic;
@@ -42,36 +42,36 @@ void init_madt(madt_t *madt) {
         case APIC_IOAPIC: {
             apic_ioapic_t *ioapic = (apic_ioapic_t *)ptr;
             g_ioapic_addr = PHYS_TO_VIRT(ioapic->ioapic_addr);
-            vcdlog("found ioapic %i, addr: 0x%.8llx, gsi_base: %i",
+            vcplog("found ioapic %i, addr: 0x%.8llx, gsi_base: %i",
                    ioapic->ioapic_id, ioapic->ioapic_addr, ioapic->gsi_base);
             break;
         }
         case APIC_ISO: {
             apic_iso_t *iso = (apic_iso_t *)ptr;
             g_apic_isos[iso->irq] = iso;
-            vcdlog(
+            vcplog(
                 "found ioapic iso, bus: %i, irq: %i, gsi: %i, flags: 0x%.4lx",
                 iso->bus, iso->irq, iso->gsi, iso->flags);
             break;
         }
         case APIC_IOAPIC_NMI: {
-            vcdlog("found ioapic nmi");
+            vcplog("found ioapic nmi");
             break;
         }
         case APIC_LAPIC_NMI: {
-            vcdlog("found lapic nmi");
+            vcplog("found lapic nmi");
             break;
         }
         case APIC_LAPIC_OVERRIDE: {
-            vcdlog("found lapic address override");
+            vcplog("found lapic address override");
             break;
         }
         case APIC_X2APIC: {
-            vcdlog("found x2apic");
+            vcplog("found x2apic");
             break;
         }
         default: {
-            cdlog("found invalid madt entry %i", header->type);
+            vcplog("found invalid madt entry %i", header->type);
             break;
         }
         }
@@ -79,7 +79,7 @@ void init_madt(madt_t *madt) {
         ptr += header->length;
     }
 
-    cdlog("done");
+    vvcplog("done.");
 }
 
 uint32_t madt_get_iso(uint32_t irq) {

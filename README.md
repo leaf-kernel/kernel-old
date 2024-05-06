@@ -7,6 +7,8 @@ A hobby kernel for nerds. Pre built ISO's [here](https://nightly.link/leaf-kerne
 
 Git Mirror available [here](https://git.leafkern.xyz/leaf)
 
+Discord server available [here](https://discord.gg/mv9eePT7zV)
+
 ## Building Instructions (Local)
 
 To build a bootable image, follow these steps:

@@ -32,13 +32,17 @@ void *__LEAF_GET_VFS__();
 #define __leaf_dprintf(...) dprintf(__VA_ARGS__)
 #ifdef __LEAF_VERBOSE__
 #define vcdlog(...) cdebug_log(__func__, __VA_ARGS__)
+#define vcplog(...) pcdebug_log(__func__, __VA_ARGS__)
 #else
 #define vcdlog(...) __LEAF_VOID_REDIRECT__
+#define vcplog(...) __LEAF_VOID_REDIRECT__
 #endif
 #ifdef __LEAF_VVERBOSE__
 #define vvcdlog(...) cdebug_log(__func__, __VA_ARGS__)
+#define vvcplog(...) pcdebug_log(__func__, __VA_ARGS__)
 #else
 #define vvcdlog(...) __LEAF_VOID_REDIRECT__
+#define vvcplog(...) __LEAF_VOID_REDIRECT__
 #endif
 #else
 #define dlog(...) __LEAF_VOID_REDIRECT__

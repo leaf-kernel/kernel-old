@@ -31,7 +31,7 @@ table_entry_t _parse_entry(char *line) {
     size_t length = strcspn(line, " ");
     char *address = kmalloc(length + 1);
     if(address == NULL) {
-        dlog("Memory allocation failed");
+        plog("Memory allocation failed");
         return entry;
     }
 
@@ -47,15 +47,17 @@ table_entry_t _parse_entry(char *line) {
     size_t name_length = strcspn(name_start, " ");
     entry.name = kmalloc(name_length + 1);
     if(entry.name == NULL) {
-        dlog("Memory allocation failed for name");
+        plog("Memory allocation failed for name");
         return entry;
     }
 
     strncpy(entry.name, name_start, name_length);
     entry.name[name_length] = '\0';
 
-    vvcdlog("%-25s Address: 0x%-16llx ID: %-c", entry.name, entry.addr,
+#ifdef __LEAF_VVVERBOSE__
+    vvcplog("%-25s Address: 0x%-16llx ID: %-c", entry.name, entry.addr,
             entry.id);
+#endif
 
     return entry;
 }
@@ -67,13 +69,13 @@ void init_stable() {
 
     status = drive_read(vfs, 0, "/sys/kernel/kernel.map", &map);
     if(status != STATUS_OK) {
-        dlog("Failed to read /sys/kernel/kernel.map!");
+        plog("Failed to read /sys/kernel/kernel.map!");
         return;
     }
 
     char **map_lines = kmalloc(sizeof(char *) * MAX_STABLE_COUNT);
     if(map_lines == NULL) {
-        dlog("Failed to allocate space for map lines!");
+        plog("Failed to allocate space for map lines!");
         kfree(map);
         return;
     }
@@ -83,7 +85,7 @@ void init_stable() {
     while(token != NULL && line_count < MAX_STABLE_COUNT) {
         map_lines[line_count] = strdup(token);
         if(map_lines[line_count] == NULL) {
-            dlog("Memory allocation failed for map line");
+            plog("Memory allocation failed for map line");
             for(int i = 0; i < line_count; ++i)
                 kfree(map_lines[i]);
             kfree(map_lines);

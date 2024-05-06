@@ -10,4 +10,4 @@ ISO_FILE="release/Leaf-$TARGET-$(date +%B-%Y).iso"
 ./env/configure "$TARGET" "$BOOTLOADER"
 ./env/build "$TARGET" "$BOOTLOADER"
 
-qemu-system-"$TARGET" -name "Leaf $TARGET" -drive file="$ISO_FILE",index=0,format=raw -machine q35 "$@"
+qemu-system-"$TARGET" -name "Leaf $TARGET" -drive file="$ISO_FILE",index=0,format=raw -machine q35 -rtc base=localtime,clock=host "$@"

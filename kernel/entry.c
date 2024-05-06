@@ -65,6 +65,8 @@ VFS_t *vfs;
 bool _leaf_log;
 bool _leaf_should_clear_serial;
 bool _leaf_should_flush_serial;
+bool _leaf_should_flush_tty;
+bool _leaf_disable_pre_log;
 
 // Utils
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
@@ -78,16 +80,23 @@ void _start(void) {
     framebuffer = framebuffer_request.response->framebuffers[0];
 #endif
     __LEAF_ENABLE_LOG();
-    init_serial();
-    __LEAF_FLUSH_SERIAL();
+    __LEAF_FLUSH_TTY();
     __LEAF_CLEAR_SERIAL();
+    __LEAF_FLUSH_SERIAL();
+    __LEAF_ENABLE_PRE_LOG();
+    init_serial();
     flush_serial();
     init_rtc();
-
     init_idt();
     init_pit();
     init_pmm();
-    // init_vmm();
+
+    __LEAF_DONT_CLEAR_SERIAL();
+    __LEAF_DONT_FLUSH_SERIAL();
+    init_tty();
+    tty_spawn(0, NULL, 1);
+
+    init_vmm();
     init_apic();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),
@@ -95,24 +104,17 @@ void _start(void) {
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
-    init_tty();
-    __LEAF_DONT_CLEAR_SERIAL();
-    __LEAF_DONT_FLUSH_SERIAL();
-    tty_spawn(0, NULL, 1);
-    __LEAF_FLUSH_SERIAL();
-    __LEAF_CLEAR_SERIAL();
 
-    cdlog("Kernel init done. On tty%03d", currentTTYid);
+    __LEAF_DISABLE_PRE_LOG();  // Disable pre-log. cdebug_log and whatnot
+    plog_ok("Reached target \033[1mpost-kinit\033[0m");
     int status = main();
 
-    cdlog("Kernel exited with code %d.", status);
-
     if(status != LEAF_RETURN_SUCCESS) {
-        cdlog("Something went wrong! Rebooting");
+        plog_fail("Something went wrong! Rebooting");
         _reboot();
     }
 
-    cdlog("Successfully quit! Shuting down");
+    plog_ok("Reached target \033[1mshutdown\033[0m\r\n");
     _shutdown_emu();
     hlt();
 }

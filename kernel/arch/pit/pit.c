@@ -47,7 +47,7 @@ void init_pit() {
     uptime_milis = 0;
     uptime_secs = 0;
     irq_register(0, pit_handler);
-    cdlog("done.");
+    vvcplog("done.");
 }
 
 uint64_t pit_get_uptime_secs() { return uptime_secs; }

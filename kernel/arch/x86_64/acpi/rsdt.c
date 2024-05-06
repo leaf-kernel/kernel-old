@@ -12,7 +12,7 @@ void init_rsdt() {
 
     g_rsdt = (rsdt_t *)(uintptr_t)PHYS_TO_VIRT(rsdp->rsdt_addr);
     if(_use_xsdt()) {
-        cdlog("Using XSDT!");
+        vcplog("Using XSDT");
         xsdp_t *xsdp = (xsdp_t *)rsdp_request.response->address;
         g_xsdt = (xsdt_t *)(uintptr_t)PHYS_TO_VIRT(xsdp->xsdt_addr);
     }
@@ -20,7 +20,7 @@ void init_rsdt() {
     madt_t *madt = _find_sdt("APIC");
     if(madt == NULL) {
 
-        cdlog("Failed to find MADT!");
+        plog("Failed to find MADT!");
         hcf();
     }
 
@@ -28,7 +28,7 @@ void init_rsdt() {
     fadt_t *fadt = _find_sdt("FACP");
     if(madt == NULL) {
 
-        cdlog("Failed to find FADT!");
+        plog("Failed to find FADT!");
         hcf();
     }
 
@@ -37,12 +37,12 @@ void init_rsdt() {
     mcfg_t *mcfg = _find_sdt("MCFG");
     if(mcfg == NULL) {
 
-        cdlog("Failed to find MCFG!");
+        plog("Failed to find MCFG!");
         hcf();
     }
 
     init_mcfg(mcfg);
 
-    cdlog("cores: %d", g_acpi_cpu_count);
-    cdlog("done");
+    vcplog("CPU Cores: %d", g_acpi_cpu_count);
+    vvcplog("done.");
 }
