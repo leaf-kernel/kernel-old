@@ -6,3 +6,4 @@ rm -rf kernel/include/utils/john
 rm -rf arch/x86_64/limine
 rm -rf arch/x86_64/modules/ramdisk
 rm -rf initrd/sys/kernel/kernel.map
+rm -rf CMakeCache.txt CMakeFiles
