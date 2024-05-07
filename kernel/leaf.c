@@ -64,6 +64,7 @@ int main(service_t *self, void *leaf_hdr) {
 
     _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
 
+    ok("-------- System Information --------");
     ok("Magic: 0x%X", hdr->magic);
     ok("Version: %d.%d.%d", hdr->version_major, hdr->version_minor,
        hdr->version_patch);
@@ -71,6 +72,7 @@ int main(service_t *self, void *leaf_hdr) {
     ok("Kernel: %s", hdr->kernel);
     ok("CPU Vendor: %s", hdr->cpu_vendor);
     ok("TTY: tty%03d", currentTTYid);
+    ok("-------------------------------------");
 
     service_config_t memory_check_conf = {.name = "memory-check",
                                           .verbose = false,
