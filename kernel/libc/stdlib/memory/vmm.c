@@ -8,18 +8,6 @@ struct Level4Group {
     PML4E entries[512];
 };
 
-struct Level3Group {
-    PML3E entries[512];
-};
-
-struct Level2Group {
-    PML2E entries[512];
-};
-
-struct Level1Group {
-    PML1E entries[512];
-};
-
 struct Level4Group *PML4Array;
 
 void *get_physaddr(uint64_t vaddr) {
