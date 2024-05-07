@@ -49,6 +49,21 @@ extern volatile struct limine_rsdp_request rsdp_request;
 extern struct limine_framebuffer *framebuffer;
 extern uint64_t hhdm_offset;
 
+// Leaf config and structs
+typedef struct {
+    uint32_t magic;
+} __attribute((packed)) __LEAF_HDR;
+
+// Helper functions
+#define ARRAY_SUM(arr, len)                                                    \
+    ({                                                                         \
+        int sum = 0;                                                           \
+        for(int i = 0; i < len; i++) {                                         \
+            sum += arr[i];                                                     \
+        }                                                                      \
+        sum;                                                                   \
+    })
+
 int main(service_t *self, void *signature);
 
 #endif  // __LEAF_H__

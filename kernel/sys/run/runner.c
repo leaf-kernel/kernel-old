@@ -15,6 +15,9 @@ char *service_err(int status, void *in) {
     case SERVICE_ERROR_INVALID_SIGNATURE:
         sprintf(err, "Invalid signature: %s", (char *)in);
         break;
+    case SERVICE_ERROR_INVALID_MAGIC:
+        sprintf(err, "Invalid magic: 0x%08X", (char *)in);
+        break;
     default:
         err = "Unknown error";
         break;

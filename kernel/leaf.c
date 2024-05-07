@@ -56,14 +56,15 @@ int memory_check(service_t *self, void *in) {
     return LEAF_RETURN_SUCCESS;
 }
 
-int main(service_t *self, void *signature) {
-    if(strcmp(signature, "LEAF") != 0) {
-        return SERVICE_ERROR_INVALID_SIGNATURE;
+int main(service_t *self, void *leaf_hdr) {
+    __LEAF_HDR *hdr = (__LEAF_HDR *)leaf_hdr;
+    if(hdr->magic != 0x7F61F3C0) {
+        return SERVICE_ERROR_INVALID_MAGIC;
     }
 
     _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
 
-    ok("Signature: %s", signature);
+    ok("Magic: 0x%X", hdr->magic);
 
     service_config_t memory_check_conf = {.name = "memory-check",
                                           .verbose = false,

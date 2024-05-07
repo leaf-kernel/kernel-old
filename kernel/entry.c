@@ -140,6 +140,9 @@ int kinit(service_t *self, void *args) {
         .stop_when_done = true,
         .runner = &main,
     };
-    register_service(&post_kinit_conf, "LEAF");
+
+    __LEAF_HDR post_kinit_hdr = {.magic = 0x7F61F3C0};
+
+    register_service(&post_kinit_conf, &post_kinit_hdr);
     return 0;
 }
