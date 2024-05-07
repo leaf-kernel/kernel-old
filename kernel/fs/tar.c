@@ -59,16 +59,15 @@ void tar_extract(const char *raw, uint64_t size, TAREntry *tar) {
         TARFile *temp_files =
             krealloc(tar->files, (tar->fileCount + 1) * sizeof(TARFile));
         if(temp_files == NULL) {
-            debug_log(__FILE__, __LINE__, __func__,
-                      "Failed to allocate memory for temp file!");
+            fail("Failed to allocate memory for temp file!");
             return;
         }
 
         tar->files = temp_files;
         tar->files[tar->fileCount] = file;
         tar->fileCount++;
-        vvcplog("{ name: \"%s\", directory: %s, size: %d }", file.name,
-                file.directory ? "true" : "false", file.size);
+        vvok("{ name: \"%s\", directory: %s, size: %d }", file.name,
+             file.directory ? "true" : "false", file.size);
         offset += ((file.size + 511) / 512 + 1) * 512;
     }
 }

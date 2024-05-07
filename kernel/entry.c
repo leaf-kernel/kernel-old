@@ -95,7 +95,6 @@ void _start(void) {
     init_pit();
     init_pmm();
     __LEAF_DONT_LOG_SERIAL_ALWAYS();
-
     __LEAF_DONT_CLEAR_SERIAL();
     __LEAF_DONT_FLUSH_SERIAL();
     init_tty();
@@ -127,7 +126,7 @@ void _start(void) {
     };
     register_service(&post_kinit_conf, "LEAF_POST");
 
-    plog_ok("Reached target \033[1mshutdown\033[0m\r\n");
+    ok("Reached target \033[1mshutdown\033[0m\r\n");
     _shutdown_emu();
     hlt();
 }

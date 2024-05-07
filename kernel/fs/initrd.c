@@ -8,12 +8,12 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size) {
     TAREntry *entry = (TAREntry *)kmalloc(sizeof(TAREntry));
 
     if(entry == NULL) {
-        plog("Failed to allocate memory for TAREntry!");
+        fail("Failed to allocate memory for TAREntry!");
         return NULL;
     }
 
     if(initrd == NULL) {
-        plog("Failed to allocate memory for initrd!");
+        fail("Failed to allocate memory for initrd!");
         kfree(entry);
         return NULL;
     }
@@ -23,7 +23,7 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size) {
     initrd->content =
         (RamdiskEntry **)kmalloc(entry->fileCount * sizeof(RamdiskEntry *));
     if(initrd->content == NULL) {
-        plog("Failed to allocate memory for RamdiskEntry pointers!");
+        fail("Failed to allocate memory for RamdiskEntry pointers!");
         kfree(entry);
         kfree(initrd);
         return NULL;
@@ -34,7 +34,7 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size) {
 
         RamdiskEntry *ramEntry = (RamdiskEntry *)kmalloc(sizeof(RamdiskEntry));
         if(ramEntry == NULL) {
-            plog("Failed to allocate memory for RamdiskEntry!");
+            fail("Failed to allocate memory for RamdiskEntry!");
             for(int j = 0; j < i; j++)
                 kfree(initrd->content[j]);
             kfree(initrd->content);
@@ -48,11 +48,11 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size) {
         ramEntry->hash = hash_string(entry->files[i].path);
 
         initrd->content[i] = ramEntry;
-        vcplog("hash: 0x%08x", initrd->content[i]->hash);
+        vok("hash: 0x%08x", initrd->content[i]->hash);
     }
 
     initrd->count = entry->fileCount;
-    vvcplog("done.");
+    vvok("done.");
     kfree(entry);
     return initrd;
 }

@@ -33,9 +33,9 @@ void init_pmm() {
             if(top_address > higher_address)
                 higher_address = top_address;
 
-            vcplog("Usable entry at 0x%.llx, Top Address: 0x%.llx, Higher "
-                   "Address: 0x%.llx",
-                   entry->base, top_address, higher_address);
+            vok("Usable entry at 0x%.llx, Top Address: 0x%.llx, Higher "
+                "Address: 0x%.llx",
+                entry->base, top_address, higher_address);
         }
     }
     bitmap_pages = higher_address / PAGE_SIZE;
@@ -69,12 +69,12 @@ void init_pmm() {
 
     update_memory();
     if(total_memory < 64000000)
-        vcplog("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf "
-               "requires atleast 64MB!\033[0m",
-               bytes_to_mb(total_memory));
+        vok("\033[1;33mWarning: Your computer only has %dMB of RAM. Leaf "
+            "requires atleast 64MB!\033[0m",
+            bytes_to_mb(total_memory));
     else
-        vcplog("%dMB ok.", bytes_to_mb(total_memory));
-    vvcplog("done.");
+        vok("%dMB ok.", bytes_to_mb(total_memory));
+    vvok("done.");
 }
 
 void update_memory() {

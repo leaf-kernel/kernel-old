@@ -7,10 +7,10 @@ fadt_t *fadt_table;
 
 void init_fadt(fadt_t *fadt) {
     if(strncmp(fadt->h.Signature, "FACP", 4) == 0) {
-        vvcplog("done.");
+        vvok("done.");
         fadt_table = fadt;
     } else {
-        dlog("Failed to init FADT");
+        fail("Failed to init FADT");
         hcf();
     }
 }

@@ -10,26 +10,26 @@ bool _support_pcie;
 
 void init_mcfg(mcfg_t *h) {
     if(h == NULL) {
-        cplog("\033[31mERROR\033[0m: Your computer doesnt support PCIe");
-        plog_fail("Your computer doesnt support PCIe");
+        ok("\033[31mERROR\033[0m: Your computer doesnt support PCIe");
+        fail("Your computer doesnt support PCIe");
         _support_pcie = false;
         return;
     }
 
     num_entries = (h->h.length - sizeof(mcfg_t)) / sizeof(device_config);
     entries = (device_config *)((uint8_t *)h + sizeof(mcfg_t));
-    vcplog("Entries: %d", num_entries);
+    vok("Entries: %d", num_entries);
     for(int i = 0; i < num_entries; i++)
-        vcplog("Base Address: 0x%.16llx", entries[i].base_address);
+        vok("Base Address: 0x%.16llx", entries[i].base_address);
 
     _support_pcie = true;
-    vvcplog("done.");
+    vvok("done.");
 }
 
 void iterate_pci() {
     if(!_support_pcie) {
-        cplog("\033[31mERROR\033[0m: Your computer doesnt support PCIe");
-        plog_fail("Your computer doesnt support PCIe");
+        ok("\033[31mERROR\033[0m: Your computer doesnt support PCIe");
+        fail("Your computer doesnt support PCIe");
         return;
     }
     for(int bus = 0; bus < 8; bus++) {
@@ -47,18 +47,18 @@ void iterate_pci() {
                 if(vendor_id == 0x0000 || vendor_id == 0xFFFF) {
                     continue;
                 }
-                cplog("PCI Bus: %02d Device: %02d ID: %04X Function: "
-                      "%d USB: %s",
-                      (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF),
-                      device_id, ((uint8_t)((function & 0xFF))),
-                      ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
-                                                                    : "no");
-                plog_ok("PCI Bus: %02d Device: %02d ID: %04X Function: %d "
-                        "USB: %s",
-                        (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF),
-                        device_id, ((uint8_t)((function & 0xFF))),
-                        ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
-                                                                      : "no");
+                ok("PCI Bus: %02d Device: %02d ID: %04X Function: "
+                   "%d USB: %s",
+                   (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF), device_id,
+                   ((uint8_t)((function & 0xFF))),
+                   ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
+                                                                 : "no");
+                ok("PCI Bus: %02d Device: %02d ID: %04X Function: %d "
+                   "USB: %s",
+                   (uint8_t)(bus & 0xFF), (uint8_t)(device & 0xFF), device_id,
+                   ((uint8_t)((function & 0xFF))),
+                   ((class_id == 0x0C) && (subclass_id == 0x03)) ? "yes"
+                                                                 : "no");
             }
         }
     }

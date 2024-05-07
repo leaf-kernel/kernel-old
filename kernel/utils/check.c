@@ -241,10 +241,10 @@ TestResult __check_ctype() {
         bool result_code = test->function();
 
         if(result_code) {
-            vcplog("%s: passed", test->name);
+            vvok("%s: passed", test->name);
             result.passed++;
         } else {
-            vcplog("%s: failed", test->name);
+            vvok("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -277,10 +277,10 @@ TestResult __check_string() {
         bool result_code = test->function();
 
         if(result_code) {
-            vcplog("%s: passed", test->name);
+            vvok("%s: passed", test->name);
             result.passed++;
         } else {
-            vcplog("%s: failed", test->name);
+            vvok("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -306,10 +306,10 @@ TestResult __check_kheap() {
         bool result_code = test->function();
 
         if(result_code) {
-            vcplog("%s: passed", test->name);
+            vvok("%s: passed", test->name);
             result.passed++;
         } else {
-            vcplog("%s: failed", test->name);
+            vvok("%s: failed", test->name);
             result.failed++;
         }
     }
@@ -326,12 +326,12 @@ TestResult check_libc() {
     string_result = __check_string();
     kheap_result = __check_kheap();
 
-    vcplog("ctype result %d/%d", ctype_result.passed,
-           ctype_result.failed + ctype_result.passed);
-    vcplog("string result %d/%d", string_result.passed,
-           string_result.failed + string_result.passed);
-    vcplog("kheap result %d/%d", kheap_result.passed,
-           kheap_result.failed + kheap_result.passed);
+    vvok("ctype result %d/%d", ctype_result.passed,
+         ctype_result.failed + ctype_result.passed);
+    vvok("string result %d/%d", string_result.passed,
+         string_result.failed + string_result.passed);
+    vvok("kheap result %d/%d", kheap_result.passed,
+         kheap_result.failed + kheap_result.passed);
 
     TestResult total_result = {
         ctype_result.passed + string_result.passed + kheap_result.passed,

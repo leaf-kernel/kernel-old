@@ -10,7 +10,7 @@ bool _xsdt_is_available;
 bool _acpi_mode;
 
 void init_acpi() {
-    vcplog("rsdp is at 0x%8llx", rsdp_request.response->address);
+    vok("rsdp is at 0x%8llx", rsdp_request.response->address);
 
     rsdp_t *rsdp = (rsdp_t *)rsdp_request.response->address;
     if(rsdp->revision == 0) {
@@ -23,9 +23,9 @@ void init_acpi() {
     outb(fadt_table->SMI_CommandPort, fadt_table->AcpiEnable);
     while(inw(fadt_table->PM1aControlBlock) & 1 == 0)
         ;
-    vcplog("Switched to ACPI mode!");
+    vok("Switched to ACPI mode!");
     _acpi_mode = true;
-    vvcplog("done.");
+    vvok("done.");
 }
 
 void *_find_sdt(char *signature) {
@@ -41,7 +41,7 @@ void *_find_sdt(char *signature) {
             header = (sdt_t *)(uintptr_t)PHYS_TO_VIRT(g_rsdt->sdt[i]);
         }
         if(!strncmp(header->signature, signature, 4)) {
-            vcplog("found header with signature %.4s", header->signature);
+            vok("found header with signature %.4s", header->signature);
             return (void *)header;
         }
     }

@@ -22,33 +22,27 @@ void *__LEAF_GET_VFS__();
 #endif
 
 #ifdef __LEAF_DEBUG_WRAPPERS__
-#include <libc/stdio/printf.h>
-#include <sys/logger.h>
-#define dlog(...) debug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
-#define cdlog(...) cdebug_log(__func__, __VA_ARGS__)
-#define plog(...) pdebug_log(__FILE__, __LINE__, __func__, __VA_ARGS__)
-#define cplog(...) pcdebug_log(__func__, __VA_ARGS__)
-#define __leaf_printf(...) printf(__VA_ARGS__)
-#define __leaf_dprintf(...) dprintf(__VA_ARGS__)
+#ifndef __LEAF_DEBUG__
+#define __LEAF_DEBUG__
+#endif
+#endif
+
 #ifdef __LEAF_VERBOSE__
-#define vcdlog(...) cdebug_log(__func__, __VA_ARGS__)
-#define vcplog(...) pcdebug_log(__func__, __VA_ARGS__)
+#define vok(...) ok(__VA_ARGS__)
+#ifdef __LEAF_VVERBOSE__
+#define vvok(...) vok(__VA_ARGS__)
 #else
-#define vcdlog(...) __LEAF_VOID_REDIRECT__
-#define vcplog(...) __LEAF_VOID_REDIRECT__
+#define vvok(...)
 #endif
 #ifdef __LEAF_VVERBOSE__
-#define vvcdlog(...) cdebug_log(__func__, __VA_ARGS__)
-#define vvcplog(...) pcdebug_log(__func__, __VA_ARGS__)
+#define vvvok(...) vvok(__VA_ARGS__)
 #else
-#define vvcdlog(...) __LEAF_VOID_REDIRECT__
-#define vvcplog(...) __LEAF_VOID_REDIRECT__
+#define vvvok(...)
 #endif
 #else
-#define dlog(...) __LEAF_VOID_REDIRECT__
-#define cdlog(...) __LEAF_VOID_REDIRECT__
-#define plog(...) __LEAF_VOID_REDIRECT__
-#define cplog(...) __LEAF_VOID_REDIRECT__
+#define vok(...)
+#define vvok(...)
+#define vvvok(...)
 #endif
 #endif
 

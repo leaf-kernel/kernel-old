@@ -52,12 +52,12 @@ bool _register_port(uint16_t port) {
     outb(port + 4, 0x1E);
     outb(port + 0, 0x69);
     if(inb(port + 0) != 0x69) {
-        dlog("Failed to register port \"0x%04llx\"", port);
+        fail("Failed to register port \"0x%04llx\"", port);
         return false;
     }
 
     outb(port + 4, 0x0F);
-    vcplog("Registered port \"0x%04llx\"", port);
+    vok("Registered port \"0x%04llx\"", port);
     return true;
 }
 
@@ -66,7 +66,7 @@ void init_serial() {
     switch_serial(1, 0);
 
     _serial_has_been_init = true;
-    vvcplog("done.");
+    vvok("done.");
 }
 
 int _serial_received() { return inb(__cur_port + 5) & 1; }
@@ -113,7 +113,7 @@ void switch_serial(uint8_t id, uint16_t port) {
             _serial_cur_com_char = "COM8";
             break;
         default:
-            dlog("Invalid COM id!");
+            fail("Invalid COM id!");
             hcf();
             break;
         }

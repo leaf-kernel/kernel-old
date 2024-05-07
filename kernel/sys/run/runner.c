@@ -2,7 +2,7 @@
 #include <sys/run/runner.h>
 
 int _runner(service_t *self, void *in) {
-    plog_ok("%s", in);
+    ok("%s", in);
     return 1;
 }
 
@@ -23,7 +23,7 @@ char *service_err(int status) {
 int register_service(service_config_t *conf, void *in) {
 
     if(conf == NULL) {
-        plog_fail("Invalid service config passed (ERROR: NULL_PASSED)!");
+        fail("Invalid service config passed (ERROR: NULL_PASSED)!");
         return -1;
     }
 
@@ -46,7 +46,7 @@ int register_service(service_config_t *conf, void *in) {
         service.flags |= SERVICE_FLAG_STOP_WHEN_DONE;
     }
 
-    plog_ok("Reached target \033[1m%s\033[0m", service.config->name);
+    ok("Reached target \033[1m%s\033[0m", service.config->name);
     service.runner = service.config->runner;
 
     if(service.flags & SERVICE_FLAG_AUTO_START) {
@@ -54,9 +54,8 @@ int register_service(service_config_t *conf, void *in) {
         if(service.flags & SERVICE_FLAG_STOP_WHEN_DONE) {
             int status = service.runner(&service, in);
             if(status != 0) {
-                plog_fail(
-                    "Service \"%s\" crashed (ERROR: \"%s\", ERRNO: 0x%02x)",
-                    service.config->name, service_err(status), status);
+                fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: 0x%02x)",
+                     service.config->name, service_err(status), status);
                 return 1;
             } else {
                 service.has_been_run = true;
@@ -65,9 +64,9 @@ int register_service(service_config_t *conf, void *in) {
             while(service.has_been_run) {
                 int status = service.runner(&service, in);
                 if(status != 0) {
-                    plog_fail(
-                        "Service \"%s\" crashed (ERROR: \"%s\", ERRNO: 0x%02x)",
-                        service.config->name, service_err(status), status);
+                    fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: "
+                         "0x%02x)",
+                         service.config->name, service_err(status), status);
                     return 1;
                 } else {
                     service.has_been_run = true;

@@ -133,7 +133,7 @@ void init_idt() {
     idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
     idt_p.base = (uint64_t)&idt;
 
-    vcplog("limit: 0x%04x base: 0x%016x", idt_p.limit, idt_p.base);
+    vok("limit: 0x%04x base: 0x%016x", idt_p.limit, idt_p.base);
 
     for(size_t i = 0; i < 16; i++) {
         irq_handlers[i] = NULL;
@@ -150,7 +150,7 @@ void init_idt() {
     load_idt((uint64_t)&idt_p);
     pic_enable();
     asm("cli");
-    vvcplog("done.");
+    vvok("done.");
 }
 
 void excp_handler(int_frame_t frame) {
@@ -170,7 +170,7 @@ void excp_handler(int_frame_t frame) {
 
         pic_sendEOI(irq);
     } else if(frame.vector == 0x80) {
-        vcplog("Handeling system call!");
+        vok("Handeling system call!");
     }
 }
 

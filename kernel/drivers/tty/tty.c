@@ -9,8 +9,7 @@ void init_tty() {
     if(ttys == NULL) {
         ttys = kmalloc(MAX_TTYS * sizeof(TTY_t *));
         if(ttys == NULL) {
-            debug_log(__FILE__, __LINE__, __func__,
-                      "Failed to allocate memory for TTY array!");
+            fail("Failed to allocate memory for TTY array!");
             return;
         }
 
@@ -26,7 +25,7 @@ void init_tty() {
         }
     }
 
-    vvcplog("done.");
+    vvok("done.");
 }
 
 void tty_destroy(uint8_t id) {
@@ -41,7 +40,7 @@ void tty_destroy(uint8_t id) {
 
     kfree(ttys[id]);
     ttys[id] = NULL;
-    vcplog("tty%04d destroyed", id);
+    vok("tty%04d destroyed", id);
 }
 
 void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
@@ -51,8 +50,7 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
 
     ttys[id] = kmalloc(sizeof(TTY_t));
     if(ttys[id] == NULL) {
-        debug_log(__FILE__, __LINE__, __func__,
-                  "Failed to allocate memory for tty%03d!", id);
+        fail("Failed to allocate memory for tty%03d!", id);
         return;
     }
 
@@ -69,15 +67,15 @@ void tty_spawn(uint8_t id, char *font, uint8_t mapped_com) {
         NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 0, 0);
 
     if(currentTTY->ctx == NULL) {
-        dlog("Failed to initialize Flanterm for tty%03d!", id);
+        fail("Failed to initialize Flanterm for tty%03d!", id);
         hcf();
     }
 
     tty_switch(id);
     if(mapped_com > 0 && mapped_com <= 8)
-        vcplog("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
+        vok("Spawned tty%03d (tty%03d -> COM%d)", id, id, mapped_com);
     else
-        vcplog("Spawned tty%03d (tty%03d -> NULL)", id, id);
+        vok("Spawned tty%03d (tty%03d -> NULL)", id, id);
 }
 
 void tty_switch(uint8_t id) {
