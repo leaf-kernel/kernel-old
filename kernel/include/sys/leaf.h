@@ -52,6 +52,10 @@ extern uint64_t hhdm_offset;
 // Leaf config and structs
 typedef struct {
     uint32_t magic;
+    uint8_t version_major;
+    uint8_t version_minor;
+    uint8_t version_patch;
+    char build[32];
 } __attribute((packed)) __LEAF_HDR;
 
 // Helper functions

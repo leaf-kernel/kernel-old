@@ -65,6 +65,9 @@ int main(service_t *self, void *leaf_hdr) {
     _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
 
     ok("Magic: 0x%X", hdr->magic);
+    ok("Version: %d.%d.%d", hdr->version_major, hdr->version_minor,
+       hdr->version_patch);
+    ok("Build: %s", hdr->build);
 
     service_config_t memory_check_conf = {.name = "memory-check",
                                           .verbose = false,

@@ -141,7 +141,13 @@ int kinit(service_t *self, void *args) {
         .runner = &main,
     };
 
-    __LEAF_HDR post_kinit_hdr = {.magic = 0x7F61F3C0};
+    __LEAF_HDR post_kinit_hdr = {
+        .magic = 0x7F61F3C0,
+        .version_major = 0,
+        .version_minor = 3,
+        .version_patch = 5,
+        .build = "Development",
+    };
 
     register_service(&post_kinit_conf, &post_kinit_hdr);
     return 0;
