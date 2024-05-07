@@ -55,11 +55,11 @@ int register_service(service_config_t *conf, void *in) {
         service.flags |= SERVICE_FLAG_STOP_WHEN_DONE;
     }
 
-    ok("Reached target \033[1m%s\033[0m", service.config->name);
+    vok("Registered service \"%s\". TYPE: 0x%02X", service.config->name);
     service.runner = service.config->runner;
 
     if(service.flags & SERVICE_FLAG_AUTO_START) {
-
+        ok("Reached target \033[1m%s\033[0m", service.config->name);
         if(service.flags & SERVICE_FLAG_STOP_WHEN_DONE) {
             int status = service.runner(&service, in);
             if(status != 0) {
