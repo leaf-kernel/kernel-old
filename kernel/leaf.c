@@ -35,7 +35,7 @@
 int libc_test(service_t *self, void *in) {
     TestResult result = check_libc(self->config->verbose);
     if(result.failed == 0 && result.passed > 0) {
-        ok("All libc test passed.");
+        ok("All libc tests passed.");
     } else {
         warn("Only %d/%d libc tests passed.", result.passed,
              result.passed + result.failed);
@@ -77,6 +77,7 @@ int main(service_t *self, void *leaf_hdr) {
                                           .run_once = true,
                                           .auto_start = true,
                                           .stop_when_done = true,
+                                          .type = SERVICE_TYPE_KERNEL,
                                           .runner = &memory_check};
 
     register_service(&memory_check_conf, NULL);
@@ -86,6 +87,7 @@ int main(service_t *self, void *leaf_hdr) {
                                        .run_once = true,
                                        .auto_start = true,
                                        .stop_when_done = true,
+                                       .type = SERVICE_TYPE_KERNEL,
                                        .runner = &libc_test};
 
     register_service(&libc_test_conf, NULL);
@@ -96,10 +98,13 @@ int main(service_t *self, void *leaf_hdr) {
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
+        .type = SERVICE_TYPE_KERNEL,
         .runner = &parse_elf_service,
     };
 
-    // register_service(&driver_conf, "/sys/run/drivers/hello");
+    register_service(&driver_conf, "/sys/run/drivers/hello");
+
+    _int(3);
 
     hlt();
     return LEAF_RETURN_SUCCESS;

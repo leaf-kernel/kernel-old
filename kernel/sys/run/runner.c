@@ -18,6 +18,9 @@ char *service_err(int status, void *in) {
     case SERVICE_ERROR_INVALID_MAGIC:
         sprintf(err, "Invalid magic: 0x%08X", (char *)in);
         break;
+    case SERVICE_ERROR_FILE_NOT_FOUND:
+        sprintf(err, "File \"%s\" not found!", (char *)in);
+        break;
     default:
         err = "Unknown error";
         break;
@@ -68,6 +71,10 @@ int register_service(service_config_t *conf, void *in) {
                 }
                 fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: 0x%02x)",
                      service.config->name, service_err(status, in), status);
+                if(service.config->type == SERVICE_TYPE_KERNEL) {
+                    fatal("Please reboot your computer.");
+                    hcf();
+                }
                 return 1;
             } else {
                 service.has_been_run = true;
@@ -79,6 +86,10 @@ int register_service(service_config_t *conf, void *in) {
                     fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: "
                          "0x%02x)",
                          service.config->name, service_err(status, in), status);
+                    if(service.config->type == SERVICE_TYPE_KERNEL) {
+                        fatal("Please reboot your computer.");
+                        hcf();
+                    }
                     return 1;
                 } else {
                     service.has_been_run = true;

@@ -89,6 +89,7 @@ void _start(void) {
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
+        .type = SERVICE_TYPE_KERNEL,
         .runner = &kinit,
     };
     register_service(&kinit_conf, NULL);
@@ -107,16 +108,12 @@ int kinit(service_t *self, void *args) {
     __LEAF_FLUSH_TTY();
     __LEAF_CLEAR_SERIAL();
     __LEAF_FLUSH_SERIAL();
-    __LEAF_ENABLE_PRE_LOG();
-
-    __LEAF_LOG_SERIAL_ALWAYS();
     init_serial();
     flush_serial();
     init_rtc();
     init_idt();
     init_pit();
     init_pmm();
-    __LEAF_DONT_LOG_SERIAL_ALWAYS();
     __LEAF_DONT_CLEAR_SERIAL();
     __LEAF_DONT_FLUSH_SERIAL();
     init_tty();
@@ -136,14 +133,13 @@ int kinit(service_t *self, void *args) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
-    __LEAF_DISABLE_PRE_LOG();
-
     service_config_t post_kinit_conf = {
         .name = "post-kinit",
         .verbose = true,
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
+        .type = SERVICE_TYPE_KERNEL,
         .runner = &main,
     };
 

@@ -53,7 +53,14 @@ bool elf_check_supported(Elf64_Ehdr *hdr) {
 
 int parse_elf_service(service_t *self, void *name) {
     (void)self;
-    return parse_elf((char *)name, self->config->verbose);
+    int s = parse_elf((char *)name, self->config->verbose);
+    if(s == -1) {
+        return SERVICE_ERROR_UNKNOWN;
+    } else if(s == 1) {
+        return SERVICE_ERROR_FILE_NOT_FOUND;
+    }
+
+    return LEAF_RETURN_SUCCESS;
 }
 
 int parse_elf(const char *name, bool verbose) {
@@ -65,8 +72,7 @@ int parse_elf(const char *name, bool verbose) {
     status = drive_read(vfs, 0, (char *)name, &elf_raw);
 
     if(status != STATUS_OK) {
-        fatal("Failed to read \"%s\"!, name");
-        return -1;
+        return 1;
     }
 
     Elf64_Ehdr *hdr = (Elf64_Ehdr *)elf_raw;

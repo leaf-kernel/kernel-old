@@ -13,8 +13,12 @@
 #define SERVICE_WARN_MEMORY 0x32
 #define SERVICE_ERROR_INVALID_SIGNATURE 0x42
 #define SERVICE_ERROR_INVALID_MAGIC 0x52
+#define SERVICE_ERROR_FILE_NOT_FOUND 0x62
 #define SERVICE_ERROR_NO_VMM 0x69
 #define SERVICE_ERROR_UNKNOWN 0x80
+
+#define SERVICE_TYPE_KERNEL 0x01
+#define SERVICE_TYPE_USER 0x02
 
 #define MAX_SERVICE_ERR_LEN 64
 
@@ -26,6 +30,7 @@ typedef struct {
     bool run_once;
     bool auto_start;
     bool stop_when_done;
+    uint8_t type;
     int (*runner)(service_t *, void *);
 } service_config_t;
 
