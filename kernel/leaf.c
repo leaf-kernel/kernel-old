@@ -58,9 +58,7 @@ int memory_check(service_t *self, void *in) {
 
 int example(service_t *self, void *data) {
     (void)data;
-    (void)self;
-    printf("Hello, World!\r\n");
-
+    ok("Hello world from %s", self->config->name);
     return LEAF_RETURN_SUCCESS;
 }
 
