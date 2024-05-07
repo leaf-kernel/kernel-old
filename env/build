@@ -15,7 +15,11 @@ else
 fi
 
 pushd "build-$target_arch-$bootloader" > /dev/null
-ninja -j$cores
+if [ -e "Makefile" ]; then
+    make -j$cores
+else
+    ninja -j$cores
+fi
 status=$?
 if [ $status -ne 0 ]; then
     echo -e ">>> \033[1m\033[31mFailed to build!\033[0m"

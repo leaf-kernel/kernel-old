@@ -62,7 +62,12 @@ fi
 mkdir "build-$target_arch-$bootloader"
 pushd "build-$target_arch-$bootloader" > /dev/null
 
-cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain" -DCMAKE_VERBOSE_MAKEFILE=ON -GNinja
+if command -v "ninja" &> /dev/null; then
+    cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain" -GNinja
+else
+    cmake .. -DTARGET_ARCH="$target_arch" -DCMAKE_TOOLCHAIN_FILE="$toolchain"
+fi
+
 config_status=$?
 popd > /dev/null
 
