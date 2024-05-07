@@ -1,4 +1,4 @@
-#include <arch/cpu/cpuid.h>
+#include <arch/x86_64/cpu/cpuid.h>
 #include <libc/stdlib/memory/kheap.h>
 #include <stddef.h>
 

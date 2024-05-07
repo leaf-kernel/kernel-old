@@ -71,9 +71,36 @@ int register_service(service_config_t *conf, void *in) {
                 }
                 fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: 0x%02x)",
                      service.config->name, service_err(status, in), status);
-                if(service.config->type == SERVICE_TYPE_KERNEL) {
-                    fatal("Please reboot your computer.");
-                    hcf();
+                switch(service.config->type) {
+                case SERVICE_TYPE_CHECK:
+                    fail("A check service (\033[1m%s\033[0m) failed!",
+                         service.config->name);
+                    break;
+                case SERVICE_TYPE_CONF:
+                    fail("A config service (\033[1m%s\033[0m) failed! Some "
+                         "services or programms might not be working properly.",
+                         service.config->name);
+                    break;
+                case SERVICE_TYPE_DAEMON:
+                    fail("A daemon (\033[1m%s\033[0m) failed! Please restart "
+                         "the deamon, if that dont work reboot.",
+                         service.config->name);
+                    break;
+                case SERVICE_TYPE_DRIVER:
+                    fail("A driver (\033[1m%s\033[0m) failed! Please restart "
+                         "the driver, if that dont work reinstall the driver.",
+                         service.config->name);
+                    break;
+                case SERVICE_TYPE_KINIT:
+                    fatal("A kernel module (\033[1m%s\033[0m) failed! Please "
+                          "restart your computer! If that dont work, then your "
+                          "fucked",
+                          service.config->name);
+                    break;
+                default:
+                    fail("The service %s failed. Unknown type 0x%02X!",
+                         service.config->name, service.config->type);
+                    break;
                 }
                 return 1;
             } else {
@@ -83,12 +110,52 @@ int register_service(service_config_t *conf, void *in) {
             while(service.has_been_run) {
                 int status = service.runner(&service, in);
                 if(status != 0) {
+                    if(status == SERVICE_WARN_MEMORY) {
+                        warn("\033[1m%s\033[0m exited with a warning (ERROR: "
+                             "Leaf "
+                             "recommends 64MB of RAM, ERRNO: 0x%02x)",
+                             service.config->name, status);
+                        return 2;
+                    }
                     fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: "
                          "0x%02x)",
                          service.config->name, service_err(status, in), status);
-                    if(service.config->type == SERVICE_TYPE_KERNEL) {
-                        fatal("Please reboot your computer.");
-                        hcf();
+                    switch(service.config->type) {
+                    case SERVICE_TYPE_CHECK:
+                        fail("A check service (\033[1m%s\033[0m) failed!",
+                             service.config->name);
+                        break;
+                    case SERVICE_TYPE_CONF:
+                        fail("A config service (\033[1m%s\033[0m) failed! Some "
+                             "services or programms might not be working "
+                             "properly.",
+                             service.config->name);
+                        break;
+                    case SERVICE_TYPE_DAEMON:
+                        fail("A daemon (\033[1m%s\033[0m) failed! Please "
+                             "restart "
+                             "the deamon, if that dont work reboot.",
+                             service.config->name);
+                        break;
+                    case SERVICE_TYPE_DRIVER:
+                        fail("A driver (\033[1m%s\033[0m) failed! Please "
+                             "restart "
+                             "the driver, if that dont work reinstall the "
+                             "driver.",
+                             service.config->name);
+                        break;
+                    case SERVICE_TYPE_KINIT:
+                        fatal(
+                            "A kernel module (\033[1m%s\033[0m) failed! Please "
+                            "restart your computer! If that dont work, then "
+                            "your "
+                            "fucked",
+                            service.config->name);
+                        break;
+                    default:
+                        fail("The service %s failed. Unknown type 0x%02X!",
+                             service.config->name, service.config->type);
+                        break;
                     }
                     return 1;
                 } else {

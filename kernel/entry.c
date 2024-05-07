@@ -5,10 +5,9 @@
 
 // Arch imports
 #include <arch/cpu/cpu.h>
-#include <arch/cpu/rsdt/rsdt.h>
-#include <arch/cpu/utils.h>
 #include <arch/pit/pit.h>
 #include <arch/x86_64/apic/apic.h>
+#include <arch/x86_64/cpu/utils.h>
 #include <arch/x86_64/idt/idt.h>
 
 // Memory imports
@@ -89,7 +88,7 @@ void _start(void) {
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
-        .type = SERVICE_TYPE_KERNEL,
+        .type = SERVICE_TYPE_KINIT,
         .runner = &kinit,
     };
     register_service(&kinit_conf, NULL);
@@ -139,7 +138,7 @@ int kinit(service_t *self, void *args) {
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
-        .type = SERVICE_TYPE_KERNEL,
+        .type = SERVICE_TYPE_KINIT,
         .runner = &main,
     };
 

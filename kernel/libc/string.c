@@ -1,4 +1,4 @@
-#include <arch/cpu/utils.h>
+#include <arch/x86_64/cpu/utils.h>
 #include <libc/stdio/printf.h>
 #include <libc/string.h>
 #include <sys/leaf.h>

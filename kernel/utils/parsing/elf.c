@@ -60,7 +60,7 @@ int parse_elf_service(service_t *self, void *name) {
         return SERVICE_ERROR_FILE_NOT_FOUND;
     }
 
-    return LEAF_RETURN_SUCCESS;
+    return SERVICE_ERROR_NO_VMM;
 }
 
 int parse_elf(const char *name, bool verbose) {

@@ -31,7 +31,7 @@
 //
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
-#include <arch/cpu/utils.h>
+#include <arch/x86_64/cpu/utils.h>
 #include <libc/stdio/printf.h>
 #include <stdbool.h>
 #include <stdint.h>

@@ -3,8 +3,8 @@
 
 // CPU related headers
 #include <arch/cpu/cpu.h>
-#include <arch/cpu/cpuid.h>
-#include <arch/cpu/utils.h>
+#include <arch/x86_64/cpu/cpuid.h>
+#include <arch/x86_64/cpu/utils.h>
 
 // x86_64 architecture specific headers
 #include <arch/x86_64/acpi/mcfg.h>
@@ -77,7 +77,7 @@ int main(service_t *self, void *leaf_hdr) {
                                           .run_once = true,
                                           .auto_start = true,
                                           .stop_when_done = true,
-                                          .type = SERVICE_TYPE_KERNEL,
+                                          .type = SERVICE_TYPE_CHECK,
                                           .runner = &memory_check};
 
     register_service(&memory_check_conf, NULL);
@@ -87,7 +87,7 @@ int main(service_t *self, void *leaf_hdr) {
                                        .run_once = true,
                                        .auto_start = true,
                                        .stop_when_done = true,
-                                       .type = SERVICE_TYPE_KERNEL,
+                                       .type = SERVICE_TYPE_CHECK,
                                        .runner = &libc_test};
 
     register_service(&libc_test_conf, NULL);
@@ -98,13 +98,11 @@ int main(service_t *self, void *leaf_hdr) {
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
-        .type = SERVICE_TYPE_KERNEL,
+        .type = SERVICE_TYPE_KINIT,
         .runner = &parse_elf_service,
     };
 
     register_service(&driver_conf, "/sys/run/drivers/hello");
-
-    _int(3);
 
     hlt();
     return LEAF_RETURN_SUCCESS;

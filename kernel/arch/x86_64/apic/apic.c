@@ -1,9 +1,9 @@
 #include <arch/cpu/cpu.h>
-#include <arch/cpu/cpuid.h>
-#include <arch/cpu/utils.h>
 #include <arch/x86_64/acpi/acpi.h>
 #include <arch/x86_64/acpi/madt.h>
 #include <arch/x86_64/apic/apic.h>
+#include <arch/x86_64/cpu/cpuid.h>
+#include <arch/x86_64/cpu/utils.h>
 #include <arch/x86_64/pic/pic.h>
 
 #define LEAF_INCLUDE_PRIVATE
