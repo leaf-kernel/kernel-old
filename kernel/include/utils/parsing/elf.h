@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <sys/run/runner.h>
 
 typedef uint16_t Elf64_Half;
 typedef uint64_t Elf64_Off;
@@ -76,7 +77,8 @@ enum Elf_PType {
 
 #define EV_CURRENT (1)
 
+int parse_elf_service(service_t *self, void *name);
 bool elf_check_file(Elf64_Ehdr *hdr);
-void parse_elf(const char *name);
+void parse_elf(const char *name, bool verbose);
 
 #endif

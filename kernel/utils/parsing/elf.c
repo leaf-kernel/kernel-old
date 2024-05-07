@@ -51,7 +51,12 @@ bool elf_check_supported(Elf64_Ehdr *hdr) {
     return true;
 }
 
-void parse_elf(const char *name) {
+int parse_elf_service(service_t *self, void *name) {
+    (void)self;
+    parse_elf((char *)name, self->config->verbose);
+}
+
+void parse_elf(const char *name, bool verbose) {
 
     char *elf_raw;
     vfs_op_status status;
@@ -80,20 +85,25 @@ void parse_elf(const char *name) {
         plog_fail("REL files are not supported.");
         return;
     } else if(hdr->e_type == ET_EXEC) {
-        plog_ok("Indentified \"%s\" as an ELF Executable.", name);
+        if(verbose)
+            plog_ok("Indentified \"%s\" as an ELF Executable.", name);
     }
 
-    plog_ok("Found %d program headers.", hdr->e_phnum);
+    if(verbose)
+        plog_ok("Found %d program headers.", hdr->e_phnum);
     for(int i = 0; i < hdr->e_phnum; i++) {
         Elf64_Phdr *phdr =
             (Elf64_Phdr *)(elf_raw + hdr->e_phoff) + (i * hdr->e_phentsize);
 
         if(phdr->p_type == PT_LOAD) {
-            plog_ok("Program header %d type is PT_LOAD.", i);
+            if(verbose)
+                plog_ok("Program header %d type is PT_LOAD.", i);
         } else {
             plog_fail("Program header %d is not PT_LOAD. It is %d.", i,
                       phdr->p_type);
             return;
         }
     }
+
+    return;
 }

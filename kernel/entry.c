@@ -34,6 +34,7 @@
 // Sys import
 #include <sys/backtrace.h>
 #include <sys/limine.h>
+#include <sys/run/runner.h>
 #include <sys/stable.h>
 #include <sys/time/rtc.h>
 #define LEAF_INCLUDE_PRIVATE
@@ -114,14 +115,17 @@ void _start(void) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
-    __LEAF_DISABLE_PRE_LOG();  // Disable pre-log. cdebug_log and whatnot
-    plog_ok("Reached target \033[1mpost-kinit\033[0m");
-    int status = main();
+    __LEAF_DISABLE_PRE_LOG();
 
-    if(status != LEAF_RETURN_SUCCESS) {
-        plog_fail("Something went wrong! Rebooting");
-        _reboot();
-    }
+    service_config_t post_kinit_conf = {
+        .name = "post-kinit",
+        .verbose = true,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .runner = &main,
+    };
+    register_service(&post_kinit_conf, "LEAF_POST");
 
     plog_ok("Reached target \033[1mshutdown\033[0m\r\n");
     _shutdown_emu();

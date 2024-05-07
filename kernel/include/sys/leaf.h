@@ -2,6 +2,7 @@
 #define __LEAF_H__
 
 #include <stdint.h>
+#include <sys/run/runner.h>
 #include <utils/hash.h>
 
 #ifdef LEAF_INCLUDE_PRIVATE
@@ -48,6 +49,6 @@ extern volatile struct limine_rsdp_request rsdp_request;
 extern struct limine_framebuffer *framebuffer;
 extern uint64_t hhdm_offset;
 
-int main();
+int main(service_t *self, void *signature);
 
 #endif  // __LEAF_H__

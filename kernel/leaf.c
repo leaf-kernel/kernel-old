@@ -21,6 +21,7 @@
 
 // System headers
 #include <sys/backtrace.h>
+#include <sys/run/runner.h>
 #include <sys/time/rtc.h>
 
 // Utility headers
@@ -31,7 +32,12 @@
 #include <utils/parsing/elf.h>
 #include <utils/parsing/ini.h>
 
-int main() {
+int main(service_t *self, void *signature) {
+    if(strcmp(signature, "LEAF_POST") != 0) {
+        plog_fatal("Failed to start post");
+        return LEAF_RETURN_FATAL;
+    }
+
     _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
     update_memory();
 
@@ -54,9 +60,20 @@ int main() {
     plog_ok("------- PCI ------");
     iterate_pci();
     plog_ok("------------------");
-    plog_ok("Reached target \033[1mdrivers\033[0m");
-    parse_elf("/sys/run/drivers/hello");
+
+    service_config_t driver_conf = {
+        .name = "drivers",
+        .verbose = false,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .runner = &parse_elf_service,
+    };
+    register_service(&driver_conf, "/sys/run/drivers/hello");
+
     plog_warn("Failed to finish target \033[1mdrivers\033[0m, no VMM :(");
+
+    // test_service();
     hlt();
     return LEAF_RETURN_SUCCESS;
 }
