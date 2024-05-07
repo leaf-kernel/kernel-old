@@ -68,6 +68,9 @@ int main(service_t *self, void *leaf_hdr) {
     ok("Version: %d.%d.%d", hdr->version_major, hdr->version_minor,
        hdr->version_patch);
     ok("Build: %s", hdr->build);
+    ok("Kernel: %s", hdr->kernel);
+    ok("CPU Vendor: %s", hdr->cpu_vendor);
+    ok("TTY: tty%03d", currentTTYid);
 
     service_config_t memory_check_conf = {.name = "memory-check",
                                           .verbose = false,

@@ -30,7 +30,7 @@ void panic(const char *reason, const char *description, int_frame_t frame,
            void *rbp);
 
 // Util funcs (yet again)
-void get_intel_cpu_brand_string(char *brand_string);
+void get_cpu_vendor_string(char *vendor_string);
 char *get_intel_brand();
 int get_model();
 

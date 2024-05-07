@@ -56,6 +56,8 @@ typedef struct {
     uint8_t version_minor;
     uint8_t version_patch;
     char build[32];
+    char kernel[32];
+    char *cpu_vendor;
 } __attribute((packed)) __LEAF_HDR;
 
 // Helper functions

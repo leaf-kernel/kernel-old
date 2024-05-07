@@ -141,12 +141,18 @@ int kinit(service_t *self, void *args) {
         .runner = &main,
     };
 
+    char cpu_vendor[42];
+
+    get_cpu_vendor_string(cpu_vendor);
+
     __LEAF_HDR post_kinit_hdr = {
         .magic = 0x7F61F3C0,
         .version_major = 0,
         .version_minor = 3,
         .version_patch = 5,
         .build = "Development",
+        .kernel = "leaf-x86_64-stable",
+        .cpu_vendor = cpu_vendor,
     };
 
     register_service(&post_kinit_conf, &post_kinit_hdr);
