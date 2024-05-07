@@ -33,12 +33,14 @@
 #include <utils/parsing/ini.h>
 
 int main(service_t *self, void *signature) {
-    if(strcmp(signature, "LEAF_POST") != 0) {
-        fatal("Failed to start post");
-        return LEAF_RETURN_FATAL;
+    if(strcmp(signature, "LEAF") != 0) {
+        return SERVICE_ERROR_INVALID_SIGNATURE;
     }
 
     _tty_flag_set(&currentTTY->ctx->cursor_enabled, true);
+
+    ok("Signature: %s", signature);
+
     update_memory();
 
     if(total_memory < 64000000) {
@@ -46,26 +48,26 @@ int main(service_t *self, void *signature) {
              "recommends atleast 64MB!\033[0m",
              bytes_to_mb(total_memory));
     } else {
-        ok("%d bytes OK", total_memory);
+        vok("%d bytes OK", total_memory);
     }
 
     TestResult result = check_libc();
     if(result.failed == 0 && result.passed > 0) {
-        ok("All libc test passed.");
+        vok("All libc test passed.");
     } else {
         warn("Only %d/%d libc tests passed.", result.passed,
              result.passed + result.failed);
     }
 
-    service_config_t driver_conf = {
-        .name = "drivers",
-        .verbose = false,
-        .run_once = true,
-        .auto_start = true,
-        .stop_when_done = true,
-        .runner = &parse_elf_service,
-    };
-    register_service(&driver_conf, "/sys/run/drivers/hello");
+    // service_config_t driver_conf = {
+    //     .name = "drivers",
+    //     .verbose = false,
+    //     .run_once = true,
+    //     .auto_start = true,
+    //     .stop_when_done = true,
+    //     .runner = &parse_elf_service,
+    // };
+    // register_service(&driver_conf, "/sys/run/drivers/hello");
 
     hlt();
     return LEAF_RETURN_SUCCESS;

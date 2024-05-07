@@ -87,6 +87,8 @@ void _start(void) {
         .runner = &kinit,
     };
     register_service(&kinit_conf, NULL);
+
+    hcf();
 }
 
 int kinit(service_t *self, void *args) {
@@ -138,10 +140,6 @@ int kinit(service_t *self, void *args) {
         .stop_when_done = true,
         .runner = &main,
     };
-    register_service(&post_kinit_conf, "LEAF_POST");
-
-    ok("Reached target \033[1mshutdown\033[0m\r\n");
-    _shutdown_emu();
-    hlt();
+    register_service(&post_kinit_conf, "LEAF");
     return 0;
 }

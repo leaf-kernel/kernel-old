@@ -6,11 +6,14 @@ int _runner(service_t *self, void *in) {
     return 1;
 }
 
-char *service_err(int status) {
-    char *err = NULL;
+char *service_err(int status, void *in) {
+    char *err = (char *)kmalloc(MAX_SERVICE_ERR_LEN * sizeof(char));
     switch(status) {
     case SERVICE_ERROR_NO_VMM:
-        err = "VMM not present, cannot continue";
+        err = "VMM not present";
+        break;
+    case SERVICE_ERROR_INVALID_SIGNATURE:
+        sprintf(err, "Invalid signature: %s", (char *)in);
         break;
     default:
         err = "Unknown error";
@@ -55,7 +58,7 @@ int register_service(service_config_t *conf, void *in) {
             int status = service.runner(&service, in);
             if(status != 0) {
                 fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: 0x%02x)",
-                     service.config->name, service_err(status), status);
+                     service.config->name, service_err(status, in), status);
                 return 1;
             } else {
                 service.has_been_run = true;
@@ -66,7 +69,7 @@ int register_service(service_config_t *conf, void *in) {
                 if(status != 0) {
                     fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: "
                          "0x%02x)",
-                         service.config->name, service_err(status), status);
+                         service.config->name, service_err(status, in), status);
                     return 1;
                 } else {
                     service.has_been_run = true;
