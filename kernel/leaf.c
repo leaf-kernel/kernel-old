@@ -56,9 +56,17 @@ int memory_check(service_t *self, void *in) {
     return LEAF_RETURN_SUCCESS;
 }
 
+int example(service_t *self, void *data) {
+    (void)data;
+    (void)self;
+    printf("Hello, World!\r\n");
+
+    return LEAF_RETURN_SUCCESS;
+}
+
 int main(service_t *self, void *leaf_hdr) {
     __LEAF_HDR *hdr = (__LEAF_HDR *)leaf_hdr;
-    if(hdr->magic != 0x7F61F3C0) {
+    if(hdr->magic != 0x76696570) {
         return SERVICE_ERROR_INVALID_MAGIC;
     }
 
@@ -104,7 +112,19 @@ int main(service_t *self, void *leaf_hdr) {
         .runner = &parse_elf_service,
     };
 
-    register_service(&driver_conf, "/sys/run/drivers/hello");
+    // register_service(&driver_conf, "/sys/run/drivers/hello");
+
+    service_config_t test_service = {
+        .name = "example",
+        .verbose = false,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .type = SERVICE_TYPE_DAEMON,
+        .runner = &example,
+    };
+
+    register_service(&test_service, NULL);
 
     hlt();
     return LEAF_RETURN_SUCCESS;
