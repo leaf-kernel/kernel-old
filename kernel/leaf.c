@@ -32,6 +32,30 @@
 #include <utils/parsing/elf.h>
 #include <utils/parsing/ini.h>
 
+int libc_test(service_t *self, void *in) {
+    TestResult result = check_libc(self->config->verbose);
+    if(result.failed == 0 && result.passed > 0) {
+        ok("All libc test passed.");
+    } else {
+        warn("Only %d/%d libc tests passed.", result.passed,
+             result.passed + result.failed);
+    }
+
+    return LEAF_RETURN_SUCCESS;
+}
+
+int memory_check(service_t *self, void *in) {
+    update_memory();
+
+    if(total_memory < 64000000) {
+        return SERVICE_WARN_MEMORY;
+    } else {
+        ok("%d bytes OK", total_memory);
+    }
+
+    return LEAF_RETURN_SUCCESS;
+}
+
 int main(service_t *self, void *signature) {
     if(strcmp(signature, "LEAF") != 0) {
         return SERVICE_ERROR_INVALID_SIGNATURE;
@@ -41,32 +65,33 @@ int main(service_t *self, void *signature) {
 
     ok("Signature: %s", signature);
 
-    update_memory();
+    service_config_t memory_check_conf = {.name = "memory-check",
+                                          .verbose = false,
+                                          .run_once = true,
+                                          .auto_start = true,
+                                          .stop_when_done = true,
+                                          .runner = &memory_check};
 
-    if(total_memory < 64000000) {
-        warn("Your computer only has %dMB of RAM. Leaf "
-             "recommends atleast 64MB!\033[0m",
-             bytes_to_mb(total_memory));
-    } else {
-        vok("%d bytes OK", total_memory);
-    }
+    register_service(&memory_check_conf, NULL);
 
-    TestResult result = check_libc();
-    if(result.failed == 0 && result.passed > 0) {
-        vok("All libc test passed.");
-    } else {
-        warn("Only %d/%d libc tests passed.", result.passed,
-             result.passed + result.failed);
-    }
+    service_config_t libc_test_conf = {.name = "libc-test",
+                                       .verbose = false,
+                                       .run_once = true,
+                                       .auto_start = true,
+                                       .stop_when_done = true,
+                                       .runner = &libc_test};
 
-    // service_config_t driver_conf = {
-    //     .name = "drivers",
-    //     .verbose = false,
-    //     .run_once = true,
-    //     .auto_start = true,
-    //     .stop_when_done = true,
-    //     .runner = &parse_elf_service,
-    // };
+    register_service(&libc_test_conf, NULL);
+
+    service_config_t driver_conf = {
+        .name = "drivers",
+        .verbose = false,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .runner = &parse_elf_service,
+    };
+
     // register_service(&driver_conf, "/sys/run/drivers/hello");
 
     hlt();

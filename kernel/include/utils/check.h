@@ -6,6 +6,7 @@
 #include <libc/stdlib/memory/kheap.h>
 #include <libc/string.h>
 
+#include <stdbool.h>
 #include <stddef.h>
 
 typedef struct {
@@ -13,6 +14,6 @@ typedef struct {
     int failed;
 } TestResult;
 
-TestResult check_libc();
+TestResult check_libc(bool verbose);
 
 #endif  // __CHECK_H__

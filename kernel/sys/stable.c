@@ -55,7 +55,7 @@ table_entry_t _parse_entry(char *line) {
     entry.name[name_length] = '\0';
 
 #ifdef __LEAF_VVVERBOSE__
-    vvok("%-25s Address: 0x%-16llx ID: %-c", entry.name, entry.addr, entry.id);
+    vvok("%-45s Address: 0x%-16llx ID: %-c", entry.name, entry.addr, entry.id);
 #endif
 
     return entry;

@@ -317,7 +317,7 @@ TestResult __check_kheap() {
     return result;
 }
 
-TestResult check_libc() {
+TestResult check_libc(bool verbose) {
     TestResult ctype_result;
     TestResult string_result;
     TestResult kheap_result;
@@ -326,12 +326,14 @@ TestResult check_libc() {
     string_result = __check_string();
     kheap_result = __check_kheap();
 
-    vvok("ctype result %d/%d", ctype_result.passed,
-         ctype_result.failed + ctype_result.passed);
-    vvok("string result %d/%d", string_result.passed,
-         string_result.failed + string_result.passed);
-    vvok("kheap result %d/%d", kheap_result.passed,
-         kheap_result.failed + kheap_result.passed);
+    if(verbose) {
+        ok("<ctyp.h> result %d/%d", ctype_result.passed,
+           ctype_result.failed + ctype_result.passed);
+        ok("<string.h> result %d/%d", string_result.passed,
+           string_result.failed + string_result.passed);
+        ok("<stdlib.h> result %d/%d", kheap_result.passed,
+           kheap_result.failed + kheap_result.passed);
+    }
 
     TestResult total_result = {
         ctype_result.passed + string_result.passed + kheap_result.passed,

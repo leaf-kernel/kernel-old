@@ -57,6 +57,12 @@ int register_service(service_config_t *conf, void *in) {
         if(service.flags & SERVICE_FLAG_STOP_WHEN_DONE) {
             int status = service.runner(&service, in);
             if(status != 0) {
+                if(status == SERVICE_WARN_MEMORY) {
+                    warn("\033[1m%s\033[0m exited with a warning (ERROR: Leaf "
+                         "recommends 64MB of RAM, ERRNO: 0x%02x)",
+                         service.config->name, status);
+                    return 2;
+                }
                 fail("\033[1m%s\033[0m failed (ERROR: \"%s\", ERRNO: 0x%02x)",
                      service.config->name, service_err(status, in), status);
                 return 1;
