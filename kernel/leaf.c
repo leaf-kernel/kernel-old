@@ -71,9 +71,6 @@ int main(service_t *self, void *signature) {
     };
     register_service(&driver_conf, "/sys/run/drivers/hello");
 
-    plog_warn("Failed to finish target \033[1mdrivers\033[0m, no VMM :(");
-
-    // test_service();
     hlt();
     return LEAF_RETURN_SUCCESS;
 }

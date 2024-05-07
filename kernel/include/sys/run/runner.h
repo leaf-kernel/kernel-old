@@ -10,6 +10,8 @@
 #define SERVICE_FLAG_STOP_WHEN_DONE 0x0100
 #define SERVICE_FLAG_VERBOSE 0x1000
 
+#define SERVICE_ERROR_NO_VMM 0x69
+
 typedef struct service_t service_t;
 
 typedef struct {

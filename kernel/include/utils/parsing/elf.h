@@ -79,6 +79,6 @@ enum Elf_PType {
 
 int parse_elf_service(service_t *self, void *name);
 bool elf_check_file(Elf64_Ehdr *hdr);
-void parse_elf(const char *name, bool verbose);
+int parse_elf(const char *name, bool verbose);
 
 #endif

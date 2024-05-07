@@ -2,8 +2,22 @@
 #include <sys/run/runner.h>
 
 int _runner(service_t *self, void *in) {
-    printf("%s: %s\r\n", self->config->name, in);
-    return 0;
+    plog_ok("%s", in);
+    return 1;
+}
+
+char *service_err(int status) {
+    char *err = NULL;
+    switch(status) {
+    case SERVICE_ERROR_NO_VMM:
+        err = "VMM not present, cannot continue";
+        break;
+    default:
+        err = "Unknown error";
+        break;
+    }
+
+    return err;
 }
 
 int register_service(service_config_t *conf, void *in) {
@@ -40,8 +54,9 @@ int register_service(service_config_t *conf, void *in) {
         if(service.flags & SERVICE_FLAG_STOP_WHEN_DONE) {
             int status = service.runner(&service, in);
             if(status != 0) {
-                plog_fail("Service \"%s\" crashed (ERROR: %d)",
-                          service.config->name, status);
+                plog_fail(
+                    "Service \"%s\" crashed (ERROR: \"%s\", ERRNO: 0x%02x)",
+                    service.config->name, service_err(status), status);
                 return 1;
             } else {
                 service.has_been_run = true;
@@ -50,8 +65,9 @@ int register_service(service_config_t *conf, void *in) {
             while(service.has_been_run) {
                 int status = service.runner(&service, in);
                 if(status != 0) {
-                    plog_fail("Service \"%s\" crashed (ERROR: %d)",
-                              service.config->name, status);
+                    plog_fail(
+                        "Service \"%s\" crashed (ERROR: \"%s\", ERRNO: 0x%02x)",
+                        service.config->name, service_err(status), status);
                     return 1;
                 } else {
                     service.has_been_run = true;

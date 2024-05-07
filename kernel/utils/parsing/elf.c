@@ -53,11 +53,10 @@ bool elf_check_supported(Elf64_Ehdr *hdr) {
 
 int parse_elf_service(service_t *self, void *name) {
     (void)self;
-    parse_elf((char *)name, self->config->verbose);
+    return parse_elf((char *)name, self->config->verbose);
 }
 
-void parse_elf(const char *name, bool verbose) {
-
+int parse_elf(const char *name, bool verbose) {
     char *elf_raw;
     vfs_op_status status;
 
@@ -67,23 +66,23 @@ void parse_elf(const char *name, bool verbose) {
 
     if(status != STATUS_OK) {
         plog_fatal("Failed to read \"%s\"!, name");
-        return;
+        return -1;
     }
 
     Elf64_Ehdr *hdr = (Elf64_Ehdr *)elf_raw;
     if(!elf_check_file(hdr)) {
         plog_fail("Invalid ELF file.");
-        return;
+        return -1;
     }
 
     if(!elf_check_supported(hdr)) {
         plog_fail("Unsupported ELF file.");
-        return;
+        return -1;
     }
 
     if(hdr->e_type == ET_REL) {
         plog_fail("REL files are not supported.");
-        return;
+        return -1;
     } else if(hdr->e_type == ET_EXEC) {
         if(verbose)
             plog_ok("Indentified \"%s\" as an ELF Executable.", name);
@@ -101,9 +100,9 @@ void parse_elf(const char *name, bool verbose) {
         } else {
             plog_fail("Program header %d is not PT_LOAD. It is %d.", i,
                       phdr->p_type);
-            return;
+            return -1;
         }
     }
 
-    return;
+    return SERVICE_ERROR_NO_VMM;
 }
