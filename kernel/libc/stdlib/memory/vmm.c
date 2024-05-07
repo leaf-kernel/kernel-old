@@ -53,5 +53,5 @@ void init_vmm() {
         fail("Failed to allocate memory for PML4 array");
         hcf();
     }
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }

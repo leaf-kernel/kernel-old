@@ -74,7 +74,7 @@ void init_pmm() {
             bytes_to_mb(total_memory));
     else
         vok("%dMB ok.", bytes_to_mb(total_memory));
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 void update_memory() {

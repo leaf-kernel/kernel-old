@@ -25,7 +25,7 @@ void init_acpi() {
         ;
     vok("Switched to ACPI mode!");
     _acpi_mode = true;
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 void *_find_sdt(char *signature) {

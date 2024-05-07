@@ -52,7 +52,7 @@ Ramdisk *init_ramdisk(const char *raw, const size_t size) {
     }
 
     initrd->count = entry->fileCount;
-    vvok("done.");
+    vvok("%s: done.", __func__);
     kfree(entry);
     return initrd;
 }

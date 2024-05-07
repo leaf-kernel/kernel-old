@@ -78,7 +78,7 @@ void init_madt(madt_t *madt) {
         ptr += header->length;
     }
 
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 uint32_t madt_get_iso(uint32_t irq) {

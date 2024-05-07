@@ -34,7 +34,7 @@ void init_apic() {
     init_acpi();
     enable_apic();
 
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 void enable_apic() {

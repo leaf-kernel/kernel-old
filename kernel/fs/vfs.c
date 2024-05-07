@@ -11,7 +11,7 @@ VFS_t *init_vfs() {
     }
 
     vfs->address = (uint64_t)vfs;
-    ok("vfs at 0x%0.16llx", vfs->address);
+    vok("vfs at 0x%0.16llx", vfs->address);
 
     vfs->drives = (drive_t *)kmalloc(sizeof(drive_t));
     if(vfs->drives == NULL) {
@@ -19,7 +19,7 @@ VFS_t *init_vfs() {
         return NULL;
     }
 
-    ok("done.");
+    vvok("%s: done.", __func__);
     return vfs;
 }
 
@@ -54,7 +54,7 @@ vfs_op_status mount_drive(VFS_t *vfs, uint64_t driveAddr, vfs_drive_type type) {
 
     vfs->drives[vfs->numDrives++] = *newDrive;
     kfree(newDrive);
-    ok("mounted drive from 0x%.16llx", driveAddr);
+    vok("mounted drive from 0x%.16llx", driveAddr);
     return STATUS_OK;
 }
 
@@ -82,7 +82,7 @@ vfs_op_status umount_drive(VFS_t *vfs, int driveId) {
         vfs->drives = NULL;
     }
 
-    ok("-0x%016x", driveToRemove->driveAddr);
+    vok("-0x%016x", driveToRemove->driveAddr);
 
     return STATUS_OK;
 }
@@ -107,7 +107,6 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
 
         if(fileId == -1) {
             fail("%s not found!", fileName);
-            fail("%s not found!", fileName);
             return STATUS_ERROR_FILE_NOT_FOUND;
         }
 
@@ -115,7 +114,6 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
             (RamdiskEntry *)((Ramdisk *)temp->driveAddr)->content[fileId];
 
         if(tempEntry->file->path == NULL) {
-            fail("%s not found!", fileName);
             fail("%s not found!", fileName);
             return STATUS_ERROR_FILE_NOT_FOUND;
         }
@@ -129,7 +127,7 @@ vfs_op_status drive_read(VFS_t *vfs, int driveId, char *fileName, char **out) {
         size_t numBytes = tempEntry->file->size * sizeof((*out)[0]);
         memcpy((*out), tempEntry->file->content, numBytes);
 
-        ok("done.");
+        vvok("%s: done.", __func__);
         break;
     default:
         fail("Invalid drive type ! %d", temp->driveType);

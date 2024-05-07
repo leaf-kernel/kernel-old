@@ -23,7 +23,7 @@ void init_mcfg(mcfg_t *h) {
         vok("Base Address: 0x%.16llx", entries[i].base_address);
 
     _support_pcie = true;
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 void iterate_pci() {

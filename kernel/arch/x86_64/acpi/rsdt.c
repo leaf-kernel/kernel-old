@@ -39,5 +39,5 @@ void init_rsdt() {
     init_mcfg(mcfg);
 
     vok("CPU Cores: %d", g_acpi_cpu_count);
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }

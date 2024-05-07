@@ -74,9 +74,23 @@ bool _leaf_should_log_serial_always;
 void *__LEAF_GET_INITRD__() { return (void *)initrd; }
 
 void *__LEAF_GET_VFS__() { return (void *)vfs; }
+int kinit(service_t *self, void *args);
 
 // Kernel entry function
 void _start(void) {
+    service_config_t kinit_conf = {
+        .name = "kinit",
+        .verbose = true,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .runner = &kinit,
+    };
+    register_service(&kinit_conf, NULL);
+}
+
+int kinit(service_t *self, void *args) {
+
 #if defined(LEAF_LIMINE)
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
@@ -129,4 +143,5 @@ void _start(void) {
     ok("Reached target \033[1mshutdown\033[0m\r\n");
     _shutdown_emu();
     hlt();
+    return 0;
 }

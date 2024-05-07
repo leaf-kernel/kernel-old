@@ -25,7 +25,7 @@ void init_tty() {
         }
     }
 
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 void tty_destroy(uint8_t id) {

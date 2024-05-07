@@ -150,7 +150,7 @@ void init_idt() {
     load_idt((uint64_t)&idt_p);
     pic_enable();
     asm("cli");
-    vvok("done.");
+    vvok("%s: done.", __func__);
 }
 
 void excp_handler(int_frame_t frame) {
