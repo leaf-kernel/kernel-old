@@ -140,6 +140,7 @@ Ensure you have the following tools installed:
 | [x86-leaf](https://github.com/leaf-kernel/bootloader)        | ❌     |
 
 ## Config
+
 To change some config you can change the defines in `kernel/include/sys/_config.h`. Some defines are:
 ```c
 #define __LEAF_VERBOSE__
@@ -151,15 +152,9 @@ To change some config you can change the defines in `kernel/include/sys/_config.
 ```
 *Enable extra verbose logging*
 
-```c
-#define __LEAF_DEBUG__
-```
-*Enables some debug output, enabled by default*
+## Credits
 
-```c
-#define __LEAF_DEBUG_WRAPPERS__
-```
-*Enables wrappers for debug logging, enabled by default*
+Credits to everyone who has helped and contributed to Leaf. With out the help of you all this wouldnt be possible.
 
 ## License
 
