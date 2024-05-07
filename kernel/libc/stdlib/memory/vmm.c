@@ -119,5 +119,13 @@ void init_vmm() {
         fail("Failed to allocate memory for PML4 array");
         hcf();
     }
+
+    ok("Kernel Physical Address: 0x%lX", kernel_addr_response->physical_base);
+    ok("Kernel Virtual Address: 0x%lx", kernel_addr_response->virtual_base);
+
+    for(uint64_t addr = 0; addr < (UINT32_MAX + 1); addr += 4096) {
+        vmm_map(PHYS_TO_VIRT(addr), addr, 0x08000003);
+    }
+
     vvok("%s: done.", __func__);
 }

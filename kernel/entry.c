@@ -58,6 +58,11 @@ volatile struct limine_hhdm_request hhdm_request = {.id = LIMINE_HHDM_REQUEST,
 volatile struct limine_rsdp_request rsdp_request = {.id = LIMINE_RSDP_REQUEST,
                                                     .revision = 0};
 struct limine_framebuffer *framebuffer;
+
+volatile struct limine_kernel_address_request kernel_addr_request = {
+    .id = LIMINE_KERNEL_ADDRESS_REQUEST, .revision = 0};
+
+struct limine_kernel_address_response *kernel_addr_response;
 #endif
 
 uint64_t hhdm_offset;
@@ -96,6 +101,7 @@ int kinit(service_t *self, void *args) {
 #if defined(LEAF_LIMINE)
     hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
+    kernel_addr_response = kernel_addr_request.response;
 #endif
     __LEAF_ENABLE_LOG();
     __LEAF_FLUSH_TTY();
