@@ -3,6 +3,7 @@
 
 #include <arch/cpu/cpu.h>
 #include <arch/x86_64/acpi/rsdt.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct {
@@ -17,6 +18,8 @@ typedef struct {
     uint8_t end_bus;
     uint32_t reserved;
 } __attribute__((packed)) device_config;
+
+extern bool _support_pcie;
 
 void init_mcfg(mcfg_t *h);
 void iterate_pci();
