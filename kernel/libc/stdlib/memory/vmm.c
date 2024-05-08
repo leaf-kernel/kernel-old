@@ -108,6 +108,10 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
             (void *)((uint64_t)(PML3.Address) << 12)))[PD_i] = *(PML2E *)&temp;
     }
 
+    ok("Vaddr: 0x%.16llx, Paddr: 0x%.16llx, Flags: 0x%.8llx", vaddr, paddr,
+       flags);
+    ok("PML2 Addr: 0x%.16llx", PML2.Address);
+
     uint64_t temp =
         ((uint64_t)((flags & 0x0FFF) | ((uint64_t)(flags & 0x0FFF0000) << 36)));
     PML1E PML1 = *(PML1E *)(&temp);

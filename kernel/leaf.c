@@ -57,6 +57,30 @@ int memory_check(service_t *self, void *in) {
     return LEAF_RETURN_SUCCESS;
 }
 
+int map_kernel(service_t *self, void *data) {
+    (void)data;
+    (void)self;
+
+    vvok("Kernel Start: 0x%lx", &__kernel_start);
+    vvok(" - Text Start: 0x%lx", &__text_start);
+    vvok(" - Text End: 0x%lx", &__text_end);
+    vvok(" - ROData Start: 0x%lx", &__rodata_start);
+    vvok(" - ROData End: 0x%lx", &__rodata_end);
+    vvok(" - Data Start: 0x%lx", &__data_start);
+    vvok(" - Data End: 0x%lx", &__data_end);
+    vvok(" - BSS Start: 0x%lx", &__bss_start);
+    vvok(" - BSS End: 0x%lx", &__bss_end);
+    vvok("Kernel End: 0x%lx", &__kernel_end);
+
+    vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__text_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__kernel_end, _VMM_PRESENT);
+
+    return LEAF_RETURN_SUCCESS;
+}
+
 int main(service_t *self, void *leaf_hdr) {
     __LEAF_HDR *hdr = (__LEAF_HDR *)leaf_hdr;
     if(hdr->magic != 0x76696570) {
@@ -106,6 +130,20 @@ int main(service_t *self, void *leaf_hdr) {
     };
 
     // register_service(&driver_conf, "/sys/run/drivers/hello");
+
+    service_config_t kernel_map = {
+        .name = "kernel-mapping",
+        .verbose = false,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .type = SERVICE_TYPE_KINIT,
+        .runner = &map_kernel,
+    };
+
+    register_service(&kernel_map, NULL);
+
+    ok("\033[1mpost-kinit\033[0m done.");
 
     hlt();
     return LEAF_RETURN_SUCCESS;
