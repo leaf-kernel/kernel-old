@@ -15,6 +15,7 @@
 
 // Memory management related headers
 #include <libc/stdlib/memory/kheap.h>
+#include <libc/stdlib/memory/vmm.h>
 
 // System configuration headers
 #include <sys/_config.h>
@@ -56,9 +57,27 @@ int memory_check(service_t *self, void *in) {
     return LEAF_RETURN_SUCCESS;
 }
 
-int example(service_t *self, void *data) {
+int map_kernel(service_t *self, void *data) {
     (void)data;
-    ok("Hello world from %s", self->config->name);
+    (void)self;
+
+    ok("Kernel Start: 0x%lx", &__kernel_start);
+    ok(" - Text Start: 0x%lx", &__text_start);
+    ok(" - Text End: 0x%lx", &__text_end);
+    ok(" - ROData Start: 0x%lx", &__rodata_start);
+    ok(" - ROData End: 0x%lx", &__rodata_end);
+    ok(" - Data Start: 0x%lx", &__data_start);
+    ok(" - Data End: 0x%lx", &__data_end);
+    ok(" - BSS Start: 0x%lx", &__bss_start);
+    ok(" - BSS End: 0x%lx", &__bss_end);
+    ok("Kernel End: 0x%lx", &__kernel_end);
+
+    vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__text_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__kernel_end, _VMM_PRESENT);
+
     return LEAF_RETURN_SUCCESS;
 }
 
@@ -112,17 +131,17 @@ int main(service_t *self, void *leaf_hdr) {
 
     // register_service(&driver_conf, "/sys/run/drivers/hello");
 
-    service_config_t test_service = {
-        .name = "example",
+    service_config_t kernel_map = {
+        .name = "kernel-mapping",
         .verbose = false,
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,
-        .type = SERVICE_TYPE_DAEMON,
-        .runner = &example,
+        .type = SERVICE_TYPE_KINIT,
+        .runner = &map_kernel,
     };
 
-    register_service(&test_service, NULL);
+    register_service(&kernel_map, NULL);
 
     hlt();
     return LEAF_RETURN_SUCCESS;

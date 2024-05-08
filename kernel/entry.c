@@ -113,16 +113,11 @@ int kinit(service_t *self, void *args) {
     init_idt();
     init_pit();
     init_pmm();
-    __LEAF_DONT_CLEAR_SERIAL();
-    __LEAF_DONT_FLUSH_SERIAL();
     init_tty();
 
-#ifdef __LEAF_MAP_TTY__
+    __LEAF_DONT_CLEAR_SERIAL();
+    __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
-#else
-    tty_spawn(0, NULL, 0);
-#endif
-
     init_vmm();
     init_apic();
 

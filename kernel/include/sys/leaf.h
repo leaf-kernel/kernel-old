@@ -52,6 +52,18 @@ extern uint64_t hhdm_offset;
 
 extern struct limine_kernel_address_response *kernel_addr_response;
 
+// Kernel symbols
+extern uint8_t __kernel_start;
+extern uint8_t __text_start;
+extern uint8_t __text_end;
+extern uint8_t __rodata_start;
+extern uint8_t __rodata_end;
+extern uint8_t __data_start;
+extern uint8_t __data_end;
+extern uint8_t __bss_start;
+extern uint8_t __bss_end;
+extern uint8_t __kernel_end;
+
 // Leaf config and structs
 typedef struct {
     uint32_t magic;
@@ -73,6 +85,7 @@ typedef struct {
         sum;                                                                   \
     })
 
+// Entry point for post-kinit
 int main(service_t *self, void *signature);
 
 #endif  // __LEAF_H__

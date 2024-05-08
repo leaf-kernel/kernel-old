@@ -113,6 +113,12 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
         PML1;
 }
 
+void vmm_map_range(void *virt, void *phys, void *virt_end, uint32_t perms) {
+    for(virt; virt < virt_end; virt += PAGE_SIZE, phys += PAGE_SIZE) {
+        vmm_map((uint64_t)virt, (uint64_t)phys, perms);
+    }
+}
+
 void init_vmm() {
     PML4Array = (struct Level4Group *)kmalloc(sizeof(struct Level4Group));
     if(PML4Array == NULL) {

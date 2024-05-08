@@ -65,7 +65,15 @@ typedef struct {
     uint8_t ExecuteDisable : 1;
 } __attribute((packed)) PML1E;
 
+#define _VMM_PRESENT 1
+#define _VMM_WRITE 2
+#define _VMM_USER 4
+#define _VMM_EXECUTE_DISABLE 0x8000000
+
+void *get_physaddr(uint64_t vaddr);
 void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags);
+void vmm_map_range(void *virt, void *phys, void *virt_end, uint32_t perms);
+
 void init_vmm();
 
 #ifdef LEAF_X64
