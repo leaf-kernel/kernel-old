@@ -118,7 +118,6 @@ int kinit(service_t *self, void *args) {
     __LEAF_DONT_CLEAR_SERIAL();
     __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
-    init_vmm();
 
     init_apic();
 
@@ -127,6 +126,8 @@ int kinit(service_t *self, void *args) {
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
+
+    init_vmm();
 
     service_config_t post_kinit_conf = {
         .name = "post-kinit",

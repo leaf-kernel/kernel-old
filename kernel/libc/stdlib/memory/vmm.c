@@ -144,6 +144,8 @@ void init_vmm() {
 
     for(uint64_t addr = 0; addr < (4UL * 1024UL * 1024UL * 1024UL);
         addr += 4096) {
+        ok(" - addr: 0x%lx PHYS_TO_VIRT(addr): 0x%lx", addr,
+           PHYS_TO_VIRT(addr));
         vmm_map(PHYS_TO_VIRT(addr), addr, 0x08000003);
     }
 
