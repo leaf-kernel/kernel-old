@@ -96,6 +96,7 @@ void _start(void) {
     hcf();
 }
 
+int map_kernel(service_t *self, void *data);
 int kinit(service_t *self, void *args) {
 
 #if defined(LEAF_LIMINE)
@@ -119,6 +120,19 @@ int kinit(service_t *self, void *args) {
     __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
     init_vmm();
+
+    service_config_t kernel_map = {
+        .name = "kernel-mapping",
+        .verbose = false,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .type = SERVICE_TYPE_KINIT,
+        .runner = &map_kernel,
+    };
+
+    register_service(&kernel_map, NULL);
+
     init_apic();
 
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),
@@ -152,4 +166,28 @@ int kinit(service_t *self, void *args) {
 
     register_service(&post_kinit_conf, &post_kinit_hdr);
     return 0;
+}
+
+int map_kernel(service_t *self, void *data) {
+    (void)data;
+    (void)self;
+
+    vvok("Kernel Start: 0x%lx", &__kernel_start);
+    vvok(" - Text Start: 0x%lx", &__text_start);
+    vvok(" - Text End: 0x%lx", &__text_end);
+    vvok(" - ROData Start: 0x%lx", &__rodata_start);
+    vvok(" - ROData End: 0x%lx", &__rodata_end);
+    vvok(" - Data Start: 0x%lx", &__data_start);
+    vvok(" - Data End: 0x%lx", &__data_end);
+    vvok(" - BSS Start: 0x%lx", &__bss_start);
+    vvok(" - BSS End: 0x%lx", &__bss_end);
+    vvok("Kernel End: 0x%lx", &__kernel_end);
+
+    vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__text_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__kernel_end, _VMM_PRESENT);
+
+    return LEAF_RETURN_SUCCESS;
 }

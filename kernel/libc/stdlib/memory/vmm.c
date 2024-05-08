@@ -22,17 +22,17 @@ void *get_physaddr(uint64_t vaddr) {
         return NULL;
 
     PML3E PML3 = ((
-        (PML3E *)VIRT_TO_PHYS((void *)((uint64_t)PML4.Address << 12)))[PDP_i]);
+        (PML3E *)PHYS_TO_VIRT((void *)((uint64_t)PML4.Address << 12)))[PDP_i]);
     if(PML3.Present == 0)
         return NULL;
 
     PML2E PML2 =
-        (((PML2E *)VIRT_TO_PHYS((void *)((uint64_t)PML3.Address << 12)))[PD_i]);
+        (((PML2E *)PHYS_TO_VIRT((void *)((uint64_t)PML3.Address << 12)))[PD_i]);
     if(PML2.Present == 0)
         return NULL;
 
     PML1E PML1 =
-        (((PML1E *)VIRT_TO_PHYS((void *)((uint64_t)PML2.Address << 12)))[PT_i]);
+        (((PML1E *)PHYS_TO_VIRT((void *)((uint64_t)PML2.Address << 12)))[PT_i]);
     if(PML1.Present == 0)
         return NULL;
 
@@ -45,6 +45,9 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
     const uint16_t PDP_i = (uint16_t)((vaddr & 0x007FC0000000) >> 30);
     const uint16_t PML4_i = (uint16_t)((vaddr & 0xFF8000000000) >> 39);
 
+    vvvok("Vaddr: 0x%.16llx, Paddr: 0x%.16llx, Flags: 0x%.8llx", vaddr, paddr,
+          flags);
+
     PML4E PML4 = PML4Array->entries[PML4_i];
     if(PML4.Present == 0) {
         uint64_t temp = ((uint64_t)((flags & 0x0FFF) |
@@ -52,7 +55,8 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
         PML4 = *(PML4E *)(&temp);
         PML4.Present = 1;
         PML4.Address = (uint64_t)pmm_request_page() >> 12;
-        memset((void *)VIRT_TO_PHYS(PML4.Address << 12), 0, 4096);
+        vvvok("PML4 Addr: 0x%.16llx", PML4.Address);
+        memset((void *)PHYS_TO_VIRT(PML4.Address << 12), 0, 4096);
 
         PML4Array->entries[PML4_i] = PML4;
     } else {
@@ -62,7 +66,7 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
         PML4Array->entries[PML4_i] = *(PML4E *)&temp;
     }
 
-    PML3E PML3 = ((PML3E *)VIRT_TO_PHYS(
+    PML3E PML3 = ((PML3E *)PHYS_TO_VIRT(
         (void *)((uint64_t)(PML4.Address) << 12)))[PDP_i];
 
     if(PML3.Present == 0) {
@@ -71,20 +75,20 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
         PML3 = *(PML3E *)(&temp);
         PML3.Present = 1;
         PML3.Address = (uint64_t)pmm_request_page() >> 12;
-        memset((void *)VIRT_TO_PHYS(PML3.Address << 12), 0, 4096);
+        memset((void *)PHYS_TO_VIRT(PML3.Address << 12), 0, 4096);
 
-        ((PML3E *)VIRT_TO_PHYS(
+        ((PML3E *)PHYS_TO_VIRT(
             (void *)((uint64_t)(PML4.Address) << 12)))[PDP_i] = PML3;
     } else {
         uint64_t temp = *(uint64_t *)(&PML3);
         temp |= flags & 0xFFF;
         temp |= (uint64_t)(flags & 0x7FF0000) << 36;
-        ((PML3E *)VIRT_TO_PHYS(
+        ((PML3E *)PHYS_TO_VIRT(
             (void *)((uint64_t)(PML4.Address) << 12)))[PDP_i] = *(PML3E *)&temp;
     }
 
     PML2E PML2 =
-        ((PML2E *)VIRT_TO_PHYS((void *)((uint64_t)(PML3.Address) << 12)))[PD_i];
+        ((PML2E *)PHYS_TO_VIRT((void *)((uint64_t)(PML3.Address) << 12)))[PD_i];
 
     if(PML2.Present == 0) {
         uint64_t temp = ((uint64_t)((flags & 0x0FFF) |
@@ -92,15 +96,15 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
         PML2 = *(PML2E *)(&temp);
         PML2.Present = 1;
         PML2.Address = (uint64_t)pmm_request_page() >> 12;
-        memset((void *)VIRT_TO_PHYS(PML2.Address << 12), 0, 4096);
+        memset((void *)PHYS_TO_VIRT(PML2.Address << 12), 0, 4096);
 
-        ((PML2E *)VIRT_TO_PHYS(
+        ((PML2E *)PHYS_TO_VIRT(
             (void *)((uint64_t)(PML3.Address) << 12)))[PD_i] = PML2;
     } else {
         uint64_t temp = *(uint64_t *)(&PML2);
         temp |= flags & 0xFFF;
         temp |= (uint64_t)(flags & 0x7FF0000) << 36;
-        ((PML2E *)VIRT_TO_PHYS(
+        ((PML2E *)PHYS_TO_VIRT(
             (void *)((uint64_t)(PML3.Address) << 12)))[PD_i] = *(PML2E *)&temp;
     }
 
@@ -109,7 +113,7 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
     PML1E PML1 = *(PML1E *)(&temp);
     PML1.Address = (paddr >> 12);
 
-    ((PML1E *)VIRT_TO_PHYS((void *)((uint64_t)(PML2.Address) << 12)))[PT_i] =
+    ((PML1E *)PHYS_TO_VIRT((void *)((uint64_t)(PML2.Address) << 12)))[PT_i] =
         PML1;
 }
 
@@ -129,7 +133,8 @@ void init_vmm() {
     vok("Kernel Physical Address: 0x%lX", kernel_addr_response->physical_base);
     vok("Kernel Virtual Address: 0x%lx", kernel_addr_response->virtual_base);
 
-    for(uint64_t addr = 0; addr < (UINT32_MAX + 1); addr += 4096) {
+    for(uint64_t addr = 0; addr < (4UL * 1024UL * 1024UL * 1024UL);
+        addr += 4096) {
         vmm_map(PHYS_TO_VIRT(addr), addr, 0x08000003);
     }
 
