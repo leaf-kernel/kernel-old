@@ -140,6 +140,8 @@ void init_vmm() {
     vok("Kernel Physical Address: 0x%lX", kernel_addr_response->physical_base);
     vok("Kernel Virtual Address: 0x%lx", kernel_addr_response->virtual_base);
 
+    ok("HHDM Offset: 0x%lx", hhdm_offset);
+
     for(uint64_t addr = 0; addr < (4UL * 1024UL * 1024UL * 1024UL);
         addr += 4096) {
         vmm_map(PHYS_TO_VIRT(addr), addr, 0x08000003);
