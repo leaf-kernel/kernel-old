@@ -1,0 +1,1 @@
+let g:ale_c_cc_options = '-std=c99 -g -ffreestanding -Wno-packed-bitfield-compat -fno-stack-protector -fno-stack-check -fno-omit-frame-pointer -fno-lto -fPIE -m64 -march=x86-64 -mabi=sysv -mno-80387 -mno-mmx -msse -msse2 -mno-red-zone -MP' . expand('%:p:h') . '/kernel/include -I' . expand('%:p:h') . '/arch/x86_64'
