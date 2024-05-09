@@ -6,7 +6,6 @@
 // Arch imports
 #include <arch/cpu/cpu.h>
 #include <arch/pit/pit.h>
-#include <arch/x86_64/apic/apic.h>
 #include <arch/x86_64/cpu/utils.h>
 #include <arch/x86_64/idt/idt.h>
 
@@ -119,19 +118,17 @@ int kinit(service_t *self, void *args) {
     __LEAF_DONT_FLUSH_SERIAL();
     tty_spawn(0, NULL, 1);
 
-    init_apic();
-
     initrd = init_ramdisk((char *)(mod_request.response->modules[0]->address),
                           mod_request.response->modules[0]->size);
     vfs = init_vfs();
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
-    init_vmm();
+    // init_vmm();
 
     service_config_t post_kinit_conf = {
         .name = "post-kinit",
-        .verbose = true,
+        .verbose = false,
         .run_once = true,
         .auto_start = true,
         .stop_when_done = true,

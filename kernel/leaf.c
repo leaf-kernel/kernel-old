@@ -8,6 +8,7 @@
 
 // x86_64 architecture specific headers
 #include <arch/x86_64/acpi/mcfg.h>
+#include <arch/x86_64/apic/lapic.h>
 #include <arch/x86_64/idt/idt.h>
 
 // File system related headers
@@ -33,27 +34,8 @@
 #include <utils/parsing/elf.h>
 #include <utils/parsing/ini.h>
 
-int libc_test(service_t *self, void *in) {
-    TestResult result = check_libc(self->config->verbose);
-    if(result.failed == 0 && result.passed > 0) {
-        ok("All libc tests passed.");
-    } else {
-        warn("Only %d/%d libc tests passed.", result.passed,
-             result.passed + result.failed);
-    }
-
-    return LEAF_RETURN_SUCCESS;
-}
-
-int memory_check(service_t *self, void *in) {
-    update_memory();
-
-    if(total_memory < 64000000) {
-        return SERVICE_WARN_MEMORY;
-    } else {
-        ok("%d bytes OK", total_memory);
-    }
-
+int apic_setup(service_t *self, void *in) {
+    init_lapic();
     return LEAF_RETURN_SUCCESS;
 }
 
@@ -99,25 +81,21 @@ int main(service_t *self, void *leaf_hdr) {
     ok("TTY: tty%03d", currentTTYid);
     ok("-------------------------------------");
 
-    service_config_t memory_check_conf = {.name = "memory-check",
-                                          .verbose = false,
-                                          .run_once = true,
-                                          .auto_start = true,
-                                          .stop_when_done = true,
-                                          .type = SERVICE_TYPE_CHECK,
-                                          .runner = &memory_check};
+    update_memory();
 
-    register_service(&memory_check_conf, NULL);
+    if(total_memory < 64000000) {
+        return SERVICE_WARN_MEMORY;
+    } else {
+        ok("%d bytes OK", total_memory);
+    }
 
-    service_config_t libc_test_conf = {.name = "libc-test",
-                                       .verbose = false,
-                                       .run_once = true,
-                                       .auto_start = true,
-                                       .stop_when_done = true,
-                                       .type = SERVICE_TYPE_CHECK,
-                                       .runner = &libc_test};
-
-    register_service(&libc_test_conf, NULL);
+    TestResult result = check_libc(self->config->verbose);
+    if(result.failed == 0 && result.passed > 0) {
+        ok("All libc tests passed.");
+    } else {
+        warn("Only %d/%d libc tests passed.", result.passed,
+             result.passed + result.failed);
+    }
 
     service_config_t driver_conf = {
         .name = "drivers",
@@ -141,7 +119,17 @@ int main(service_t *self, void *leaf_hdr) {
         .runner = &map_kernel,
     };
 
-    register_service(&kernel_map, NULL);
+    service_config_t apic_setup_conf = {
+        .name = "apic-setup",
+        .verbose = false,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .type = SERVICE_TYPE_KINIT,
+        .runner = &apic_setup,
+    };
+
+    register_service(&apic_setup_conf, NULL);
 
     ok("\033[1mpost-kinit\033[0m done.");
 

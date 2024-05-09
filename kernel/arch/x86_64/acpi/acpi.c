@@ -1,7 +1,7 @@
 
 #include <arch/x86_64/acpi/fadt.h>
 #include <arch/x86_64/acpi/rsdt.h>
-#include <arch/x86_64/apic/apic.h>
+#include <arch/x86_64/apic/lapic.h>
 #include <drivers/serial/serial.h>
 #include <sys/leaf.h>
 #include <sys/limine.h>
