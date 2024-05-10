@@ -45,8 +45,8 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
     const uint16_t PDP_i = (uint16_t)((vaddr & 0x007FC0000000) >> 30);
     const uint16_t PML4_i = (uint16_t)((vaddr & 0xFF8000000000) >> 39);
 
-    vvok("Vaddr: 0x%.16llx, Paddr: 0x%.16llx, Flags: 0x%.8llx", vaddr, paddr,
-         flags);
+    vvvok("Vaddr: 0x%.16llx, Paddr: 0x%.16llx, Flags: 0x%.8llx", vaddr, paddr,
+          flags);
 
     PML4E PML4 = PML4Array.entries[PML4_i];
     if(PML4.Present == 0) {

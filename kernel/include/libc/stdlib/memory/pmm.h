@@ -17,6 +17,9 @@ extern uint64_t bitmap_size;
 extern uint64_t free_memory;
 extern uint64_t total_memory;
 
+extern volatile struct limine_memmap_request memmap_request;
+extern volatile struct limine_memmap_response *memmap;
+
 void init_pmm();
 void update_memory();
 void *pmm_request_page();
