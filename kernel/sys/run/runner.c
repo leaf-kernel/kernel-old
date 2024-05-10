@@ -1,6 +1,8 @@
 #include <sys/logger.h>
 #include <sys/run/runner.h>
 
+#include <arch/x86_64/cpu/utils.h>
+
 int _runner(service_t *self, void *in) {
     ok("%s", in);
     return 1;
@@ -96,7 +98,7 @@ int register_service(service_config_t *conf, void *in) {
                           "restart your computer! If that dont work, then your "
                           "fucked",
                           service.config->name);
-                    hcf();
+                    _int(3);
                     break;
                 default:
                     fail("The service %s failed. Unknown type 0x%02X!",
@@ -152,7 +154,7 @@ int register_service(service_config_t *conf, void *in) {
                             "your "
                             "fucked",
                             service.config->name);
-                        hcf();
+                        _int(3);
                         break;
                     default:
                         fail("The service %s failed. Unknown type 0x%02X!",

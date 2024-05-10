@@ -40,10 +40,17 @@ void backtrace(void *rbp, uint64_t caller) {
             char symbol_name[30];
             snprintf(symbol_name, sizeof(symbol_name), "%s+0x%04x",
                      symbol->name, frame->rip - symbol->addr);
+
+            bool service = false;
+            if(strcmp(symbol->name, "register_service") == 0)
+                service = true;
+
             int symbol_name_length = strlen(symbol_name);
             if(symbol_name_length > 25)
                 symbol_name[22] = symbol_name[23] = symbol_name[24] = '.';
-            printf("│ ↕ [%.16lx]\t<%-25s> │\r\n", frame->rip, symbol_name);
+
+            if(!service)
+                printf("│ ↕ [%.16lx]\t<%-25s> │\r\n", frame->rip, symbol_name);
         } else {
             printf("│ ↕ [%.16lx]\t<\?\?\?>   │\r\n", frame->rip);
         }
