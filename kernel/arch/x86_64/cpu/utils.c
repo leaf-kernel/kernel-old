@@ -24,7 +24,7 @@ void _legacy_reboot() {
 
 #define bit(n) (1 << (n))
 
-#define check_flag(flags, n) ((flags)&bit(n))
+#define check_flag(flags, n) ((flags) & bit(n))
 
     uint8_t temp;
 

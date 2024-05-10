@@ -96,6 +96,7 @@ int register_service(service_config_t *conf, void *in) {
                           "restart your computer! If that dont work, then your "
                           "fucked",
                           service.config->name);
+                    hcf();
                     break;
                 default:
                     fail("The service %s failed. Unknown type 0x%02X!",
@@ -151,6 +152,7 @@ int register_service(service_config_t *conf, void *in) {
                             "your "
                             "fucked",
                             service.config->name);
+                        hcf();
                         break;
                     default:
                         fail("The service %s failed. Unknown type 0x%02X!",

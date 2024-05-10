@@ -154,18 +154,6 @@ int main(service_t *self, void *leaf_hdr) {
              result.passed + result.failed);
     }
 
-    service_config_t driver_conf = {
-        .name = "drivers",
-        .verbose = false,
-        .run_once = true,
-        .auto_start = true,
-        .stop_when_done = true,
-        .type = SERVICE_TYPE_KINIT,
-        .runner = &parse_elf_service,
-    };
-
-    // register_service(&driver_conf, "/sys/run/drivers/hello");
-
     service_config_t kernel_map = {
         .name = "kernel-mapping",
         .verbose = false,
@@ -189,6 +177,18 @@ int main(service_t *self, void *leaf_hdr) {
     };
 
     // register_service(&apic_setup_conf, NULL);
+
+    service_config_t drivers_conf = {
+        .name = "test-driver",
+        .verbose = true,
+        .run_once = true,
+        .auto_start = true,
+        .stop_when_done = true,
+        .type = SERVICE_TYPE_KINIT,
+        .runner = &parse_elf_service,
+    };
+
+    register_service(&drivers_conf, "/sys/run/drivers/hello");
 
     ok("\033[1mpost-kinit\033[0m done.");
 
