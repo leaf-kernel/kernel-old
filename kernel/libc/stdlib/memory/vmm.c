@@ -45,8 +45,8 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
     const uint16_t PDP_i = (uint16_t)((vaddr & 0x007FC0000000) >> 30);
     const uint16_t PML4_i = (uint16_t)((vaddr & 0xFF8000000000) >> 39);
 
-    ok("Vaddr: 0x%.16llx, Paddr: 0x%.16llx, Flags: 0x%.8llx", vaddr, paddr,
-       flags);
+    vvok("Vaddr: 0x%.16llx, Paddr: 0x%.16llx, Flags: 0x%.8llx", vaddr, paddr,
+         flags);
 
     PML4E PML4 = PML4Array.entries[PML4_i];
     if(PML4.Present == 0) {
@@ -65,7 +65,7 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
         PML4Array.entries[PML4_i] = *(PML4E *)&temp;
     }
 
-    ok("PML4 Addr: 0x%.16llx", PML4.Address);
+    vvvok("PML4 Addr: 0x%.16llx", PML4.Address);
 
     PML3E PML3 = ((PML3E *)PHYS_TO_VIRT(
         (void *)((uint64_t)(PML4.Address) << 12)))[PDP_i];
@@ -88,7 +88,7 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
             (void *)((uint64_t)(PML4.Address) << 12)))[PDP_i] = *(PML3E *)&temp;
     }
 
-    ok("PML3 Addr: 0x%.16llx", PML3.Address);
+    vvvok("PML3 Addr: 0x%.16llx", PML3.Address);
 
     PML2E PML2 =
         ((PML2E *)PHYS_TO_VIRT((void *)((uint64_t)(PML3.Address) << 12)))[PD_i];
@@ -111,7 +111,7 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
             (void *)((uint64_t)(PML3.Address) << 12)))[PD_i] = *(PML2E *)&temp;
     }
 
-    ok("PML2 Addr: 0x%.16llx", PML2.Address);
+    vvvok("PML2 Addr: 0x%.16llx", PML2.Address);
 
     uint64_t temp =
         ((uint64_t)((flags & 0x0FFF) | ((uint64_t)(flags & 0x0FFF0000) << 36)));
@@ -121,7 +121,7 @@ void _x86_64_vmm_map(uint64_t vaddr, uint64_t paddr, uint32_t flags) {
     ((PML1E *)PHYS_TO_VIRT((void *)((uint64_t)(PML2.Address) << 12)))[PT_i] =
         PML1;
 
-    ok("PML1 Addr: 0x%.16llx", PML1.Address);
+    vvvok("PML1 Addr: 0x%.16llx", PML1.Address);
 }
 
 void vmm_map_range(void *virt, void *phys, void *virt_end, uint32_t perms) {
@@ -136,12 +136,10 @@ void init_vmm() {
     vok("Kernel Physical Address: 0x%lX", kernel_addr_response->physical_base);
     vok("Kernel Virtual Address: 0x%lx", kernel_addr_response->virtual_base);
 
-    ok("HHDM Offset: 0x%lx", hhdm_offset);
+    vok("HHDM Offset: 0x%lx", hhdm_offset);
 
     for(uint64_t addr = 0; addr < (4UL * 1024UL * 1024UL * 1024UL);
         addr += 4096) {
-        ok(" - addr: 0x%lx PHYS_TO_VIRT(addr): 0x%lx", addr,
-           PHYS_TO_VIRT(addr));
         vmm_map(PHYS_TO_VIRT(addr), addr, 0x08000003);
     }
 

@@ -55,10 +55,35 @@ int map_kernel(service_t *self, void *data) {
     vvok("Kernel End: 0x%lx", &__kernel_end);
 
     vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__kernel_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__kernel_end, _VMM_PRESENT | _VMM_EXECUTE_DISABLE);
+
+    vmm_map_range(&__kernel_start,
                   (void *)((uint64_t)&__text_start -
                            (uint64_t)kernel_addr_response->virtual_base +
                            (uint64_t)kernel_addr_response->physical_base),
-                  &__kernel_end, _VMM_PRESENT);
+                  &__text_end, _VMM_PRESENT);
+
+    vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__rodata_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__rodata_end, _VMM_PRESENT | _VMM_EXECUTE_DISABLE);
+
+    vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__data_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__data_end,
+                  _VMM_PRESENT | _VMM_WRITE | _VMM_EXECUTE_DISABLE);
+
+    vmm_map_range(&__kernel_start,
+                  (void *)((uint64_t)&__bss_start -
+                           (uint64_t)kernel_addr_response->virtual_base +
+                           (uint64_t)kernel_addr_response->physical_base),
+                  &__bss_end, _VMM_PRESENT | _VMM_WRITE | _VMM_EXECUTE_DISABLE);
 
     return LEAF_RETURN_SUCCESS;
 }
@@ -119,6 +144,8 @@ int main(service_t *self, void *leaf_hdr) {
         .runner = &map_kernel,
     };
 
+    register_service(&kernel_map, NULL);
+
     service_config_t apic_setup_conf = {
         .name = "apic-setup",
         .verbose = false,
@@ -129,7 +156,7 @@ int main(service_t *self, void *leaf_hdr) {
         .runner = &apic_setup,
     };
 
-    register_service(&apic_setup_conf, NULL);
+    // register_service(&apic_setup_conf, NULL);
 
     ok("\033[1mpost-kinit\033[0m done.");
 
