@@ -103,6 +103,7 @@ void *pmm_request_page() {
     while(1) {
         last_bit_val = bitmap_get(bitmap, last_allocated_index);
         if(last_bit_val == 0) {
+            bitmap_set(bitmap, last_allocated_index);
             return (void *)(last_allocated_index * PAGE_SIZE);
         } else {
             if(last_allocated_index >= bitmap_pages) {
