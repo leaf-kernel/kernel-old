@@ -124,7 +124,7 @@ int kinit(service_t *self, void *args) {
     mount_drive(vfs, (uint64_t)initrd, TYPE_INITRD);
     init_stable();
 
-    // init_vmm();
+    init_vmm();
 
     service_config_t post_kinit_conf = {
         .name = "post-kinit",
