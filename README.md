@@ -1,4 +1,7 @@
 # Leaf
+> [!NOTE]
+> This is the old repo checkout the new one [here](https://github.com/leaf-kernel/os)
+
 A hobby kernel for nerds. Pre built ISO's [here](https://nightly.link/leaf-kernel/kernel/workflows/build/main/Leaf-release.zip)
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/leaf-kernel/kernel/.github%2Fworkflows%2Fbuild.yml?label=Daily%20ISO%20Build%20(x86_64-limine))
